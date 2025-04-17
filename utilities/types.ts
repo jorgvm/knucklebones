@@ -17,9 +17,13 @@ export type GameId = string;
 export type Player = {
   id: PlayerId;
   name: string;
+  host: boolean;
 };
 
-export type GameStatus = "playing" | "done";
+export type GameStatus =
+  | "lobby" // waiting on more players
+  | "playing" // playing the game
+  | "finished"; // there is a winner
 
 export type GameData = {
   id: GameId;
