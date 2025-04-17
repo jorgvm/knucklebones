@@ -1,26 +1,30 @@
 <template>
-  <div class="flex items-center justify-center w-full h-full">
-    <div class="shadow p-12 aspect-square min-w-[260px]">
+  <div class="flex h-full w-full items-center justify-center">
+    <div class="aspect-square min-w-[260px] p-12 shadow">
       <h1>Error</h1>
 
       <p>Oops something went wrong</p>
 
-      <button @click="handleClearError" class="my-7">Go home</button>
+      <p>
+        {{ error }}
+      </p>
+
+      <button class="my-7" @click="handleClearError">Go home</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  layout: false,
-});
+  definePageMeta({
+    layout: false,
+  });
 
-const { error } = defineProps({
-  error: {
-    type: Object,
-    required: true,
-  },
-});
+  const { error } = defineProps({
+    error: {
+      type: Object,
+      required: true,
+    },
+  });
 
-const handleClearError = () => clearError({ redirect: "/" });
+  const handleClearError = () => clearError({ redirect: "/" });
 </script>

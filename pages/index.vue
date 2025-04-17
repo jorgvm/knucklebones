@@ -1,5 +1,5 @@
 <template>
   <div>
-    <GameCreate />
+    <GameNameForm type="create-game" />
   </div>
 </template>

@@ -1,4 +1,5 @@
 {
   "tailwindStylesheet": "./assets/css/main.css",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "vueIndentScriptAndStyle": true
 }

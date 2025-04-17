@@ -4,9 +4,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { PlayerId } from "~/utilities/types";
+  import type { PlayerId } from "~/utilities/types";
 
-const { playerId } = defineProps<{
-  playerId: PlayerId;
-}>();
+  const { playerId } = defineProps<{
+    playerId: PlayerId;
+  }>();
 </script>

@@ -5,6 +5,8 @@ import {
   updateDoc,
   collection,
   addDoc,
+  getDoc,
+  increment,
 } from "firebase/firestore";
 import type { GameData } from "../../utilities/types";
 
@@ -33,6 +35,7 @@ const db = getFirestore(app);
 
 /**
  * Update existing game in Firebase
+ * Update version with every update
  *
  * @param gameId id of existing game
  * @param data (partial) game data
@@ -41,7 +44,11 @@ const db = getFirestore(app);
 export const updateGameInDatabase = async (
   gameId: string,
   data: Partial<GameData>,
-) => await updateDoc(doc(db, firebaseCollectionId, gameId), data);
+) =>
+  await updateDoc(doc(db, firebaseCollectionId, gameId), {
+    ...data,
+    version: increment(1),
+  });
 
 /**
  * Create new game in Firebase
@@ -53,4 +60,17 @@ export const createGameInDatabase = async (data: Partial<GameData>) => {
   return await addDoc(collection(db, firebaseCollectionId), data).then(
     (docRef) => docRef.id,
   );
+};
+
+// Function to get a document once
+export const getGameFromDatabase = async (gameId: string) => {
+  const docRef = doc(db, firebaseCollectionId, gameId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    console.log("No such document!");
+    return null;
+  }
 };

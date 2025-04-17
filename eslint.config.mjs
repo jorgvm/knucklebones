@@ -25,5 +25,13 @@ export default withNuxt({
         },
       },
     ],
+    // Make sure <script> indents, for readability
+    "vue/script-indent": [
+      "error",
+      2,
+      {
+        baseIndent: 1,
+      },
+    ],
   },
 });

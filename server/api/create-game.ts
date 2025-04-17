@@ -3,10 +3,11 @@ import { createGameInDatabase } from "~/server/utilities/firebase";
 export default defineEventHandler(async (event) => {
   const { playerName } = await readBody(event);
   const playerId = crypto.randomUUID();
-  const gameId = crypto.randomUUID();
 
   // Create game
-  const result = await createGameInDatabase({
+  const gameId = await createGameInDatabase({
+    creation_date: new Date(),
+    version: 1,
     players: [
       {
         host: true,
@@ -14,14 +15,13 @@ export default defineEventHandler(async (event) => {
         name: playerName,
       },
     ],
-    id: gameId,
     active_player: playerId,
     status: "lobby",
     winner: null,
     dice_list: [],
   });
 
-  if (!result) {
+  if (!gameId) {
     throw new Error();
   }
 
