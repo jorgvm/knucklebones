@@ -29,10 +29,12 @@ const fetchData = (): GameData => {
     dice_list: mockDiceList,
     players: [
       {
+        host: true,
         id: "1",
         name: "john",
       },
       {
+        host: false,
         id: "2",
         name: "jane",
       },
