@@ -26,6 +26,8 @@ export type GameStatus =
   | "finished"; // there is a winner
 
 export type GameData = {
+  creation_date: Date;
+  version: number;
   id: GameId;
   players: Player[];
   status: GameStatus;

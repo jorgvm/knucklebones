@@ -9,20 +9,20 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from "vue";
-import type { GameData, PlayerId, Racks } from "~/utilities/types";
+  import { inject } from "vue";
+  import type { GameData, PlayerId, Racks } from "~/utilities/types";
 
-const gameData = inject("gameData") as GameData;
+  const gameData = inject("gameData") as GameData;
 
-const { playerId } = defineProps<{
-  playerId: PlayerId;
-}>();
+  const { playerId } = defineProps<{
+    playerId: PlayerId;
+  }>();
 
-const myDice = gameData.dice_list.filter((dice) => dice.player_id === playerId);
+  const myDice = gameData.dice_list.filter((dice) => dice.player_id === playerId);
 
-const racks: Racks = [[], [], []];
+  const racks: Racks = [[], [], []];
 
-myDice.forEach((dice) => {
-  racks[dice.rack].push(dice);
-});
+  myDice.forEach((dice) => {
+    racks[dice.rack].push(dice);
+  });
 </script>
