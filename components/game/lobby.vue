@@ -5,10 +5,14 @@
 
   const url = useRequestURL();
 
-  // Check if user is host
-  const gameData = inject("gameData") as GameData;
+  const gameData = inject<GameData>("gameData");
+
+  if (!gameData) {
+    throw new Error("GameData was not provided");
+  }
+
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
-  const isHost = gameData.players.some((i) => i.id === cookiePlayerId.value);
+  const isHost = gameData.players?.some((i) => i.id === cookiePlayerId.value);
 </script>
 
 <template>
@@ -18,7 +22,7 @@
 
       <p>Send them this link:</p>
 
-      <input type="text" disabled :value="url" />
+      <input type="text" disabled :value="url" className="w-[500px]" />
     </div>
 
     <GameNameForm v-if="!isHost" type="join-game" />

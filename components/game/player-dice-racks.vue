@@ -12,13 +12,19 @@
   import { inject } from "vue";
   import type { GameData, PlayerId, Racks } from "~/utilities/types";
 
-  const gameData = inject("gameData") as GameData;
+  const gameData = inject<GameData>("gameData");
+
+  if (!gameData) {
+    throw new Error("GameData was not provided");
+  }
 
   const { playerId } = defineProps<{
     playerId: PlayerId;
   }>();
 
-  const myDice = gameData.dice_list.filter((dice) => dice.player_id === playerId);
+  const myDice = gameData.dice_list.filter(
+    (dice) => dice.player_id === playerId,
+  );
 
   const racks: Racks = [[], [], []];
 

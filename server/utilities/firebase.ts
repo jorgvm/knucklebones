@@ -7,6 +7,7 @@ import {
   addDoc,
   getDoc,
   increment,
+  type FieldValue,
 } from "firebase/firestore";
 import type { GameData } from "../../utilities/types";
 
@@ -41,9 +42,14 @@ const db = getFirestore(app);
  * @param data (partial) game data
  * @returns Promise with gamedata
  */
+
+type FirestoreCompatible<T> = {
+  [K in keyof T]?: T[K] | FieldValue;
+};
+
 export const updateGameInDatabase = async (
   gameId: string,
-  data: Partial<GameData>,
+  data: FirestoreCompatible<GameData>,
 ) =>
   await updateDoc(doc(db, firebaseCollectionId, gameId), {
     ...data,
@@ -68,9 +74,8 @@ export const getGameFromDatabase = async (gameId: string) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return docSnap.data();
+    return docSnap.data() as GameData;
   } else {
-    console.log("No such document!");
-    return null;
+    throw new Error("Game not found");
   }
 };
