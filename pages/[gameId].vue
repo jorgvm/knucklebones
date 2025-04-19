@@ -2,23 +2,61 @@
   import { provide } from "vue";
   import { COOKIE_PLAYER_ID } from "~/utilities/constants";
 
-  // Fetch game
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
   const route = useRoute();
   const { gameId } = route.params;
+  const pollCount = ref(0);
+  const shouldPoll = computed(() => pollCount.value < 2);
 
-  const gameData = await $fetch("/api/get-game", {
-    method: "post",
-    body: { gameId, playerId: cookiePlayerId.value },
+  // Fetch data on load
+  const fetchData = async () =>
+    await $fetch("/api/get-game", {
+      method: "post",
+      body: { gameId, playerId: cookiePlayerId.value },
+    });
+  const gameData = ref(await fetchData());
+
+  // Fetch the new game data every X seconds
+  const pollData = async () => {
+    console.log({ pollCount: pollCount.value, shouldPoll: shouldPoll.value });
+
+    if (!shouldPoll.value) {
+      return;
+    }
+
+    // Fetch data
+    pollCount.value++;
+    const newData = await fetchData();
+
+    // Only save data if new version was found
+    if (newData.version > gameData.value.version) {
+      gameData.value = newData;
+      pollCount.value = 0;
+    }
+  };
+
+  const intervalId = setInterval(pollData, 2000);
+
+  const handleContinue = () => {
+    pollCount.value = 0;
+    pollData();
+  };
+
+  // Provider
+  provide("gameData", gameData.value);
+
+  // Cleanup
+  onBeforeUnmount(() => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
   });
-
-  // Provide data
-  provide("gameData", gameData);
 </script>
 
 <template>
   <div>
     <GameBoard v-if="gameData?.status === 'playing'" />
     <GameLobby v-if="gameData?.status === 'lobby'" />
+    <GamePaused v-if="!shouldPoll" :handle-continue="handleContinue" />
   </div>
 </template>

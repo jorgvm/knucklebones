@@ -1,27 +1,42 @@
 import { arrayUnion } from "firebase/firestore";
-import { updateGameInDatabase } from "~/server/utilities/firebase";
-import type { Player } from "~/utilities/types";
+import {
+  getGameFromDatabase,
+  updateGameInDatabase,
+} from "~/server/utilities/firebase";
+import { isValidFirebaseDocumentId, sanitizeName } from "~/utilities/sanitise";
 
 export default defineEventHandler(async (event) => {
   const { playerName, gameId } = await readBody(event);
+  const sanitizedName = sanitizeName(playerName);
+
+  // All ids should be valid
+  if (!sanitizedName || !isValidFirebaseDocumentId(gameId)) {
+    throw new Error("Invalid input.");
+  }
+
+  // Check if game exists
+  const existingGame = await getGameFromDatabase(gameId);
+
+  if (!existingGame) {
+    throw new Error("While joining game, game was not found.");
+  }
+
+  if (existingGame.players.length >= 2) {
+    throw new Error("Can't join game, there are already two players.");
+  }
+
+  // Join game
   const playerId = crypto.randomUUID();
-  console.log("join game:", playerName, gameId);
-  // Create game
   const newPlayer = {
     host: false,
     id: playerId,
-    name: playerName,
+    name: sanitizedName,
   };
 
-  const result = await updateGameInDatabase(gameId, {
-    players: arrayUnion(newPlayer) as unknown as Player[],
+  await updateGameInDatabase(gameId, {
+    players: arrayUnion(newPlayer),
+    status: "playing",
   });
-
-  console.log("join game result", result);
-
-  if (!gameId) {
-    throw new Error();
-  }
 
   return {
     playerId,
