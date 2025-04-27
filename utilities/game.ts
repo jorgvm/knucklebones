@@ -18,18 +18,24 @@ export const moveIsAllowed = (
     return false;
   }
 
-  const playerActiveDice = gameData.dice_list.filter(
-    (dice) => dice.player_id === playerId && dice.status === "active",
-  );
-  const targetRack = playerActiveDice.filter(
-    (dice) => dice.rack === rackNumber,
-  );
-
-  // Chosen rack should not be full
-  if (targetRack.length >= 3) {
+  // Player data should exist
+  const activePlayer = gameData.players.find((i) => i.id === playerId);
+  if (!activePlayer) {
     return false;
   }
 
+  // Chosen rack should not be full
+  const playerActiveDice = activePlayer.dice.filter(
+    (dice) => dice.status === "active",
+  );
+  const diceInTargetRack = playerActiveDice.filter(
+    (dice) => dice.rack === rackNumber,
+  );
+  if (diceInTargetRack.length >= 3) {
+    return false;
+  }
+
+  // Move is allowed
   return true;
 };
 

@@ -16,19 +16,19 @@ export default defineEventHandler(async (event) => {
   const playerId = generateId();
 
   const gameId = await createGameInDatabase({
-    creation_date: new Date(),
+    created: new Date().toISOString(),
     version: 1,
     players: [
       {
         host: true,
         id: playerId,
         name: sanitizedName,
+        dice: [],
       },
     ],
     active_player: playerId,
     status: "lobby",
     winner: null,
-    dice_list: [],
     new_dice: rollDice(),
   });
 
