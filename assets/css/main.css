@@ -7,3 +7,7 @@ body {
 button {
   @apply cursor-pointer border border-amber-300;
 }
+
+button:disabled {
+  @apply cursor-not-allowed;
+}

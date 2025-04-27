@@ -33,5 +33,6 @@ export default withNuxt({
         baseIndent: 1,
       },
     ],
+    "vue/no-multiple-template-root": "off", // in vue3 we don't need a root
   },
 });

@@ -9,7 +9,7 @@ import {
   increment,
   type FieldValue,
 } from "firebase/firestore";
-import type { GameData } from "../../utilities/types";
+import type { GameData } from "~/utilities/types";
 
 // Firebase setup
 const {
@@ -34,18 +34,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+type FirestoreCompatible<T> = {
+  [K in keyof T]?: T[K] | FieldValue;
+};
+
 /**
  * Update existing game in Firebase
- * Update version with every update
+ *
+ * Version is updated with every update
  *
  * @param gameId id of existing game
  * @param data (partial) game data
  * @returns Promise with gamedata
  */
-
-type FirestoreCompatible<T> = {
-  [K in keyof T]?: T[K] | FieldValue;
-};
 
 export const updateGameInDatabase = async (
   gameId: string,
@@ -68,7 +69,7 @@ export const createGameInDatabase = async (data: Partial<GameData>) => {
   );
 };
 
-// Function to get a document once
+/** Retrieve GameData */
 export const getGameFromDatabase = async (gameId: string) => {
   const docRef = doc(db, firebaseCollectionId, gameId);
   const docSnap = await getDoc(docRef);

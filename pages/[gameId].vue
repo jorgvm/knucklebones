@@ -6,7 +6,7 @@
   const route = useRoute();
   const { gameId } = route.params;
   const pollCount = ref(0);
-  const shouldPoll = computed(() => pollCount.value < 2);
+  const shouldPoll = computed(() => pollCount.value < 30);
 
   // Fetch data on load
   const fetchData = async () =>
@@ -14,12 +14,11 @@
       method: "post",
       body: { gameId, playerId: cookiePlayerId.value },
     });
+
   const gameData = ref(await fetchData());
 
   // Fetch the new game data every X seconds
   const pollData = async () => {
-    console.log({ pollCount: pollCount.value, shouldPoll: shouldPoll.value });
-
     if (!shouldPoll.value) {
       return;
     }
@@ -43,7 +42,7 @@
   };
 
   // Provider
-  provide("gameData", gameData.value);
+  provide("gameData", gameData);
 
   // Cleanup
   onBeforeUnmount(() => {
@@ -54,9 +53,7 @@
 </script>
 
 <template>
-  <div>
-    <GameBoard v-if="gameData?.status === 'playing'" />
-    <GameLobby v-if="gameData?.status === 'lobby'" />
-    <GamePaused v-if="!shouldPoll" :handle-continue="handleContinue" />
-  </div>
+  <GameBoard v-if="gameData?.status === 'playing'" />
+  <GameLobby v-if="gameData?.status === 'lobby'" />
+  <GamePaused v-if="!shouldPoll" :handle-continue="handleContinue" />
 </template>

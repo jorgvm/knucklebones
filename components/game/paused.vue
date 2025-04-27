@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div>
-    It's been a while, are you still playing the game?
+  <div class="my-3 opacity-30">
+    It has been a while, are you still playing the game?
 
     <button @click="handleContinue">Continue</button>
   </div>

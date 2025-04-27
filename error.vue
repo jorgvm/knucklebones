@@ -10,7 +10,14 @@
     },
   });
 
-  const serverError = JSON.parse(error.data)?.message;
+  let serverError = "";
+
+  try {
+    // serverError = JSON.parse(error.data)?.message;
+  } catch (e) {
+    console.log(e);
+    serverError = "Error could not be parsed";
+  }
 
   const handleClearError = () => clearError({ redirect: "/" });
 </script>
@@ -24,7 +31,9 @@
         {{ serverError }}
       </p>
 
-      <button class="my-7" @click="handleClearError">Go home</button>
+      <!-- <button class="my-7" @click="handleClearError">Go home</button> -->
+
+      <RouterLink to="/">Go home</RouterLink>
     </div>
   </div>
 </template>
