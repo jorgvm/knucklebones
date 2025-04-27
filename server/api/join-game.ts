@@ -5,9 +5,11 @@ import {
 } from "~/utilities/firebase";
 import { generateId } from "~/utilities/generate-id";
 import { isValidFirebaseDocumentId, sanitizeName } from "~/utilities/sanitise";
+import type { Player } from "~/utilities/types";
 
 export default defineEventHandler(async (event) => {
-  const { playerName, gameId } = await readBody(event);
+  const { playerName, gameId }: { playerName: string; gameId: string } =
+    await readBody(event);
   const sanitizedName = sanitizeName(playerName);
 
   // All ids should be valid
@@ -17,23 +19,23 @@ export default defineEventHandler(async (event) => {
 
   // Check if game exists
   const gameData = await getGameFromDatabase(gameId);
-
   if (!gameData) {
     throw new Error("While joining game, game was not found.");
   }
-
   if (gameData.players.length >= 2) {
     throw new Error("Can't join game, there are already two players.");
   }
 
-  // Join game
+  // Create new player
   const playerId = generateId();
-  const newPlayer = {
+  const newPlayer: Player = {
     host: false,
+    dice: [],
     id: playerId,
     name: sanitizedName,
   };
 
+  // Join game
   await updateGameInDatabase(gameId, {
     players: arrayUnion(newPlayer),
     status: "playing",

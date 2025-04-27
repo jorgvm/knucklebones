@@ -1,16 +1,6 @@
 <script lang="ts" setup>
-  import type { Dice, GameData, PlayerId, Racks } from "~/utilities/types";
-
-  const generateRacks = (dice: Dice[]) => {
-    const defaultRacks = [[], [], []] as Racks;
-
-    const result = dice.reduce((acc, dice) => {
-      acc[dice.rack] = [...(acc[dice.rack] || []), dice];
-      return acc;
-    }, defaultRacks);
-
-    return result;
-  };
+  import { generateRacks } from "~/utilities/generate-racks";
+  import type { GameData, PlayerId } from "~/utilities/types";
 
   const { playerId, isLocalPlayer } = defineProps<{
     playerId: PlayerId;
@@ -18,14 +8,38 @@
   }>();
 
   const route = useRoute();
+
+  // Keep track of loading locally, to prevent multiple place-dice requests to server
   const isLoading = ref(false);
 
   const gameData = inject<Ref<GameData>>("gameData");
-
   if (!gameData?.value) {
     throw new Error("GameData was not provided");
   }
 
+  const player = computed(() =>
+    gameData.value.players?.find((i) => i.id === playerId),
+  );
+
+  const racks = computed(() => {
+    if (!player.value) {
+      throw new Error("Player data not found");
+    }
+    return generateRacks(player.value.dice);
+  });
+
+  // For the player in this player-section, is it the turn to play?
+  const myTurn = computed(() => gameData.value.active_player === playerId);
+  const canPlay = computed(
+    () => isLocalPlayer && myTurn.value && !isLoading.value,
+  );
+
+  watch(gameData, () => {
+    // After making a move and new data is fetched, set loading to false
+    isLoading.value = false;
+  });
+
+  // Player selects which rack to place dice in
   const handlePlaceDice = async (rackNumber: number) => {
     isLoading.value = true;
     const { gameId } = route.params;
@@ -34,29 +48,12 @@
       method: "post",
       body: { gameId, playerId, rackNumber },
     });
-
-    isLoading.value = false; // todo, loading should be defined by succesfull new game fetch
   };
-
-  const localPlayer = computed(() =>
-    gameData.value.players?.find((i) => i.id === playerId),
-  );
-
-  const myDice = computed(() =>
-    gameData.value.dice_list.filter((dice) => dice.player_id === playerId),
-  );
-
-  const racks = computed(() => generateRacks(myDice.value));
-
-  const myTurn = computed(() => gameData.value.active_player === playerId);
-  const canPlay = computed(() => isLocalPlayer && myTurn);
 </script>
 
 <template>
-  <div v-if="localPlayer" class="">
-    {{ isLocalPlayer && myTurn ? "My turn" : null }}
-
-    <div>{{ localPlayer.name }}</div>
+  <div v-if="player">
+    <div>{{ player.name }}</div>
     <div class="flex">
       <button
         v-for="(rack, index) in racks"
@@ -70,5 +67,7 @@
         </div>
       </button>
     </div>
+
+    {{ canPlay ? "your turn!" : "" }}
   </div>
 </template>
