@@ -27,12 +27,14 @@ export const isValidCryptoId = (value: string): boolean => {
 /**
  * Checks if a string:
  * - Is exactly 20 characters long
- * - Contains only uppercase letters, lowercase letters, and numbers
- *
- * @param {string} value - The string to validate
- * @returns {boolean} True if the string is valid, false otherwise
+ * - Contains only uppercase letters, lowercase letters, and number
  */
 export const isValidFirebaseDocumentId = (value: string): boolean => {
   const pattern = /^[a-zA-Z0-9]{20}$/;
   return pattern.test(value);
 };
+
+/**
+ * Check if value is number
+ */
+export const isNumber = (value: unknown): boolean => typeof value === "number";

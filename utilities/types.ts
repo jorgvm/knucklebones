@@ -1,5 +1,7 @@
+export type DiceStatus = "active" | "removed";
+
 export type Dice = {
-  status: "ready";
+  status: DiceStatus;
   value: number;
   id: string;
   rack: 0 | 1 | 2;
@@ -34,4 +36,5 @@ export type GameData = {
   active_player: PlayerId | null;
   winner: PlayerId | null;
   dice_list: Dice[];
+  new_dice: number;
 };

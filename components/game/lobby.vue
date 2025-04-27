@@ -5,26 +5,29 @@
 
   const url = useRequestURL();
 
-  const gameData = inject<GameData>("gameData");
+  const gameData = inject<Ref<GameData>>("gameData");
 
-  if (!gameData) {
+  if (!gameData?.value) {
     throw new Error("GameData was not provided");
   }
 
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
-  const isHost = gameData.players?.some((i) => i.id === cookiePlayerId.value);
+
+  const localPlayerIsHost = computed(() =>
+    Boolean(
+      gameData.value.players?.find((i) => i.id === cookiePlayerId.value)?.host,
+    ),
+  );
 </script>
 
 <template>
-  <div>
-    <div v-if="isHost">
-      <p>Waiting for other players</p>
+  <div v-if="localPlayerIsHost">
+    <p>Waiting for other players</p>
 
-      <p>Send them this link:</p>
+    <p>Send them this link:</p>
 
-      <input type="text" disabled :value="url" className="w-[500px]" />
-    </div>
-
-    <GameNameForm v-if="!isHost" type="join-game" />
+    <input type="text" disabled :value="url" class="w-[500px]" />
   </div>
+
+  <GameNameForm v-if="!localPlayerIsHost" type="join-game" />
 </template>

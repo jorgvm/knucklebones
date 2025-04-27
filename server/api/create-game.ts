@@ -1,4 +1,6 @@
-import { createGameInDatabase } from "~/server/utilities/firebase";
+import { createGameInDatabase } from "~/utilities/firebase";
+import { generateId } from "~/utilities/generate-id";
+import { rollDice } from "~/utilities/roll-dice";
 import { sanitizeName } from "~/utilities/sanitise";
 
 export default defineEventHandler(async (event) => {
@@ -11,7 +13,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Create game
-  const playerId = crypto.randomUUID();
+  const playerId = generateId();
 
   const gameId = await createGameInDatabase({
     creation_date: new Date(),
@@ -27,6 +29,7 @@ export default defineEventHandler(async (event) => {
     status: "lobby",
     winner: null,
     dice_list: [],
+    new_dice: rollDice(),
   });
 
   if (!gameId) {

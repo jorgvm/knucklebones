@@ -2,7 +2,8 @@ import { arrayUnion } from "firebase/firestore";
 import {
   getGameFromDatabase,
   updateGameInDatabase,
-} from "~/server/utilities/firebase";
+} from "~/utilities/firebase";
+import { generateId } from "~/utilities/generate-id";
 import { isValidFirebaseDocumentId, sanitizeName } from "~/utilities/sanitise";
 
 export default defineEventHandler(async (event) => {
@@ -15,18 +16,18 @@ export default defineEventHandler(async (event) => {
   }
 
   // Check if game exists
-  const existingGame = await getGameFromDatabase(gameId);
+  const gameData = await getGameFromDatabase(gameId);
 
-  if (!existingGame) {
+  if (!gameData) {
     throw new Error("While joining game, game was not found.");
   }
 
-  if (existingGame.players.length >= 2) {
+  if (gameData.players.length >= 2) {
     throw new Error("Can't join game, there are already two players.");
   }
 
   // Join game
-  const playerId = crypto.randomUUID();
+  const playerId = generateId();
   const newPlayer = {
     host: false,
     id: playerId,
