@@ -31,14 +31,11 @@ export const moveIsAllowed = (
   const diceInTargetRack = playerActiveDice.filter(
     (dice) => dice.rack === rackNumber,
   );
+
   if (diceInTargetRack.length >= 3) {
     return false;
   }
 
   // Move is allowed
   return true;
-};
-
-export const isGameReady = (game: GameData): boolean => {
-  return false; //todo
 };

@@ -2,7 +2,10 @@ import {
   getGameFromDatabase,
   updateGameInDatabase,
 } from "~/utilities/firebase";
-import { moveIsAllowed, isGameReady } from "~/utilities/game";
+import { isGameReady } from "~/utilities/game/is-game-ready";
+import { moveIsAllowed } from "~/utilities/game/move-is-allowed";
+import { removeDice } from "~/utilities/game/remove-dice";
+import { updateScore } from "~/utilities/game/score";
 import { generateId } from "~/utilities/generate-id";
 import { rollDice } from "~/utilities/roll-dice";
 import {
@@ -28,11 +31,11 @@ export default defineEventHandler(async (event) => {
   const gameData = (await getGameFromDatabase(gameId)) as GameData;
   const activePlayer = gameData.players.find((i) => i.id === playerId);
   const opponent = gameData.players.find((player) => player.id !== playerId);
+
+  // Check if move is allowed
   if (!gameData || !activePlayer || !opponent) {
     throw new Error("Invalid game data");
   }
-
-  // Check if move is allowed
   if (!moveIsAllowed(playerId, gameData, rackNumber)) {
     throw new Error("Illegal move");
   }
@@ -47,16 +50,30 @@ export default defineEventHandler(async (event) => {
   };
   activePlayer.dice.push(newDice);
 
+  // Remove dice from opponent
+  opponent.dice = removeDice({
+    dice: opponent.dice,
+    rackNumber,
+    diceValue: gameData.new_dice,
+  });
+
+  // Roll new dice
+  gameData.new_dice = rollDice();
+
+  // Calculate player score
+  gameData.players.forEach((player) => updateScore(player));
+
   // Check if game is done
   if (isGameReady(gameData)) {
-    // todo, set winner
     gameData.status = "finished";
+    gameData.active_player = "";
   }
 
+  // Update game in database
   await updateGameInDatabase(gameId, {
     active_player: opponent.id,
     players: gameData.players,
-    new_dice: rollDice(),
+    new_dice: gameData.new_dice,
     status: gameData.status,
   });
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { generateRacks } from "~/utilities/generate-racks";
+  import { getRacks } from "~/utilities/get-racks";
   import type { GameData, PlayerId } from "~/utilities/types";
 
   const { playerId, isLocalPlayer } = defineProps<{
@@ -25,7 +25,7 @@
     if (!player.value) {
       throw new Error("Player data not found");
     }
-    return generateRacks(player.value.dice);
+    return getRacks(player.value.dice);
   });
 
   // For the player in this player-section, is it the turn to play?
@@ -53,20 +53,23 @@
 
 <template>
   <div v-if="player">
+    <div v-if="isLocalPlayer">new dice: {{ gameData.new_dice }}</div>
     <div>{{ player.name }}</div>
     <div class="flex">
       <button
         v-for="(rack, index) in racks"
         :key="index"
         class="flex min-h-20 flex-col border border-amber-900 p-4"
-        :disabled="!canPlay"
+        :disabled="
+          !canPlay || rack.filter((i) => i.status === 'active').length >= 3
+        "
         @click="() => handlePlaceDice(index)"
       >
-        <div v-for="dice in rack" :key="dice.id">
-          {{ dice.value }}
-        </div>
+        <GameDice v-for="dice in rack" :key="dice.id" :dice="dice" />
       </button>
     </div>
+
+    <div>my score: {{ player.score }}</div>
 
     {{ canPlay ? "your turn!" : "" }}
   </div>

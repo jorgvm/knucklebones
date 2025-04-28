@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
         id: playerId,
         name: sanitizedName,
         dice: [],
+        score: 0,
       },
     ],
     active_player: playerId,
