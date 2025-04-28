@@ -21,6 +21,7 @@ export type Player = {
   host: boolean;
   id: PlayerId;
   name: string;
+  score: number;
 };
 
 export type GameStatus =

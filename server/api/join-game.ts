@@ -33,6 +33,7 @@ export default defineEventHandler(async (event) => {
     dice: [],
     id: playerId,
     name: sanitizedName,
+    score: 0,
   };
 
   // Join game

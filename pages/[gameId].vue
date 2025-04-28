@@ -70,7 +70,10 @@
 </script>
 
 <template>
-  <GameBoard v-if="gameData?.status === 'playing'" />
+  <GameBoard
+    v-if="gameData.status === 'playing' || gameData.status === 'finished'"
+  />
   <GameLobby v-if="gameData?.status === 'lobby'" />
   <GamePaused v-if="!shouldPoll" :handle-continue="handleContinue" />
+  {{ gameData.status === "finished" ? "We have a winner" : "" }}
 </template>
