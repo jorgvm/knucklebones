@@ -1,16 +1,16 @@
-import type { Dice, Racks } from "~/utilities/types";
+import type { Die, Racks } from "~/utilities/types";
 
 /**
  * Group the dice into three racks, based on the unorderd list of dice
  *
  */
-export const getRacks = (diceList: Dice[], filtered = false): Racks => {
+export const getRacks = (dice: Die[], filtered = false): Racks => {
   const racks: Racks = [[], [], []];
 
-  diceList.forEach((dice) => {
+  dice.forEach((die) => {
     // if filtered, only return active dice
-    if (!filtered || (filtered && dice.status === "active")) {
-      racks[dice.rack].push(dice);
+    if (!filtered || (filtered && die.status === "active")) {
+      racks[die.rack].push(die);
     }
   });
 

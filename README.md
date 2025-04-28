@@ -33,4 +33,4 @@ To play the game on your (local) environment, you need your own Firebase databas
 A gameboard has two player sections.
 Each player has three racks.
 Each rack can have 0 to 3 dice.
-1 dice is a 'die'
+1 item is called a 'die'

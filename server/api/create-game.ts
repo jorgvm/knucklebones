@@ -1,6 +1,6 @@
 import { createGameInDatabase } from "~/utilities/firebase";
 import { generateId } from "~/utilities/generate-id";
-import { rollDice } from "~/utilities/roll-dice";
+import { rollDie } from "~/utilities/roll-die";
 import { sanitizeName } from "~/utilities/sanitise";
 
 export default defineEventHandler(async (event) => {
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     active_player: playerId,
     status: "lobby",
     winner: null,
-    new_dice: rollDice(),
+    new_die: rollDie(),
   });
 
   if (!gameId) {
