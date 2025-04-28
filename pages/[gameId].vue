@@ -1,9 +1,11 @@
 <script setup lang="ts">
   import { provide } from "vue";
   import { COOKIE_PLAYER_ID } from "~/utilities/constants";
+  import type { GameData } from "~/utilities/types";
 
-  const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
   const route = useRoute();
+  const router = useRouter();
+  const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
   const { gameId } = route.params;
   const pollCount = ref(0);
   const shouldPoll = computed(() => pollCount.value < 30);
@@ -15,7 +17,7 @@
       body: { gameId, playerId: cookiePlayerId.value },
     });
 
-  const gameData = ref(await fetchData());
+  const gameData: Ref<GameData> = ref(await fetchData());
 
   // Fetch the new game data every X seconds
   const pollData = async () => {
@@ -40,6 +42,21 @@
     pollCount.value = 0;
     pollData();
   };
+
+  // Redirect if player is not part of the game
+  watch(
+    gameData,
+    (newGameData) => {
+      const player = newGameData.players.find(
+        (i) => i.id === cookiePlayerId.value,
+      );
+
+      if (!player && gameData.value.status !== "lobby") {
+        router.replace("/wrong-game");
+      }
+    },
+    { immediate: true },
+  );
 
   // Provider
   provide("gameData", gameData);
