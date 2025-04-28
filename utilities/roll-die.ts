@@ -4,6 +4,6 @@ const randomIntBetween = (x: number, y: number): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-export const rollDice = (): number => {
+export const rollDie = (): number => {
   return randomIntBetween(1, 6);
 };

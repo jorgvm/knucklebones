@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-  import type { Dice } from "~/utilities/types";
+  import type { Die } from "~/utilities/types";
   import { twMerge } from "tailwind-merge";
 
-  const { dice } = defineProps<{ dice: Dice }>();
+  const { die } = defineProps<{ die: Die }>();
 </script>
 
 <template>
@@ -10,10 +10,10 @@
     :class="
       twMerge(
         'text-center text-2xl transition-opacity duration-500',
-        dice.status === 'removed' ? 'opacity-0' : 'opacity-100',
+        die.status === 'removed' ? 'opacity-0' : 'opacity-100',
       )
     "
   >
-    {{ dice.value }}
+    {{ die.value }}
   </div>
 </template>

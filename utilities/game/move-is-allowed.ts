@@ -26,10 +26,10 @@ export const moveIsAllowed = (
 
   // Chosen rack should not be full
   const playerActiveDice = activePlayer.dice.filter(
-    (dice) => dice.status === "active",
+    (die) => die.status === "active",
   );
   const diceInTargetRack = playerActiveDice.filter(
-    (dice) => dice.rack === rackNumber,
+    (die) => die.rack === rackNumber,
   );
 
   if (diceInTargetRack.length >= 3) {

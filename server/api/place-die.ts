@@ -7,13 +7,13 @@ import { moveIsAllowed } from "~/utilities/game/move-is-allowed";
 import { removeDice } from "~/utilities/game/remove-dice";
 import { updateScore } from "~/utilities/game/score";
 import { generateId } from "~/utilities/generate-id";
-import { rollDice } from "~/utilities/roll-dice";
+import { rollDie } from "~/utilities/roll-die";
 import {
   isValidFirebaseDocumentId,
   isValidCryptoId,
   isNumber,
 } from "~/utilities/sanitise";
-import type { Dice, GameData } from "~/utilities/types";
+import type { Die, GameData } from "~/utilities/types";
 
 export default defineEventHandler(async (event) => {
   const { gameId, playerId, rackNumber } = await readBody(event);
@@ -40,25 +40,25 @@ export default defineEventHandler(async (event) => {
     throw new Error("Illegal move");
   }
 
-  // Place dice in rack
-  const newDice: Dice = {
+  // Place die in rack
+  const newDie: Die = {
     id: generateId(),
     created: new Date().toISOString(),
     rack: rackNumber,
     status: "active",
-    value: gameData.new_dice,
+    value: gameData.new_die,
   };
-  activePlayer.dice.push(newDice);
+  activePlayer.dice.push(newDie);
 
   // Remove dice from opponent
   opponent.dice = removeDice({
     dice: opponent.dice,
     rackNumber,
-    diceValue: gameData.new_dice,
+    dieValue: gameData.new_die,
   });
 
-  // Roll new dice
-  gameData.new_dice = rollDice();
+  // Roll new die
+  gameData.new_die = rollDie();
 
   // Calculate player score
   gameData.players.forEach((player) => updateScore(player));
@@ -73,7 +73,7 @@ export default defineEventHandler(async (event) => {
   await updateGameInDatabase(gameId, {
     active_player: opponent.id,
     players: gameData.players,
-    new_dice: gameData.new_dice,
+    new_die: gameData.new_die,
     status: gameData.status,
   });
 

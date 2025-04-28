@@ -1,14 +1,14 @@
-export type DiceStatus = "active" | "removed";
+export type DieStatus = "active" | "removed";
 
-export type Dice = {
+export type Die = {
   created: string;
   id: string;
   rack: 0 | 1 | 2;
-  status: DiceStatus;
+  status: DieStatus;
   value: number;
 };
 
-export type Rack = Dice[];
+export type Rack = Die[];
 
 export type Racks = [Rack, Rack, Rack];
 
@@ -17,7 +17,7 @@ export type PlayerId = string;
 export type GameId = string;
 
 export type Player = {
-  dice: Dice[];
+  dice: Die[];
   host: boolean;
   id: PlayerId;
   name: string;
@@ -33,7 +33,7 @@ export type GameData = {
   active_player: PlayerId | null;
   created: string;
   id: GameId;
-  new_dice: number;
+  new_die: number;
   players: Player[];
   status: GameStatus;
   version: number;

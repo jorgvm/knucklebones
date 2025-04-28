@@ -1,4 +1,4 @@
-import type { Dice } from "~/utilities/types";
+import type { Die } from "~/utilities/types";
 
 /**
  * Update dice in a specific rack to 'removed' status.
@@ -8,16 +8,16 @@ import type { Dice } from "~/utilities/types";
 export const removeDice = ({
   dice,
   rackNumber,
-  diceValue,
+  dieValue: diceValue,
 }: {
-  dice: Dice[];
+  dice: Die[];
   rackNumber: number;
-  diceValue: number;
-}): Dice[] => {
-  return dice.map((dice) => {
-    if (dice.rack === rackNumber && dice.value === diceValue) {
-      dice.status = "removed";
+  dieValue: number;
+}): Die[] => {
+  return dice.map((die) => {
+    if (die.rack === rackNumber && die.value === diceValue) {
+      die.status = "removed";
     }
-    return dice;
+    return die;
   });
 };

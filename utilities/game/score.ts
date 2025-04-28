@@ -11,10 +11,10 @@ export const updateScore = (player: Player) => {
 const getPlayerScore = (player: Player) => {
   const racks: Racks = [[], [], []];
 
-  const activeDice = player.dice.filter((dice) => dice.status === "active");
+  const activeDice = player.dice.filter((die) => die.status === "active");
 
-  activeDice.forEach((dice) => {
-    racks[dice.rack].push(dice);
+  activeDice.forEach((die) => {
+    racks[die.rack].push(die);
   });
 
   return racks.reduce((acc, curr) => acc + getRackScore(curr), 0);
@@ -29,11 +29,11 @@ const getPlayerScore = (player: Player) => {
  * [4,1,4] = 4*4 + 1*1 + 4*4
  */
 export const getRackScore = (rack: Rack): number => {
-  const diceValues = rack.map((dice) => dice.value);
+  const diceValues = rack.map((die) => die.value);
 
-  const rackScores = diceValues.map((v) => {
-    const multiplier = diceValues.filter((i) => i === v).length;
-    return v * multiplier;
+  const rackScores = diceValues.map((value) => {
+    const multiplier = diceValues.filter((i) => i === value).length;
+    return value * multiplier;
   });
 
   return rackScores.reduce((acc, curr) => acc + curr, 0);

@@ -9,7 +9,7 @@
 
   const route = useRoute();
 
-  // Keep track of loading locally, to prevent multiple place-dice requests to server
+  // Keep track of loading locally, to prevent multiple place-die requests to server
   const isLoading = ref(false);
 
   const gameData = inject<Ref<GameData>>("gameData");
@@ -39,12 +39,12 @@
     isLoading.value = false;
   });
 
-  // Player selects which rack to place dice in
-  const handlePlaceDice = async (rackNumber: number) => {
+  // Player selects which rack to place die in
+  const handlePlaceDie = async (rackNumber: number) => {
     isLoading.value = true;
     const { gameId } = route.params;
 
-    await $fetch("/api/place-dice", {
+    await $fetch("/api/place-die", {
       method: "post",
       body: { gameId, playerId, rackNumber },
     });
@@ -53,7 +53,7 @@
 
 <template>
   <div v-if="player">
-    <div v-if="isLocalPlayer">new dice: {{ gameData.new_dice }}</div>
+    <div v-if="isLocalPlayer">new: {{ gameData.new_die }}</div>
     <div>{{ player.name }}</div>
     <div class="flex">
       <button
@@ -63,9 +63,9 @@
         :disabled="
           !canPlay || rack.filter((i) => i.status === 'active').length >= 3
         "
-        @click="() => handlePlaceDice(index)"
+        @click="() => handlePlaceDie(index)"
       >
-        <GameDice v-for="dice in rack" :key="dice.id" :dice="dice" />
+        <GameDice v-for="die in rack" :key="die.id" :die="die" />
       </button>
     </div>
 
