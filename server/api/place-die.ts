@@ -5,14 +5,10 @@ import {
 import { isGameReady } from "~/utilities/game/is-game-ready";
 import { moveIsAllowed } from "~/utilities/game/move-is-allowed";
 import { removeDice } from "~/utilities/game/remove-dice";
-import { updateScore } from "~/utilities/game/score";
-import { generateId } from "~/utilities/generate-id";
+import { getPlayerScore, updateScore } from "~/utilities/game/score";
+import { generateId, isValidCryptoId } from "~/utilities/generate-id";
 import { rollDie } from "~/utilities/roll-die";
-import {
-  isValidFirebaseDocumentId,
-  isValidCryptoId,
-  isNumber,
-} from "~/utilities/sanitise";
+import { isValidFirebaseDocumentId, isRackNumber } from "~/utilities/sanitise";
 import type { Die, GameData } from "~/utilities/types";
 
 export default defineEventHandler(async (event) => {
@@ -22,7 +18,7 @@ export default defineEventHandler(async (event) => {
   if (
     !isValidCryptoId(playerId) ||
     !isValidFirebaseDocumentId(gameId) ||
-    !isNumber(rackNumber)
+    !isRackNumber(rackNumber)
   ) {
     throw new Error("Game not found");
   }
@@ -36,7 +32,14 @@ export default defineEventHandler(async (event) => {
   if (!gameData || !activePlayer || !opponent) {
     throw new Error("Invalid game data");
   }
-  if (!moveIsAllowed(playerId, gameData, rackNumber)) {
+  const isMoveAllowed = moveIsAllowed({
+    activePlayer,
+    gameActivePlayerId: gameData.active_player,
+    gameStatus: gameData.status,
+    rackNumber,
+  });
+
+  if (!isMoveAllowed) {
     throw new Error("Illegal move");
   }
 
@@ -61,12 +64,13 @@ export default defineEventHandler(async (event) => {
   gameData.new_die = rollDie();
 
   // Calculate player score
-  gameData.players.forEach((player) => updateScore(player));
+  gameData.players.forEach((player) => (player.score = getPlayerScore(player)));
 
   // Check if game is done
   if (isGameReady(gameData)) {
     gameData.status = "finished";
     gameData.active_player = "";
+    // gameData.winner = // todo
   }
 
   // Update game in database

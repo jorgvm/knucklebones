@@ -10,18 +10,7 @@ export const sanitizeName = (input: string): string => {
   const sanitized = input.replace(/[^a-zA-Z ]/g, "");
 
   // Trim to max 20 characters
-  return sanitized.slice(0, MAX_PLAYER_NAME_LENGTH);
-};
-
-/**
- * Checks if a string is a valid slug.
- *
- * - Is exactly 36 characters long
- * - Contains only lowercase letters, numbers, and dashes (`-`)
- */
-export const isValidCryptoId = (value: string): boolean => {
-  const pattern = /^[a-z0-9-]{36}$/;
-  return pattern.test(value);
+  return sanitized.slice(0, MAX_PLAYER_NAME_LENGTH).trim();
 };
 
 /**
@@ -35,6 +24,7 @@ export const isValidFirebaseDocumentId = (value: string): boolean => {
 };
 
 /**
- * Check if value is number
+ * Check if value is valid rack number, 1 2 or 3
  */
-export const isNumber = (value: unknown): boolean => typeof value === "number";
+export const isRackNumber = (value: number): boolean =>
+  [0, 1, 2].includes(value);

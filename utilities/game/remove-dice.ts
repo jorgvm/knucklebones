@@ -8,15 +8,15 @@ import type { Die } from "~/utilities/types";
 export const removeDice = ({
   dice,
   rackNumber,
-  dieValue: diceValue,
+  dieValue,
 }: {
   dice: Die[];
   rackNumber: number;
   dieValue: number;
 }): Die[] => {
   return dice.map((die) => {
-    if (die.rack === rackNumber && die.value === diceValue) {
-      die.status = "removed";
+    if (die.rack === rackNumber && die.value === dieValue) {
+      return { ...die, status: "removed" };
     }
     return die;
   });

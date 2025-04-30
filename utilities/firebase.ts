@@ -31,9 +31,11 @@ const firebaseConfig = {
   appId: firebaseAppId,
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Create firebase app
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
 
+// Firestore compatible typing
 type FirestoreCompatible<T> = {
   [K in keyof T]?: T[K] | FieldValue;
 };
@@ -42,16 +44,11 @@ type FirestoreCompatible<T> = {
  * Update existing game in Firebase
  *
  * Version is updated with every update
- *
- * @param gameId id of existing game
- * @param data (partial) game data
- * @returns Promise with gamedata
  */
-
 export const updateGameInDatabase = async (
   gameId: string,
   data: FirestoreCompatible<GameData>,
-) =>
+): Promise<void> =>
   await updateDoc(doc(db, firebaseCollectionId, gameId), {
     ...data,
     version: increment(1),
@@ -60,16 +57,19 @@ export const updateGameInDatabase = async (
 /**
  * Create new game in Firebase
  *
- * @param data (partial) game data
- * @returns Promise with generated id
+ * @returns Promise with game id
  */
-export const createGameInDatabase = async (data: Partial<GameData>) => {
+export const createGameInDatabase = async (
+  data: Partial<GameData>,
+): Promise<string> => {
   return await addDoc(collection(db, firebaseCollectionId), data).then(
     (docRef) => docRef.id,
   );
 };
 
-/** Retrieve GameData */
+/**
+ * Retrieve GameData
+ */
 export const getGameFromDatabase = async (gameId: string) => {
   const docRef = doc(db, firebaseCollectionId, gameId);
   const docSnap = await getDoc(docRef);

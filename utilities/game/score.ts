@@ -1,19 +1,12 @@
 import type { Player, Rack, Racks } from "~/utilities/types";
 
-// Update given player with calculated socre
-export const updateScore = (player: Player) => {
-  player.score = getPlayerScore(player);
-};
-
 /**
  * Sum each rack score
  */
-const getPlayerScore = (player: Player) => {
+export const getPlayerScore = (player: Player) => {
   const racks: Racks = [[], [], []];
 
-  const activeDice = player.dice.filter((die) => die.status === "active");
-
-  activeDice.forEach((die) => {
+  player.dice.forEach((die) => {
     racks[die.rack].push(die);
   });
 
@@ -26,10 +19,11 @@ const getPlayerScore = (player: Player) => {
  * Multiply each die by the amount of occurences in the rack
  * [5] = 5*1
  * [2,2] = 2*2 + 2*2
- * [4,1,4] = 4*4 + 1*1 + 4*4
+ * [2,2,2] = 2*3 + 2*3 + 2*3
  */
 export const getRackScore = (rack: Rack): number => {
-  const diceValues = rack.map((die) => die.value);
+  const activeDice = rack.filter((die) => die.status === "active");
+  const diceValues = activeDice.map((die) => die.value);
 
   const rackScores = diceValues.map((value) => {
     const multiplier = diceValues.filter((i) => i === value).length;
