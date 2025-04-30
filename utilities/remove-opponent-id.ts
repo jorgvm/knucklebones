@@ -10,6 +10,7 @@ export const removeOpponentId = (
   gameData: GameData,
   opponentId?: PlayerId,
 ): GameData => {
+  // If there is no opponent yet, no need to check object
   if (!opponentId) {
     return gameData;
   }
@@ -21,7 +22,7 @@ export const removeOpponentId = (
  * Returns given object, with a target string replaced
  *
  */
-const replaceValueInObject = <T>(
+export const replaceValueInObject = <T>(
   obj: T,
   target: string,
   replaceWith: string,

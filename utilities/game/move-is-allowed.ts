@@ -1,26 +1,31 @@
-import type { PlayerId, GameData } from "~/utilities/types";
+import type { PlayerId, GameStatus, Player } from "~/utilities/types";
 
 /**
  * Check if move is allowed
  */
-export const moveIsAllowed = (
-  playerId: PlayerId,
-  gameData: GameData,
-  rackNumber: number,
-): boolean => {
+export const moveIsAllowed = ({
+  activePlayer,
+  gameActivePlayerId,
+  gameStatus,
+  rackNumber,
+}: {
+  activePlayer: Player;
+  gameActivePlayerId: PlayerId | null;
+  gameStatus: GameStatus;
+  rackNumber: number;
+}): boolean => {
+  // Player data should exist
+  if (!activePlayer) {
+    return false;
+  }
+
   // Should be this player's turn
-  if (playerId !== gameData.active_player) {
+  if (activePlayer.id !== gameActivePlayerId) {
     return false;
   }
 
   // Should be active game
-  if (gameData.status !== "playing") {
-    return false;
-  }
-
-  // Player data should exist
-  const activePlayer = gameData.players.find((i) => i.id === playerId);
-  if (!activePlayer) {
+  if (gameStatus !== "playing") {
     return false;
   }
 

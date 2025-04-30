@@ -1,9 +1,7 @@
 import { getGameFromDatabase } from "~/utilities/firebase";
+import { isValidCryptoId } from "~/utilities/generate-id";
 import { removeOpponentId } from "~/utilities/remove-opponent-id";
-import {
-  isValidFirebaseDocumentId,
-  isValidCryptoId,
-} from "~/utilities/sanitise";
+import { isValidFirebaseDocumentId } from "~/utilities/sanitise";
 import type { GameData } from "~/utilities/types";
 
 export default defineEventHandler(async (event) => {
@@ -24,7 +22,20 @@ export default defineEventHandler(async (event) => {
 
   // Remove opponent id to prevent cheating
   const opponent = gameData.players.find((player) => player.id !== playerId);
-  const publicGameData = removeOpponentId(gameData, opponent?.id);
+  if (gameData.players.length > 1 && !opponent?.id) {
+    throw new Error("There is more than 1 player, but no opponent id");
+  }
+  const cleanedGameData = removeOpponentId(gameData, opponent?.id);
+
+  // Define which data is public, to prevent accidential leak
+  const publicGameData: Partial<GameData> = {
+    players: cleanedGameData.players,
+    active_player: cleanedGameData.active_player,
+    new_die: cleanedGameData.new_die,
+    winner: cleanedGameData.winner,
+    status: cleanedGameData.status,
+    version: cleanedGameData.version,
+  };
 
   return publicGameData;
 });
