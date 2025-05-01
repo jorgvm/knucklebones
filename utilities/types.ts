@@ -1,9 +1,11 @@
 export type DieStatus = "active" | "removed";
 
+export type RackNumber = 0 | 1 | 2;
+
 export type Die = {
   created: string;
   id: string;
-  rack: 0 | 1 | 2;
+  rack: RackNumber;
   status: DieStatus;
   value: number;
 };
@@ -16,11 +18,13 @@ export type PlayerId = string;
 
 export type GameId = string;
 
+export type PlayerName = string;
+
 export type Player = {
   dice: Die[];
   host: boolean;
   id: PlayerId;
-  name: string;
+  name: PlayerName;
   score: number;
 };
 

@@ -17,6 +17,8 @@ export const sanitizeName = (input: string): string => {
  * Checks if a string:
  * - Is exactly 20 characters long
  * - Contains only uppercase letters, lowercase letters, and number
+ *
+ * For example: JO7BPzEtvwnkFQx8JWc9
  */
 export const isValidFirebaseDocumentId = (value: string): boolean => {
   const pattern = /^[a-zA-Z0-9]{20}$/;

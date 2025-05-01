@@ -1,48 +1,20 @@
-import { arrayUnion } from "firebase/firestore";
-import {
-  getGameFromDatabase,
-  updateGameInDatabase,
-} from "~/utilities/firebase";
-import { generateId } from "~/utilities/generate-id";
-import { isValidFirebaseDocumentId, sanitizeName } from "~/utilities/sanitise";
-import type { Player } from "~/utilities/types";
+import { actionJoinGame } from "~/server-actions/join-game";
+import { serverError } from "~/utilities/server-error";
 
 export default defineEventHandler(async (event) => {
-  const { playerName, gameId }: { playerName: string; gameId: string } =
-    await readBody(event);
-  const sanitizedName = sanitizeName(playerName);
+  try {
+    // Only allow POST
+    if (event.node.req.method !== "POST") {
+      throw Error("Invalid request");
+    }
 
-  // All ids should be valid
-  if (!sanitizedName || !isValidFirebaseDocumentId(gameId)) {
-    throw new Error("Invalid input.");
+    // Get params
+    const { playerName, gameId }: { playerName: string; gameId: string } =
+      await readBody(event);
+
+    // Return result
+    return await actionJoinGame({ playerName, gameId });
+  } catch (e: unknown) {
+    return serverError(e);
   }
-
-  // Check if game exists
-  const gameData = await getGameFromDatabase(gameId);
-  if (!gameData) {
-    throw new Error("While joining game, game was not found.");
-  }
-  if (gameData.players.length >= 2) {
-    throw new Error("Can't join game, there are already two players.");
-  }
-
-  // Create new player
-  const playerId = generateId();
-  const newPlayer: Player = {
-    host: false,
-    dice: [],
-    id: playerId,
-    name: sanitizedName,
-    score: 0,
-  };
-
-  // Join game
-  await updateGameInDatabase(gameId, {
-    players: arrayUnion(newPlayer),
-    status: "playing",
-  });
-
-  return {
-    playerId,
-  };
 });
