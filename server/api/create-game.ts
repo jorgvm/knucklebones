@@ -1,44 +1,19 @@
-import { createGameInDatabase } from "~/utilities/firebase";
-import { generateId } from "~/utilities/generate-id";
-import { rollDie } from "~/utilities/roll-die";
-import { sanitizeName } from "~/utilities/sanitise";
+import { actionCreateGame } from "~/server-actions/create-game";
+import { serverError } from "~/utilities/server-error";
 
 export default defineEventHandler(async (event) => {
-  const { playerName } = await readBody(event);
+  try {
+    // Only allow POST
+    if (event.node.req.method !== "POST") {
+      throw Error("Invalid request");
+    }
 
-  const sanitizedName = sanitizeName(playerName.trim());
+    // Get params
+    const { playerName }: { playerName: string } = await readBody(event);
 
-  if (!sanitizedName) {
-    throw new Error("No valid name was supplied");
+    // Return result
+    return await actionCreateGame({ playerName });
+  } catch (e: unknown) {
+    return serverError(e);
   }
-
-  // Create game
-  const playerId = generateId();
-
-  const gameId = await createGameInDatabase({
-    created: new Date().toISOString(),
-    version: 1,
-    players: [
-      {
-        host: true,
-        id: playerId,
-        name: sanitizedName,
-        dice: [],
-        score: 0,
-      },
-    ],
-    active_player: playerId,
-    status: "lobby",
-    winner: null,
-    new_die: rollDie(),
-  });
-
-  if (!gameId) {
-    throw new Error();
-  }
-
-  return {
-    playerId,
-    gameId,
-  };
 });
