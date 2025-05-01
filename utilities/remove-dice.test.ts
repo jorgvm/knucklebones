@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { removeDice } from "~/utilities/game/remove-dice";
+import { removeDice } from "~/utilities/remove-dice";
 import type { Die } from "~/utilities/types";
 
 describe("removeDice", () => {

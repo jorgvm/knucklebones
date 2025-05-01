@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { isGameReady } from "~/utilities/game/is-game-ready";
+import { isGameReady } from "~/utilities/is-game-ready";
 import { mockGameData } from "~/utilities/mock-game";
 
 describe("isGameReady", () => {

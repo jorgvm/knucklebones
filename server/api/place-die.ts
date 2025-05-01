@@ -2,10 +2,10 @@ import {
   getGameFromDatabase,
   updateGameInDatabase,
 } from "~/utilities/firebase";
-import { isGameReady } from "~/utilities/game/is-game-ready";
-import { moveIsAllowed } from "~/utilities/game/move-is-allowed";
-import { removeDice } from "~/utilities/game/remove-dice";
-import { getPlayerScore, updateScore } from "~/utilities/game/score";
+import { isGameReady } from "~/utilities/is-game-ready";
+import { moveIsAllowed } from "~/utilities/move-is-allowed";
+import { removeDice } from "~/utilities/remove-dice";
+import { getPlayerScore } from "~/utilities/score";
 import { generateId, isValidCryptoId } from "~/utilities/generate-id";
 import { rollDie } from "~/utilities/roll-die";
 import { isValidFirebaseDocumentId, isRackNumber } from "~/utilities/sanitise";
