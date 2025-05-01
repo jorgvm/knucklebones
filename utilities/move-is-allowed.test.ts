@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { moveIsAllowed } from "~/utilities/game/move-is-allowed";
+import { moveIsAllowed } from "~/utilities/move-is-allowed";
 import { mockGameData } from "~/utilities/mock-game";
 
 describe("moveIsAllowed", () => {
