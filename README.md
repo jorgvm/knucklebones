@@ -1,36 +1,84 @@
-# Knucklesbones
+# Turborepo VueJS/NuxtJS starter
 
-A small game to play around with Vue and Nuxt.
+This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
 
-To run:
+## Using this example
 
-```bash
+Run the following command:
+
+```sh
+npx create-turbo@latest -e with-vue-nuxt
+```
+
+## What's inside?
+
+This Turborepo includes the following packages/apps:
+
+### Apps and Packages
+
+- `docs`: a [Nuxt](https://nuxt.com/) app
+- `web`: another [Vue3](https://vuejs.org/) app
+- `ui`: a stub Vue component library shared by both `web` and `docs` applications
+- `eslint-config-custom`: `eslint` configurations (includes `@nuxtjs/eslint-config-typescript` and `@vue/eslint-config-typescript`)
+- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+
+### Utilities
+
+This Turborepo has some additional tools already setup for you:
+
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
+
+### Build
+
+To build all apps and packages, run the following command:
+
+```
+cd my-turborepo
+pnpm build
+```
+
+### Develop
+
+To develop all apps and packages, run the following command:
+
+```
+cd my-turborepo
 pnpm dev
 ```
 
-# Firebase
+### Remote Caching
 
-To play the game on your (local) environment, you need your own Firebase database.
+> [!TIP]
+> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
 
-- Create an account on Firebase [firebase.google.com](https://firebase.google.com/)
-- Duplicate .env to .env.local
-- Create a new project and app, place the received tokens in the .env.local file
-- Create a "Firestore Database" in development mode.
-- Create a collection, put the id in FIREBASE_COLLECTION_ID
-- Now fire up the game. The game will create the data structure on Firebase
+Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
 
-# Game rules
+By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
 
-- The game consists of two 3x3 boards, each belonging to their respective player.
-- The players take turns. On a player's turn, they roll a single 6-sided die, and must place it in a column on their board. A filled column does not accept any more dice.
-- Each player has a score, which is the sum of all the dice values on their board. - The score awarded by each column is also displayed.
-- If a player places multiple dice of the same value in the same column, the score awarded for each of those dice is multiplied by the number of dice of the same value in that column. e.g. if a column contains 4-1-4, then the score for that column is 4x2 + 1x1 + 4x2 = 17. Below is a multiplication table for reference and comparison:
-- When a player places a die, all dice of the same value in the corresponding column of the opponent's board gets destroyed. Players can use this mechanic to destroy their opponent's high-scoring combos.
-- The game ends when either player completely fills up their 3x3 board. The player with the higher score wins.
+```
+cd my-turborepo
+npx turbo login
+```
 
-# Naming
+This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
 
-A gameboard has two player sections.
-Each player has three racks.
-Each rack can have 0 to 3 dice.
-1 item is called a 'die'
+Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+
+```
+npx turbo link
+```
+
+## Useful Links
+
+Learn more about the power of Turborepo:
+
+- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
+- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
+- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
+- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
+- [Configuration Options](https://turborepo.com/docs/reference/configuration)
+- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)

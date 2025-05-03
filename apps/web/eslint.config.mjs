@@ -34,5 +34,6 @@ export default withNuxt({
       },
     ],
     "vue/no-multiple-template-root": "off", // in vue3 we don't need a root
+    "no-shadow": "error", // dont allow shadow value names
   },
 });
