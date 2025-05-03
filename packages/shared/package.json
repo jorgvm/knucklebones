@@ -1,12 +1,6 @@
 {
-  "name": "shared",
+  "name": "@knucklebones/shared",
   "version": "0.0.0",
   "private": true,
-  "main": "./index.ts",
-  "types": "./index.ts",
-  "scripts": {},
-  "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*"
-  }
+  "type": "module"
 }

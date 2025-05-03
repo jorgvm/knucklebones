@@ -1,4 +1,4 @@
-import { MAX_PLAYER_NAME_LENGTH } from "~/utilities/constants";
+import { MAX_PLAYER_NAME_LENGTH } from "./constants";
 
 /**
  * Sanitizes a name string by:

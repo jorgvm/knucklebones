@@ -3,8 +3,8 @@
   import {
     COOKIE_PLAYER_ID,
     MAX_PLAYER_NAME_LENGTH,
-  } from "~/utilities/constants";
-  import { sanitizeName } from "~/utilities/sanitise";
+  } from "@shared/utilities/constants";
+  import { sanitizeName } from "@shared/utilities/sanitise";
 
   const { type } = defineProps<{
     type: "join-game" | "create-game";
