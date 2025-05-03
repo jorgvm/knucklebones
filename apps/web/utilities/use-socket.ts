@@ -1,7 +1,8 @@
 import { ref, onUnmounted } from "vue";
 import { io, type Socket } from "socket.io-client";
+const url = "http://localhost:8080";
 
-export const useSocketIO = (url: string) => {
+export const useSocketIO = () => {
   const socket = ref<Socket | null>(null);
   const messages = ref<string[]>([]);
   const isConnected = ref(false);
@@ -30,12 +31,20 @@ export const useSocketIO = (url: string) => {
     });
   }
 
-  const sendMessage = (message: string) => {
+  const sendMessage = (payload: { action: string; data: any }) => {
     if (socket.value && isConnected.value) {
-      socket.value.emit("message", message);
+      socket.value.emit(payload.action, JSON.stringify(payload.data));
     } else {
       console.warn("Socket.IO is not connected");
     }
+  };
+
+  const sendCreateGame = (playerName: string) => {
+    sendMessage({ action: "createGame", data: { playerName } });
+  };
+
+  const sendJoinGame = (gameId: string, playerName: string) => {
+    sendMessage({ action: "joinGame", data: { gameId, playerName } });
   };
 
   const disconnect = () => {
@@ -46,5 +55,13 @@ export const useSocketIO = (url: string) => {
 
   onUnmounted(() => disconnect());
 
-  return { messages, isConnected, sendMessage, disconnect };
+  return {
+    messages,
+    isConnected,
+    sendMessage,
+    disconnect,
+    socket,
+    sendCreateGame,
+    sendJoinGame,
+  };
 };

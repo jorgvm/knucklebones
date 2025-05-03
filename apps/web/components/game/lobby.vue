@@ -1,7 +1,8 @@
 <script lang="ts" setup>
   import { inject } from "vue";
-  import { COOKIE_PLAYER_ID } from "~/utilities/constants";
+
   import type { GameData } from "@shared/types";
+  import { COOKIE_PLAYER_ID } from "@shared/utilities/constants";
 
   const url = useRequestURL();
 
@@ -21,6 +22,8 @@
 </script>
 
 <template>
+  <h1>Lobby!</h1>
+
   <div v-if="localPlayerIsHost">
     <p>Waiting for other players</p>
 

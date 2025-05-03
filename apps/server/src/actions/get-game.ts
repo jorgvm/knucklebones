@@ -1,8 +1,8 @@
-import { getGameFromDatabase } from "~/utilities/firebase";
-import { isValidCryptoId } from "~/utilities/generate-id";
-import { removeOpponentId } from "~/utilities/remove-opponent-id";
-import { isValidFirebaseDocumentId } from "~/utilities/sanitise";
-import type { GameData, GameId, PlayerId } from "@shared/types";
+import { removeOpponentId } from "~/utilities/remove-opponent-id.js";
+import { getGameFromDatabase } from "~/utilities/firebase.js";
+import type { GameData, GameId, PlayerId } from "@knucklebones/shared/types.js";
+import { isValidFirebaseDocumentId } from "@knucklebones/shared/utilities/sanitise.js";
+import { isValidCryptoId } from "~/utilities/generate-id.js";
 
 export const actionGetGame = async ({
   gameId,
