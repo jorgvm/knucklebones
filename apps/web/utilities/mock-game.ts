@@ -1,4 +1,4 @@
-import type { GameData } from "~/utilities/types";
+import type { GameData } from "@shared/types";
 
 /**
  * Mocked game data

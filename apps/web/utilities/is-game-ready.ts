@@ -1,5 +1,5 @@
 import { getRacks } from "~/utilities/get-racks";
-import type { GameData } from "~/utilities/types";
+import type { GameData } from "@shared/types";
 
 /**
  * Check if a player has a full board of 3*3 dice

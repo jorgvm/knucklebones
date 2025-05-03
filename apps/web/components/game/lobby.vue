@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { inject } from "vue";
   import { COOKIE_PLAYER_ID } from "~/utilities/constants";
-  import type { GameData } from "~/utilities/types";
+  import type { GameData } from "@shared/types";
 
   const url = useRequestURL();
 

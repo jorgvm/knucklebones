@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionPlaceDie } from "~/server-actions/place-die";
 import { getGameFromDatabase } from "~/utilities/firebase";
 
-import type { GameData } from "~/utilities/types";
+import type { GameData } from "@shared/types";
 
 // Mocks
 vi.mock("~/utilities/firebase", () => ({

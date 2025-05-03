@@ -1,4 +1,4 @@
-import type { Die } from "~/utilities/types";
+import type { Die } from "@shared/types";
 
 /**
  * Update dice in a specific rack to 'removed' status.

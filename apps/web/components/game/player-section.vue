@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { getRacks } from "~/utilities/get-racks";
-  import type { GameData, PlayerId } from "~/utilities/types";
+  import type { GameData, PlayerId } from "@shared/types";
 
   const { playerId, isLocalPlayer } = defineProps<{
     playerId: PlayerId;

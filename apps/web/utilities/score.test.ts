@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { getPlayerScore, getRackScore } from "~/utilities/score";
-import type { Die, Player } from "~/utilities/types";
+import type { Die, Player } from "@shared/types";
 
 describe("getRackScore", () => {
   it("calculates score", () => {

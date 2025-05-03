@@ -1,5 +1,5 @@
 import { OPPONENT_ID } from "~/utilities/constants";
-import type { GameData, PlayerId } from "~/utilities/types";
+import type { GameData, PlayerId } from "@shared/types";
 
 /**
  * Remove opponent id from game data

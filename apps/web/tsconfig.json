@@ -3,6 +3,10 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "types": ["@types/node"]
+    "types": ["@types/node"],
+    "paths": {
+      "~/*": ["./*"],
+      "@shared/*": ["../../packages/shared/src/*"]
+    }
   }
 }

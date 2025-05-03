@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import type { Die } from "~/utilities/types";
+  import type { Die } from "@shared/types";
   import { twMerge } from "tailwind-merge";
 
   const { die } = defineProps<{ die: Die }>();

@@ -2,7 +2,7 @@ import { getGameFromDatabase } from "~/utilities/firebase";
 import { isValidCryptoId } from "~/utilities/generate-id";
 import { removeOpponentId } from "~/utilities/remove-opponent-id";
 import { isValidFirebaseDocumentId } from "~/utilities/sanitise";
-import type { GameData, GameId, PlayerId } from "~/utilities/types";
+import type { GameData, GameId, PlayerId } from "@shared/types";
 
 export const actionGetGame = async ({
   gameId,
@@ -30,6 +30,8 @@ export const actionGetGame = async ({
     throw new Error("There is more than 1 player, but no opponent id");
   }
   const cleanedGameData = removeOpponentId(gameData, opponent?.id);
+
+  const activePlayer = cleanedGameData.active_player;
 
   // Define which data is public, to prevent accidential leak
   const publicGameData: Partial<GameData> = {

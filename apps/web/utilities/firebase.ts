@@ -9,7 +9,7 @@ import {
   increment,
   type FieldValue,
 } from "firebase/firestore";
-import type { GameData } from "~/utilities/types";
+import type { GameData } from "@shared/types";
 
 // Firebase setup
 const {
