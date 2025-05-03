@@ -1,3 +1,4 @@
+import { GameData } from "@knucklebones/shared/types.js";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -9,26 +10,18 @@ import {
   increment,
   type FieldValue,
 } from "firebase/firestore";
-import type { GameData } from "@shared/types";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 // Firebase setup
-const {
-  firebaseApiKey,
-  firebaseAuthDomain,
-  firebaseProjectId,
-  firebaseStorageBucket,
-  firebaseMessagingSenderId,
-  firebaseAppId,
-  firebaseCollectionId,
-} = useRuntimeConfig();
 
 const firebaseConfig = {
-  apiKey: firebaseApiKey,
-  authDomain: firebaseAuthDomain,
-  projectId: firebaseProjectId,
-  storageBucket: firebaseStorageBucket,
-  messagingSenderId: firebaseMessagingSenderId,
-  appId: firebaseAppId,
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_COLLECTION_ID,
 };
 
 // Create firebase app
@@ -45,9 +38,11 @@ type FirestoreCompatible<T> = {
  *
  * Version is updated with every update
  */
+const firebaseCollectionId = process.env.FIREBASE_COLLECTION_ID as string;
+console.log("firebaseCollectionId", firebaseCollectionId);
 export const updateGameInDatabase = async (
   gameId: string,
-  data: FirestoreCompatible<GameData>,
+  data: FirestoreCompatible<GameData>
 ): Promise<void> =>
   await updateDoc(doc(db, firebaseCollectionId, gameId), {
     ...data,
@@ -60,10 +55,10 @@ export const updateGameInDatabase = async (
  * @returns Promise with game id
  */
 export const createGameInDatabase = async (
-  data: Partial<GameData>,
+  data: Partial<GameData>
 ): Promise<string> => {
   return await addDoc(collection(db, firebaseCollectionId), data).then(
-    (docRef) => docRef.id,
+    (docRef) => docRef.id
   );
 };
 

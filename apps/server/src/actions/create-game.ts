@@ -1,14 +1,15 @@
-import { createGameInDatabase } from "~/utilities/firebase";
-import { generateId } from "~/utilities/generate-id";
-import { rollDie } from "~/utilities/roll-die";
-import { sanitizeName } from "~/utilities/sanitise";
-import type { PlayerName } from "@shared/types";
+import { sanitizeName } from "@knucklebones/shared";
+import { PlayerName } from "@knucklebones/shared/types.js";
+import { createGameInDatabase } from "~/utilities/firebase.js";
+import { generateId } from "~/utilities/generate-id.js";
+import { rollDie } from "~/utilities/roll-die.js";
 
 export const actionCreateGame = async ({
   playerName,
 }: {
   playerName: PlayerName;
 }) => {
+  console.log("playerName", playerName);
   const sanitizedName = sanitizeName(playerName.trim());
 
   if (!sanitizedName) {

@@ -20,6 +20,12 @@ importers:
       '@knucklebones/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
+      firebase:
+        specifier: ^11.6.1
+        version: 11.6.1
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
