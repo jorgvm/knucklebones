@@ -15,7 +15,7 @@ import type {
   RackNumber,
   PlayerId,
   GameId,
-} from "~/utilities/types";
+} from "@shared/types";
 
 export const actionPlaceDie = async ({
   gameId,

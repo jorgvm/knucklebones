@@ -2,7 +2,7 @@ import { createGameInDatabase } from "~/utilities/firebase";
 import { generateId } from "~/utilities/generate-id";
 import { rollDie } from "~/utilities/roll-die";
 import { sanitizeName } from "~/utilities/sanitise";
-import type { PlayerName } from "~/utilities/types";
+import type { PlayerName } from "@shared/types";
 
 export const actionCreateGame = async ({
   playerName,

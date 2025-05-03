@@ -4,7 +4,7 @@ import {
   removeOpponentId,
   replaceValueInObject,
 } from "~/utilities/remove-opponent-id";
-import type { GameData } from "~/utilities/types";
+import type { GameData } from "@shared/types";
 
 describe("replaceValueInObject", () => {
   it("replaces a primitive value in a flat object", () => {

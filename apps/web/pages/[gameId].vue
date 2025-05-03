@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { provide } from "vue";
   import { COOKIE_PLAYER_ID } from "~/utilities/constants";
-  import type { GameData } from "~/utilities/types";
+  import type { GameData } from "@shared/types";
 
   const route = useRoute();
   const router = useRouter();

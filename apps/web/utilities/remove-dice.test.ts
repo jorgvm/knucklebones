@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { removeDice } from "~/utilities/remove-dice";
-import type { Die } from "~/utilities/types";
+import type { Die } from "@shared/types";
 
 describe("removeDice", () => {
   it("sets status to 'removed' for dice that match rack and value", () => {

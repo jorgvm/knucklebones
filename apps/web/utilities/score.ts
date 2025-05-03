@@ -1,4 +1,4 @@
-import type { Player, Rack, Racks } from "~/utilities/types";
+import type { Player, Rack, Racks } from "@shared/types";
 
 /**
  * Sum each rack score

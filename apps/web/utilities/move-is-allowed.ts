@@ -1,4 +1,4 @@
-import type { PlayerId, GameStatus, Player } from "~/utilities/types";
+import type { PlayerId, GameStatus, Player } from "@shared/types";
 
 /**
  * Check if move is allowed

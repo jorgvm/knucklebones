@@ -5,7 +5,7 @@ import {
 } from "~/utilities/firebase";
 import { generateId } from "~/utilities/generate-id";
 import { isValidFirebaseDocumentId, sanitizeName } from "~/utilities/sanitise";
-import type { GameId, Player, PlayerName } from "~/utilities/types";
+import type { GameId, Player, PlayerName } from "@shared/types";
 
 export const actionJoinGame = async ({
   playerName,

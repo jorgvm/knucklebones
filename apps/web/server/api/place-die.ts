@@ -1,6 +1,6 @@
 import { actionPlaceDie } from "~/server-actions/place-die";
 import { serverError } from "~/utilities/server-error";
-import type { GameId, PlayerId, RackNumber } from "~/utilities/types";
+import type { GameId, PlayerId, RackNumber } from "@shared/types";
 
 export default defineEventHandler(async (event) => {
   try {
