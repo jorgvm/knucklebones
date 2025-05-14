@@ -1,5 +1,5 @@
-import { OPPONENT_ID } from "~/utilities/constants";
-import type { GameData, PlayerId } from "@shared/types";
+import { GameData, PlayerId } from "@knucklebones/shared/types.js";
+import { OPPONENT_ID } from "@knucklebones/shared/utilities/constants.js";
 
 /**
  * Remove opponent id from game data
@@ -8,7 +8,7 @@ import type { GameData, PlayerId } from "@shared/types";
  */
 export const removeOpponentId = (
   gameData: GameData,
-  opponentId?: PlayerId,
+  opponentId?: PlayerId
 ): GameData => {
   // If there is no opponent yet, no need to check object
   if (!opponentId) {
@@ -25,11 +25,11 @@ export const removeOpponentId = (
 export const replaceValueInObject = <T>(
   obj: T,
   target: string,
-  replaceWith: string,
+  replaceWith: string
 ): T => {
   if (Array.isArray(obj)) {
     return obj.map((item) =>
-      replaceValueInObject(item, target, replaceWith),
+      replaceValueInObject(item, target, replaceWith)
     ) as T;
   } else if (obj !== null && typeof obj === "object") {
     const result: Record<string, unknown> = {};

@@ -1,8 +1,8 @@
+import { GameData } from "@knucklebones/shared/types.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { actionGetGame } from "~/server-actions/get-game";
-import { OPPONENT_ID } from "~/utilities/constants";
-import { getGameFromDatabase } from "~/utilities/firebase";
-import type { GameData } from "@shared/types";
+import { actionGetGame } from "~/actions/get-game.js";
+import { getGameFromDatabase } from "~/utilities/firebase.js";
+import { OPPONENT_ID } from "@knucklebones/shared/utilities/constants.js";
 
 // Mocks
 vi.mock("~/utilities/firebase", () => ({
@@ -62,7 +62,7 @@ describe("actionGetGame", () => {
       actionGetGame({
         gameId: "invalid-game-id",
         playerId: player1Id,
-      }),
+      })
     ).rejects.toThrow("Game not found");
 
     // Ensure the getGameFromDatabase was not called since gameId is invalid

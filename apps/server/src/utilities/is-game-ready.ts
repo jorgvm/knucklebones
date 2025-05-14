@@ -1,5 +1,5 @@
-import { getRacks } from "~/utilities/get-racks";
-import type { GameData } from "@shared/types";
+import { getRacks } from "@knucklebones/shared/utilities/get-racks.js";
+import type { GameData } from "@knucklebones/shared/types.js";
 
 /**
  * Check if a player has a full board of 3*3 dice

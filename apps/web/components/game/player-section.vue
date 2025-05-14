@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import type { GameData, PlayerId } from "@shared/types";
+  import type { GameData, PlayerId, RackNumber } from "@shared/types";
   import { getRacks } from "@shared/utilities/get-racks";
 
   const { playerId, isLocalPlayer } = defineProps<{
@@ -8,6 +8,10 @@
   }>();
 
   const route = useRoute();
+
+  const socketService = inject(
+    "socketService",
+  ) as typeof import("../../utilities/socket-service").socketService;
 
   // Keep track of loading locally, to prevent multiple place-die requests to server
   const isLoading = ref(false);
@@ -40,13 +44,14 @@
   });
 
   // Player selects which rack to place die in
-  const handlePlaceDie = async (rackNumber: number) => {
+  const handlePlaceDie = async (rackNumber: RackNumber) => {
     isLoading.value = true;
     const { gameId } = route.params;
 
-    await $fetch("/api/place-die", {
-      method: "post",
-      body: { gameId, playerId, rackNumber },
+    socketService.sendPlaceDie({
+      gameId: gameId.toString(),
+      playerId,
+      rackNumber,
     });
   };
 </script>

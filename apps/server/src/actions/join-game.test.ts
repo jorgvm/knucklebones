@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { actionJoinGame } from "~/server-actions/join-game";
+import { actionJoinGame } from "~/actions/join-game.js";
 import {
   getGameFromDatabase,
   updateGameInDatabase,
-} from "~/utilities/firebase";
-import { mockGameData } from "~/utilities/mock-game";
+} from "~/utilities/firebase.js";
+import { mockGameData } from "~/utilities/mock-game.js";
 
 // Mock Firebase functions
 vi.mock("~/utilities/firebase", () => ({
@@ -68,7 +68,7 @@ describe("joinGame - success case", () => {
       actionJoinGame({
         playerName: "!@#",
         gameId: "JO7BPzEtvwnkFQx8JWc9",
-      }),
+      })
     ).rejects.toThrow("Invalid input.");
   });
 
@@ -84,7 +84,7 @@ describe("joinGame - success case", () => {
       actionJoinGame({
         playerName: "Alice",
         gameId: "xxx",
-      }),
+      })
     ).rejects.toThrow("Invalid input.");
   });
 });

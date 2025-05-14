@@ -1,6 +1,6 @@
 export type DieStatus = "active" | "removed";
 
-export type RackNumber = 0 | 1 | 2;
+export type RackNumber = number;
 
 export type Die = {
   created: string;
@@ -29,6 +29,7 @@ export type Player = {
 };
 
 export type GameStatus =
+  | "loading" // fetching game data
   | "lobby" // waiting on more players
   | "playing" // playing the game
   | "finished"; // there is a winner
@@ -43,3 +44,24 @@ export type GameData = {
   version: number;
   winner: PlayerId | null;
 };
+
+export type GameMessagePayload =
+  | SubscribeToGameData
+  | SendJoinGameData
+  | SendCreateGameData
+  | SendPlaceDieData;
+
+export type SubscribeToGameData = { gameId: GameId };
+export type SendJoinGameData = { gameId: string; playerName: string };
+export type SendCreateGameData = { playerName: string };
+export type SendPlaceDieData = {
+  gameId: GameId;
+  playerId: PlayerId;
+  rackNumber: RackNumber;
+};
+
+export type SocketAction =
+  | "createGame"
+  | "joinGame"
+  | "subscribeToGame"
+  | "placeDie";

@@ -1,4 +1,4 @@
-import type { PlayerId, GameStatus, Player } from "@shared/types";
+import { Player, PlayerId, GameStatus } from "@knucklebones/shared/types.js";
 
 /**
  * Check if move is allowed
@@ -31,10 +31,10 @@ export const moveIsAllowed = ({
 
   // Chosen rack should not be full
   const playerActiveDice = activePlayer.dice.filter(
-    (die) => die.status === "active",
+    (die) => die.status === "active"
   );
   const diceInTargetRack = playerActiveDice.filter(
-    (die) => die.rack === rackNumber,
+    (die) => die.rack === rackNumber
   );
 
   if (diceInTargetRack.length >= 3) {

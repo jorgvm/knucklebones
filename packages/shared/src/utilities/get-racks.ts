@@ -1,4 +1,4 @@
-import type { Die, Racks } from "@shared/types";
+import type { Die, Racks } from "../types.js";
 
 /**
  * Group the dice into three racks, based on the unorderd list of dice

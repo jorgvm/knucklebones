@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { actionCreateGame } from "~/server-actions/create-game";
-import { createGameInDatabase } from "~/utilities/firebase";
+import { actionCreateGame } from "~/actions/create-game.js";
+import { createGameInDatabase } from "~/utilities/firebase.js";
 
 // Mocks
 vi.mock("~/utilities/firebase", () => ({
@@ -51,14 +51,14 @@ describe("actionCreateGame - success case", () => {
         new_die: 3,
         status: "lobby",
         winner: null,
-      }),
+      })
     );
   });
 
   it("throws error when playerName is invalid", async () => {
     // Act & Assert
     await expect(actionCreateGame({ playerName: "!@#" })).rejects.toThrow(
-      "No valid name was supplied",
+      "No valid name was supplied"
     );
   });
 });

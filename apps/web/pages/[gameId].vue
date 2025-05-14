@@ -6,11 +6,14 @@
   const route = useRoute();
   const router = useRouter();
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
-  const { gameId } = route.params;
+  const gameId = route.params.gameId.toString();
 
   const gameDefaults: GameData = {
-    id: "x",
-    status: "lobby",
+    id: "",
+    created: "",
+    new_die: 1,
+    status: "loading",
+    winner: "",
     players: [],
     version: 1,
     active_player: "",
@@ -18,7 +21,51 @@
 
   const gameData: Ref<GameData> = ref(gameDefaults);
 
-  // Redirect if player is not part of the game
+  const socketService = inject(
+    "socketService",
+  ) as typeof import("../utilities/socket-service").socketService;
+  const isConnected = computed(() => socketService.isConnected.value);
+
+  onMounted(() => {
+    // Subscribe to the game when the component mounts and the socket is connected
+    if (isConnected.value && gameId) {
+      socketService.sendSubscribeToGame({ gameId: gameId });
+    }
+  });
+
+  watch(isConnected, (newIsConnected) => {
+    if (newIsConnected && gameId) {
+      // Re-subscribe when the socket reconnects
+
+      socketService.sendSubscribeToGame({ gameId: gameId });
+    }
+  });
+
+  // Listen for socket events using the injected socketService
+  watch(
+    () => socketService.socket.value,
+    () => {
+      if (socketService.socket.value) {
+        socketService.socket.value.on("error", (msg) => {
+          console.error("Socket error:", msg);
+        });
+
+        socketService.socket.value.on("gameUpdate", (data: GameData) => {
+          gameData.value = data;
+        });
+
+        socketService.socket.value.on(
+          "joinGameResult",
+          (data: { playerId: string }) => {
+            cookiePlayerId.value = data.playerId;
+          },
+        );
+      }
+    },
+    { immediate: true },
+  );
+
+  // Redirect if player is not part of the game, and status is not lobby or loading
   watch(
     gameData,
     (newGameData) => {
@@ -26,8 +73,10 @@
         (i) => i.id === cookiePlayerId.value,
       );
 
-      if (!player && gameData.value.status !== "lobby") {
-        router.replace("/wrong-game");
+      if (!player && !["lobby", "loading"].includes(gameData.value.status)) {
+        console.error("User is not part of this game");
+        // todo
+        // router.replace("/wrong-game");
       }
     },
     { immediate: true },
@@ -38,6 +87,8 @@
 </script>
 
 <template>
+  <div v-if="gameData.status === 'loading'">loading...</div>
+
   <GameBoard
     v-if="gameData.status === 'playing' || gameData.status === 'finished'"
   />

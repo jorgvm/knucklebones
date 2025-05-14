@@ -1,8 +1,7 @@
+import { GameData } from "@knucklebones/shared/types.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { actionPlaceDie } from "~/server-actions/place-die";
-import { getGameFromDatabase } from "~/utilities/firebase";
-
-import type { GameData } from "@shared/types";
+import { actionPlaceDie } from "~/actions/place-die.js";
+import { getGameFromDatabase } from "~/utilities/firebase.js";
 
 // Mocks
 vi.mock("~/utilities/firebase", () => ({
@@ -10,14 +9,17 @@ vi.mock("~/utilities/firebase", () => ({
   updateGameInDatabase: vi.fn(),
 }));
 
-vi.mock(import("~/utilities/sanitise"), async (importOriginal) => {
-  const actual = await importOriginal();
+vi.mock(
+  import("@knucklebones/shared/utilities/sanitise.js"),
+  async (importOriginal) => {
+    const actual = await importOriginal();
 
-  return {
-    ...actual,
-    isValidFirebaseDocumentId: vi.fn(() => true),
-  };
-});
+    return {
+      ...actual,
+      isValidFirebaseDocumentId: vi.fn(() => true),
+    };
+  }
+);
 
 describe("actionPlaceDie", () => {
   beforeEach(() => {
@@ -63,7 +65,7 @@ describe("actionPlaceDie", () => {
 
     // Check the player's rack and die properties
     const placedDie = updatedPlayer.dice.find(
-      (die) => die.id === "mock-die-id",
+      (die) => die.id === "mock-die-id"
     );
 
     // Check new die
@@ -125,7 +127,7 @@ describe("actionPlaceDie", () => {
         gameId: "valid-game-id",
         playerId: "player-1", // this player can't play, test should fail
         rackNumber: 1,
-      }),
+      })
     ).rejects.toThrow("Illegal move");
   });
 
@@ -172,7 +174,7 @@ describe("actionPlaceDie", () => {
         gameId: "valid-game-id",
         playerId: "player-1",
         rackNumber: 1, // this rack is already full, test should fail
-      }),
+      })
     ).rejects.toThrow("Illegal move");
   });
 });

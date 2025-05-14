@@ -1,11 +1,12 @@
+import { sanitizeName } from "@knucklebones/shared";
+import type { GameId, Player, PlayerName } from "@knucklebones/shared/types.js";
+import { isValidFirebaseDocumentId } from "@knucklebones/shared/utilities/sanitise.js";
 import { arrayUnion } from "firebase/firestore";
 import {
   getGameFromDatabase,
   updateGameInDatabase,
-} from "~/utilities/firebase";
-import { generateId } from "~/utilities/generate-id";
-import { isValidFirebaseDocumentId, sanitizeName } from "~/utilities/sanitise";
-import type { GameId, Player, PlayerName } from "@shared/types";
+} from "~/utilities/firebase.js";
+import { generateId } from "~/utilities/generate-id.js";
 
 export const actionJoinGame = async ({
   playerName,
@@ -13,7 +14,7 @@ export const actionJoinGame = async ({
 }: {
   playerName: PlayerName;
   gameId: GameId;
-}) => {
+}): Promise<{ playerId: string }> => {
   const sanitizedName = sanitizeName(playerName);
 
   // All ids should be valid
@@ -36,8 +37,8 @@ export const actionJoinGame = async ({
     host: false,
     dice: [],
     id: playerId,
-    name: sanitizedName,
     score: 0,
+    name: sanitizedName,
   };
 
   // Join game

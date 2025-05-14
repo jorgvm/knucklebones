@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { getRacks } from "~/utilities/get-racks";
-import type { Die } from "@shared/types";
+import type { Die } from "../types";
+import { getRacks } from "./get-racks";
 
 const mockDice: Die[] = [
   {

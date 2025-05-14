@@ -1,4 +1,4 @@
-import type { Die } from "@shared/types";
+import { Die } from "@knucklebones/shared/types.js";
 
 /**
  * Update dice in a specific rack to 'removed' status.
