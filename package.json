@@ -4,8 +4,10 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "dev:server": "pnpm --filter @knucklebones/server dev",
-    "dev:web": "pnpm --filter @knucklebones/web dev",
+    "dev:server": "turbo run dev --filter=@knucklebones/server",
+    "dev:web": "turbo run dev --filter=@knucklebones/web",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

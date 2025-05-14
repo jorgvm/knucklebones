@@ -1,8 +1,7 @@
-import type { GameData } from "@shared/types";
+import { GameData } from "@knucklebones/shared/types.js";
 
 /**
  * Mocked game data
- *
  */
 export const mockGameData: GameData = {
   id: "x",

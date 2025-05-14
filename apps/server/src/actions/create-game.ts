@@ -8,8 +8,7 @@ export const actionCreateGame = async ({
   playerName,
 }: {
   playerName: PlayerName;
-}) => {
-  console.log("playerName", playerName);
+}): Promise<{ playerId: string; gameId: string }> => {
   const sanitizedName = sanitizeName(playerName.trim());
 
   if (!sanitizedName) {

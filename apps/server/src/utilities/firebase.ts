@@ -1,4 +1,4 @@
-import { GameData } from "@knucklebones/shared/types.js";
+import { GameData, GameId } from "@knucklebones/shared/types.js";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -9,12 +9,13 @@ import {
   getDoc,
   increment,
   type FieldValue,
+  DocumentReference,
+  DocumentData,
 } from "firebase/firestore";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 // Firebase setup
-
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -39,7 +40,7 @@ type FirestoreCompatible<T> = {
  * Version is updated with every update
  */
 const firebaseCollectionId = process.env.FIREBASE_COLLECTION_ID as string;
-console.log("firebaseCollectionId", firebaseCollectionId);
+
 export const updateGameInDatabase = async (
   gameId: string,
   data: FirestoreCompatible<GameData>
@@ -74,4 +75,10 @@ export const getGameFromDatabase = async (gameId: string) => {
   } else {
     throw new Error("Game not found");
   }
+};
+
+export const getDocRef = (
+  gameId: GameId
+): DocumentReference<DocumentData, DocumentData> => {
+  return doc(db, firebaseCollectionId, gameId);
 };

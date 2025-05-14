@@ -10,7 +10,7 @@ export const actionGetGame = async ({
 }: {
   gameId: GameId;
   playerId: PlayerId;
-}) => {
+}): Promise<Partial<GameData>> => {
   // Validate input. playerId can be empty.
   const playerIdIsValid = !playerId || isValidCryptoId(playerId);
   if (!playerIdIsValid || !isValidFirebaseDocumentId(gameId)) {

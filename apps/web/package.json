@@ -5,11 +5,10 @@
   "scripts": {
     "build": "nuxi build",
     "dev": "nuxi dev",
-    "generate": "nuxi generate",
-    "preview": "nuxi preview",
     "start": "node .output/server/index.mjs",
     "postinstall": "nuxi prepare",
-    "test": "vitest"
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@knucklebones/shared": "workspace:*",

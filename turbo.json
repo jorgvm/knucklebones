@@ -7,9 +7,13 @@
       "outputs": [".nuxt/**", ".output/**", "dist/**"]
     },
     "lint": {},
+    "test": {},
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "typecheck": {
+      "cache": false
     }
   }
 }

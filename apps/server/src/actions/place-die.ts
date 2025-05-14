@@ -1,21 +1,24 @@
+import type {
+  GameId,
+  PlayerId,
+  RackNumber,
+  GameData,
+  Die,
+} from "@knucklebones/shared/types.js";
+import {
+  isValidFirebaseDocumentId,
+  isRackNumber,
+} from "@knucklebones/shared/utilities/sanitise.js";
 import {
   getGameFromDatabase,
   updateGameInDatabase,
-} from "~/utilities/firebase";
-import { isValidCryptoId, generateId } from "~/utilities/generate-id";
-import { isGameReady } from "~/utilities/is-game-ready";
-import { moveIsAllowed } from "~/utilities/move-is-allowed";
-import { removeDice } from "~/utilities/remove-dice";
-import { rollDie } from "~/utilities/roll-die";
-import { isValidFirebaseDocumentId, isRackNumber } from "~/utilities/sanitise";
-import { getPlayerScore } from "~/utilities/score";
-import type {
-  GameData,
-  Die,
-  RackNumber,
-  PlayerId,
-  GameId,
-} from "@shared/types";
+} from "~/utilities/firebase.js";
+import { isValidCryptoId, generateId } from "~/utilities/generate-id.js";
+import { isGameReady } from "~/utilities/is-game-ready.js";
+import { moveIsAllowed } from "~/utilities/move-is-allowed.js";
+import { removeDice } from "~/utilities/remove-dice.js";
+import { rollDie } from "~/utilities/roll-die.js";
+import { getPlayerScore } from "~/utilities/score.js";
 
 export const actionPlaceDie = async ({
   gameId,
@@ -25,7 +28,7 @@ export const actionPlaceDie = async ({
   gameId: GameId;
   playerId: PlayerId;
   rackNumber: RackNumber;
-}) => {
+}): Promise<void> => {
   // Validate input
   if (
     !isValidCryptoId(playerId) ||
@@ -95,6 +98,4 @@ export const actionPlaceDie = async ({
     new_die: gameData.new_die,
     status: gameData.status,
   });
-
-  return { result: "success" };
 };
