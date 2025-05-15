@@ -14,6 +14,5 @@
 </script>
 
 <template>
-  <NuxtPage v-if="socketService.isConnected.value" />
-  <GameLoading v-if="!socketService.isConnected.value" />
+  <NuxtPage />
 </template>

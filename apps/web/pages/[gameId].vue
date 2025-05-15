@@ -4,7 +4,6 @@
   import { COOKIE_PLAYER_ID } from "@shared/utilities/constants";
 
   const route = useRoute();
-  const router = useRouter();
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
   const gameId = route.params.gameId.toString();
 
@@ -24,6 +23,7 @@
   const socketService = inject(
     "socketService",
   ) as typeof import("../utilities/socket-service").socketService;
+
   const isConnected = computed(() => socketService.isConnected.value);
 
   onMounted(() => {
@@ -95,4 +95,6 @@
   <GameLobby v-if="gameData?.status === 'lobby'" />
 
   {{ gameData.status === "finished" ? "We have a winner" : "" }}
+
+  <GameLoading v-if="!socketService.isConnected.value" />
 </template>
