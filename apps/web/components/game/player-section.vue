@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import type { GameData, PlayerId, RackNumber } from "@shared/types";
   import { getRacks } from "@shared/utilities/get-racks";
+  import type { SocketService } from "~/utilities/socket-service";
 
   const { playerId, isLocalPlayer } = defineProps<{
     playerId: PlayerId;
@@ -9,9 +10,11 @@
 
   const route = useRoute();
 
-  const socketService = inject(
-    "socketService",
-  ) as typeof import("../../utilities/socket-service").socketService;
+  // Socket
+  const socketService = inject<SocketService>("socketService");
+  if (!socketService) {
+    throw new Error("Socket service not defined");
+  }
 
   // Keep track of loading locally, to prevent multiple place-die requests to server
   const isLoading = ref(false);

@@ -2,6 +2,7 @@
   import { provide } from "vue";
   import type { GameData } from "@shared/types";
   import { COOKIE_PLAYER_ID } from "@shared/utilities/constants";
+  import type { SocketService } from "~/utilities/socket-service";
 
   const route = useRoute();
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
@@ -20,9 +21,11 @@
 
   const gameData: Ref<GameData> = ref(gameDefaults);
 
-  const socketService = inject(
-    "socketService",
-  ) as typeof import("../utilities/socket-service").socketService;
+  // Socket
+  const socketService = inject<SocketService>("socketService");
+  if (!socketService) {
+    throw new Error("Socket service not defined");
+  }
 
   const isConnected = computed(() => socketService.isConnected.value);
 
@@ -46,10 +49,6 @@
     () => socketService.socket.value,
     () => {
       if (socketService.socket.value) {
-        socketService.socket.value.on("error", (msg) => {
-          console.error("Socket error:", msg);
-        });
-
         socketService.socket.value.on("gameUpdate", (data: GameData) => {
           gameData.value = data;
         });

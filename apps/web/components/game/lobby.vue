@@ -22,8 +22,6 @@
 </script>
 
 <template>
-  <h1>Lobby!</h1>
-
   <div v-if="localPlayerIsHost">
     <p>Waiting for other players</p>
 
@@ -32,5 +30,5 @@
     <input type="text" disabled :value="url" class="w-[500px]" />
   </div>
 
-  <GameNameForm v-if="!localPlayerIsHost" type="join-game" />
+  <GameJoinGameForm v-if="!localPlayerIsHost" />
 </template>

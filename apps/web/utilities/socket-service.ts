@@ -9,6 +9,8 @@ import type {
   SubscribeToGameData,
 } from "@shared/types";
 
+export type SocketService = typeof socketService;
+
 const socket = ref<Socket | null>(null);
 const messages = ref<string[]>([]);
 const isConnected = ref(false);
@@ -74,7 +76,7 @@ const sendPlaceDie = ({ gameId, playerId, rackNumber }: SendPlaceDieData) => {
   submit({ action: "placeDie", data: { gameId, playerId, rackNumber } });
 };
 
-export const socketService = {
+const socketService = {
   socket,
   isConnected,
   connect,
@@ -83,4 +85,6 @@ export const socketService = {
   sendJoinGame,
   sendSubscribeToGame,
   sendPlaceDie,
-};
+} as const;
+
+export default socketService;

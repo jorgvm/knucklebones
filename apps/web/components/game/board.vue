@@ -9,20 +9,15 @@
 
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
 
-  const opponentId = computed(() => {
-    const result = String(
+  const opponentId = computed(() =>
+    String(
       gameData.value.players?.find((i) => i.id !== cookiePlayerId.value)?.id,
-    );
-
-    return result;
-  });
+    ),
+  );
 </script>
 
 <template>
   <div class="flex flex-col gap-8">
-    <div>
-      {{ cookiePlayerId }}
-    </div>
     <GamePlayerSection :player-id="opponentId" :is-local-player="false" />
 
     <GamePlayerSection

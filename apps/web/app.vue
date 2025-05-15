@@ -1,5 +1,7 @@
 <script setup lang="ts">
-  import { socketService } from "~/utilities/socket-service";
+  import socketService, {
+    type SocketService,
+  } from "~/utilities/socket-service";
 
   onMounted(() => {
     socketService.connect();
@@ -10,7 +12,7 @@
   });
 
   // Provide socket to app
-  provide("socketService", socketService);
+  provide("socketService", socketService as SocketService);
 </script>
 
 <template>

@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-  const socketService = inject(
-    "socketService",
-  ) as typeof import("../utilities/socket-service").socketService;
+  import socketService from "~/utilities/socket-service";
 </script>
 
 <template>
   <div>
-    <GameNameForm type="create-game" />
+    <GameCreateGameForm />
     <GameLoading v-if="!socketService.isConnected.value" />
   </div>
 </template>
