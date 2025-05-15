@@ -98,6 +98,9 @@ io.on("connection", (socket) => {
   }
 });
 
-httpServer.listen(8080, () => {
-  console.log("Socket.IO server running on port 8080");
+// Use the PORT environment variable, fall back to 8080 for local development
+const PORT = process.env.PORT || 8080;
+
+httpServer.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
