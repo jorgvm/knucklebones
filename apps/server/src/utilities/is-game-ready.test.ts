@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { isGameReady } from "~/utilities/is-game-ready";
-import { mockGameData } from "~/utilities/mock-game";
+import { isGameReady } from "~/utilities/is-game-ready.js";
+import { mockGameData } from "~/utilities/mock-game.js";
 
 describe("isGameReady", () => {
   it("returns true if a player has 3 active dice in all 3 racks", () => {

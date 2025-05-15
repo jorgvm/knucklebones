@@ -1,6 +1,6 @@
+import type { Die } from "@knucklebones/shared/types.js";
 import { describe, it, expect } from "vitest";
-import { removeDice } from "~/utilities/remove-dice";
-import type { Die } from "@shared/types";
+import { removeDice } from "~/utilities/remove-dice.js";
 
 describe("removeDice", () => {
   it("sets status to 'removed' for dice that match rack and value", () => {

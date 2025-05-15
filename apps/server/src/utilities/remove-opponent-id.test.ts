@@ -1,10 +1,10 @@
+import { GameData } from "@knucklebones/shared/types.js";
+import { OPPONENT_ID } from "@knucklebones/shared/utilities/constants.js";
 import { describe, it, expect } from "vitest";
-import { OPPONENT_ID } from "~/utilities/constants";
 import {
-  removeOpponentId,
   replaceValueInObject,
-} from "~/utilities/remove-opponent-id";
-import type { GameData } from "@shared/types";
+  removeOpponentId,
+} from "~/utilities/remove-opponent-id.js";
 
 describe("replaceValueInObject", () => {
   it("replaces a primitive value in a flat object", () => {

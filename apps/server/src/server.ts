@@ -99,5 +99,5 @@ io.on("connection", (socket) => {
 });
 
 httpServer.listen(8080, () => {
-  console.log("Socket.IO server running on http://localhost:8080");
+  console.log("Socket.IO server running on port 8080");
 });

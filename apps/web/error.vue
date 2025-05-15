@@ -15,7 +15,7 @@
   try {
     // serverError = JSON.parse(error.data)?.message;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     serverError = "Error could not be parsed";
   }
 

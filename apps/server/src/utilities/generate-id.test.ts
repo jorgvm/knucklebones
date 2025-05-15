@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generateId, isValidCryptoId } from "~/utilities/generate-id";
+import { generateId, isValidCryptoId } from "~/utilities/generate-id.js";
 
 describe("generateId", () => {
   it("returns different values on subsequent calls", () => {

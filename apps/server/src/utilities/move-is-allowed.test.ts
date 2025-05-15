@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { moveIsAllowed } from "~/utilities/move-is-allowed";
-import { mockGameData } from "~/utilities/mock-game";
+import { mockGameData } from "~/utilities/mock-game.js";
+import { moveIsAllowed } from "~/utilities/move-is-allowed.js";
 
 describe("moveIsAllowed", () => {
   const jane = mockGameData.players[1]; // "jane", the active player
