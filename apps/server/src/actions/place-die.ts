@@ -28,7 +28,7 @@ export const actionPlaceDie = async ({
   gameId: GameId;
   playerId: PlayerId;
   rackNumber: RackNumber;
-}): Promise<void> => {
+}): Promise<{ result: string }> => {
   // Validate input
   if (
     !isValidCryptoId(playerId) ||
@@ -98,4 +98,6 @@ export const actionPlaceDie = async ({
     new_die: gameData.new_die,
     status: gameData.status,
   });
+
+  return { result: "success" };
 };

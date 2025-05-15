@@ -1,12 +1,7 @@
 import { defineConfig } from "vitest/config";
-import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   test: {},
-  resolve: {
-    alias: {
-      "~": path.resolve(__dirname, "."), // Maps ~ to the project root
-      "@shared": path.resolve(__dirname, "../../packages/shared/src"),
-    },
-  },
+  plugins: [tsconfigPaths()],
 });

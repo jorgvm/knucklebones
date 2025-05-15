@@ -1,5 +1,5 @@
-import { sanitizeName } from "@knucklebones/shared";
 import { PlayerName } from "@knucklebones/shared/types.js";
+import { sanitizeName } from "@knucklebones/shared/utilities/sanitise.js";
 import { createGameInDatabase } from "~/utilities/firebase.js";
 import { generateId } from "~/utilities/generate-id.js";
 import { rollDie } from "~/utilities/roll-die.js";

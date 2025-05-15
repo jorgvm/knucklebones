@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { actionCreateGame } from "~/actions/create-game.js";
+import { actionCreateGame } from "./create-game.js";
 import { createGameInDatabase } from "~/utilities/firebase.js";
 
 // Mocks

@@ -4,7 +4,7 @@ import {
   isValidFirebaseDocumentId,
   sanitizeName,
 } from "./sanitise";
-import { MAX_PLAYER_NAME_LENGTH } from "./constants";
+import { MAX_PLAYER_NAME_LENGTH } from "./constants.js";
 
 describe("sanitizeName", () => {
   it("removes non-letter characters and spaces", () => {

@@ -1,6 +1,8 @@
-import { sanitizeName } from "@knucklebones/shared";
 import type { GameId, Player, PlayerName } from "@knucklebones/shared/types.js";
-import { isValidFirebaseDocumentId } from "@knucklebones/shared/utilities/sanitise.js";
+import {
+  isValidFirebaseDocumentId,
+  sanitizeName,
+} from "@knucklebones/shared/utilities/sanitise.js";
 import { arrayUnion } from "firebase/firestore";
 import {
   getGameFromDatabase,
