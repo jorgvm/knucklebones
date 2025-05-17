@@ -65,7 +65,8 @@ io.on("connection", (socket) => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        socket.emit("gameUpdate", docSnap.data());
+        const gameData = docSnap.data();
+        socket.emit("gameUpdate", gameData);
       } else {
         console.error("error, game not found");
         socket.emit("error", "Game not found");

@@ -29,6 +29,10 @@
 
   const isConnected = computed(() => socketService.isConnected.value);
 
+  const playerIsInGame = computed(() =>
+    gameData.value.players.some((i) => i.id === cookiePlayerId.value),
+  );
+
   onMounted(() => {
     // Subscribe to the game when the component mounts and the socket is connected
     if (isConnected.value && gameId) {
@@ -64,36 +68,31 @@
     { immediate: true },
   );
 
-  // Redirect if player is not part of the game, and status is not lobby or loading
-  watch(
-    gameData,
-    (newGameData) => {
-      const player = newGameData.players.find(
-        (i) => i.id === cookiePlayerId.value,
-      );
-
-      if (!player && !["lobby", "loading"].includes(gameData.value.status)) {
-        console.error("User is not part of this game");
-        // todo
-        // router.replace("/wrong-game");
-      }
-    },
-    { immediate: true },
-  );
-
   // Provider
   provide("gameData", gameData);
+
+  const showLoadingScreen = computed(() => {
+    // There might be a brief moment where the game has started, but the id cookie is not set, in that case, show the loading screen
+    // This will also hide the game for players that not in the game
+    const playerIsNotInGame =
+      !playerIsInGame.value && gameData.value.status === "playing";
+    const socketIsNotConnected = !socketService.isConnected.value;
+    const gameStatusIsLoading = gameData.value.status === "loading";
+
+    return playerIsNotInGame || socketIsNotConnected || gameStatusIsLoading;
+  });
 </script>
 
 <template>
-  <div v-if="gameData.status === 'loading'">loading...</div>
+  <GameLoading v-if="showLoadingScreen" />
 
-  <GameBoard
-    v-if="gameData.status === 'playing' || gameData.status === 'finished'"
-  />
-  <GameLobby v-if="gameData?.status === 'lobby'" />
+  <div v-if="!showLoadingScreen">
+    <GameBoard
+      v-if="gameData.status === 'playing' || gameData.status === 'finished'"
+    />
 
-  {{ gameData.status === "finished" ? "We have a winner" : "" }}
+    <GameLobby v-if="gameData.status === 'lobby'" />
 
-  <GameLoading v-if="!socketService.isConnected.value" />
+    <div v-if="gameData.status === 'finished'">Winner!</div>
+  </div>
 </template>
