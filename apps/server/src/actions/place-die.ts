@@ -4,6 +4,7 @@ import type {
   RackNumber,
   GameData,
   Die,
+  PlayerSecretId,
 } from "@knucklebones/shared/types.js";
 import {
   isValidFirebaseDocumentId,
@@ -23,19 +24,22 @@ import { getPlayerScore } from "~/utilities/score.js";
 export const actionPlaceDie = async ({
   gameId,
   playerId,
+  playerSecretId,
   rackNumber,
 }: {
   gameId: GameId;
   playerId: PlayerId;
+  playerSecretId: PlayerSecretId;
   rackNumber: RackNumber;
 }): Promise<{ result: string }> => {
   // Validate input
   if (
     !isValidCryptoId(playerId) ||
+    !isValidCryptoId(playerSecretId) ||
     !isValidFirebaseDocumentId(gameId) ||
     !isRackNumber(rackNumber)
   ) {
-    throw new Error("Game not found");
+    throw new Error("Place die input is not valid");
   }
 
   // Get game from database
@@ -49,13 +53,15 @@ export const actionPlaceDie = async ({
   }
   const isMoveAllowed = moveIsAllowed({
     activePlayer,
+    playerSecretId,
+    secrets: gameData.secrets,
     gameActivePlayerId: gameData.active_player,
     gameStatus: gameData.status,
     rackNumber,
   });
 
   if (!isMoveAllowed) {
-    throw new Error("Illegal move");
+    throw new Error("Move is not allowed");
   }
 
   // Place die in rack

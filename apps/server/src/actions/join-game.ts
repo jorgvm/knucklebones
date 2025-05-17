@@ -1,4 +1,9 @@
-import type { GameId, Player, PlayerName } from "@knucklebones/shared/types.js";
+import type {
+  GameId,
+  Player,
+  PlayerName,
+  PlayerSecretId,
+} from "@knucklebones/shared/types.js";
 import {
   isValidFirebaseDocumentId,
   sanitizeName,
@@ -16,7 +21,7 @@ export const actionJoinGame = async ({
 }: {
   playerName: PlayerName;
   gameId: GameId;
-}): Promise<{ playerId: string }> => {
+}): Promise<{ playerId: string; playerSecretId: PlayerSecretId }> => {
   const sanitizedName = sanitizeName(playerName);
 
   // All ids should be valid
@@ -35,6 +40,7 @@ export const actionJoinGame = async ({
 
   // Create new player
   const playerId = generateId();
+  const playerSecretId = generateId();
   const newPlayer: Player = {
     host: false,
     dice: [],
@@ -43,13 +49,17 @@ export const actionJoinGame = async ({
     name: sanitizedName,
   };
 
+  const newPlayerSecret = { id: playerId, secret: playerSecretId };
+
   // Join game
   await updateGameInDatabase(gameId, {
     players: arrayUnion(newPlayer),
     status: "playing",
+    secrets: arrayUnion(newPlayerSecret),
   });
 
   return {
     playerId,
+    playerSecretId,
   };
 };

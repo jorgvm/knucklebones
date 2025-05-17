@@ -1,4 +1,3 @@
-import { removeOpponentId } from "~/utilities/remove-opponent-id.js";
 import { getGameFromDatabase } from "~/utilities/firebase.js";
 import type { GameData, GameId, PlayerId } from "@knucklebones/shared/types.js";
 import { isValidFirebaseDocumentId } from "@knucklebones/shared/utilities/sanitise.js";
@@ -29,18 +28,16 @@ export const actionGetGame = async ({
   if (gameData.players.length > 1 && !opponent?.id) {
     throw new Error("There is more than 1 player, but no opponent id");
   }
-  const cleanedGameData = removeOpponentId(gameData, opponent?.id);
-
-  const activePlayer = cleanedGameData.active_player;
 
   // Define which data is public, to prevent accidential leak
   const publicGameData: Partial<GameData> = {
-    players: cleanedGameData.players,
-    active_player: cleanedGameData.active_player,
-    new_die: cleanedGameData.new_die,
-    winner: cleanedGameData.winner,
-    status: cleanedGameData.status,
-    version: cleanedGameData.version,
+    players: gameData.players,
+    active_player: gameData.active_player,
+    new_die: gameData.new_die,
+    winner: gameData.winner,
+    status: gameData.status,
+    version: gameData.version,
+    secrets: [], // never send
   };
 
   return publicGameData;

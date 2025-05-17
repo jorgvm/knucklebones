@@ -16,6 +16,8 @@ export type Racks = [Rack, Rack, Rack];
 
 export type PlayerId = string;
 
+export type PlayerSecretId = string;
+
 export type GameId = string;
 
 export type PlayerName = string;
@@ -26,6 +28,11 @@ export type Player = {
   id: PlayerId;
   name: PlayerName;
   score: number;
+};
+
+export type PlayerSecret = {
+  id: PlayerId;
+  secret: PlayerSecretId;
 };
 
 export type GameStatus =
@@ -43,6 +50,7 @@ export type GameData = {
   status: GameStatus;
   version: number;
   winner: PlayerId | null;
+  secrets: PlayerSecret[];
 };
 
 export type GameMessagePayload =
@@ -57,6 +65,7 @@ export type SendCreateGameData = { playerName: string };
 export type SendPlaceDieData = {
   gameId: GameId;
   playerId: PlayerId;
+  playerSecretId: PlayerSecretId;
   rackNumber: RackNumber;
 };
 

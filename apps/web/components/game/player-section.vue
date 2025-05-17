@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import type { GameData, PlayerId, RackNumber } from "@shared/types";
+  import { COOKIE_PLAYER_SECRET_ID } from "@shared/utilities/constants";
   import { getRacks } from "@shared/utilities/get-racks";
   import type { SocketService } from "~/utilities/socket-service";
 
@@ -7,6 +8,8 @@
     playerId: PlayerId;
     isLocalPlayer: boolean;
   }>();
+
+  const cookiePlayerSecretId = useCookie(COOKIE_PLAYER_SECRET_ID);
 
   const route = useRoute();
 
@@ -54,6 +57,7 @@
     socketService.sendPlaceDie({
       gameId: gameId.toString(),
       playerId,
+      playerSecretId: String(cookiePlayerSecretId.value),
       rackNumber,
     });
   };

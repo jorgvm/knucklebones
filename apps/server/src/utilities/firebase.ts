@@ -73,7 +73,7 @@ export const getGameFromDatabase = async (gameId: string) => {
   if (docSnap.exists()) {
     return docSnap.data() as GameData;
   } else {
-    throw new Error("Game not found");
+    throw new Error("Game not found in firebase");
   }
 };
 

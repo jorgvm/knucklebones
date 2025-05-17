@@ -2,19 +2,22 @@
   import { ref } from "vue";
   import {
     COOKIE_PLAYER_ID,
+    COOKIE_PLAYER_SECRET_ID,
     MAX_PLAYER_NAME_LENGTH,
   } from "@shared/utilities/constants";
   import { sanitizeName } from "@shared/utilities/sanitise";
 
   import { useRouter, useCookie } from "nuxt/app";
 
-  import type { GameId, PlayerId } from "@shared/types";
+  import type { GameId, PlayerId, PlayerSecretId } from "@shared/types";
   import type { SocketService } from "~/utilities/socket-service";
 
   const playerName = ref("");
   const isSubmitting = ref(false);
   const router = useRouter();
+
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
+  const cookiePlayerSecretId = useCookie(COOKIE_PLAYER_SECRET_ID);
 
   const socketService = inject<SocketService>("socketService");
 
@@ -45,10 +48,19 @@
     () => socketService.socket.value,
     (socket) => {
       socket?.on("createGameResult", (data) => {
-        const { playerId, gameId }: { playerId: PlayerId; gameId: GameId } =
-          data;
+        const {
+          playerId,
+          gameId,
+          playerSecretId,
+        }: {
+          playerSecretId: PlayerSecretId;
+          playerId: PlayerId;
+          gameId: GameId;
+        } = data;
 
         cookiePlayerId.value = playerId;
+        cookiePlayerSecretId.value = playerSecretId;
+
         isSubmitting.value = false;
         router.push("/" + gameId);
       });

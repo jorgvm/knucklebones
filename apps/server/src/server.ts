@@ -47,10 +47,10 @@ io.on("connection", (socket) => {
 
     // Place die
     socket.on("placeDie", async (data: string) => {
-      const { gameId, playerId, rackNumber }: SendPlaceDieData =
+      const { gameId, playerId, playerSecretId, rackNumber }: SendPlaceDieData =
         JSON.parse(data);
 
-      await actionPlaceDie({ gameId, playerId, rackNumber });
+      await actionPlaceDie({ gameId, playerId, playerSecretId, rackNumber });
     });
 
     // Subscribe to game

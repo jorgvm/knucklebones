@@ -72,8 +72,8 @@ const sendSubscribeToGame = ({ gameId }: SubscribeToGameData) => {
   submit({ action: "subscribeToGame", data: { gameId } });
 };
 
-const sendPlaceDie = ({ gameId, playerId, rackNumber }: SendPlaceDieData) => {
-  submit({ action: "placeDie", data: { gameId, playerId, rackNumber } });
+const sendPlaceDie = (data: SendPlaceDieData) => {
+  submit({ action: "placeDie", data });
 };
 
 const socketService = {

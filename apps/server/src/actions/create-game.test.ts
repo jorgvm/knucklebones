@@ -8,7 +8,7 @@ vi.mock("~/utilities/firebase", () => ({
 }));
 
 vi.mock("~/utilities/generate-id", () => ({
-  generateId: () => "mock-player-id",
+  generateId: () => "mock-id",
 }));
 
 vi.mock("~/utilities/roll-die", () => ({
@@ -20,7 +20,7 @@ describe("actionCreateGame - success case", () => {
     vi.clearAllMocks();
   });
 
-  it("creates a new game and returns playerId and gameId", async () => {
+  it("creates a new game and returns data", async () => {
     // Arrange
     vi.mocked(createGameInDatabase).mockResolvedValue("mock-game-id");
 
@@ -31,7 +31,8 @@ describe("actionCreateGame - success case", () => {
 
     // Assert
     expect(result).toEqual({
-      playerId: "mock-player-id",
+      playerId: "mock-id",
+      playerSecretId: "mock-id",
       gameId: "mock-game-id",
     });
 
@@ -40,14 +41,14 @@ describe("actionCreateGame - success case", () => {
         version: 1,
         players: [
           expect.objectContaining({
-            id: "mock-player-id",
+            id: "mock-id",
             name: "Alice Doe",
             host: true,
             dice: [],
             score: 0,
           }),
         ],
-        active_player: "mock-player-id",
+        active_player: "mock-id",
         new_die: 3,
         status: "lobby",
         winner: null,

@@ -14,7 +14,7 @@ vi.mock("~/utilities/firebase", () => ({
 
 // Mock other utilities
 vi.mock("~/utilities/generate-id", () => ({
-  generateId: () => "mock-player-id",
+  generateId: () => "mock-id",
 }));
 
 vi.mock("firebase/firestore", () => ({
@@ -40,12 +40,12 @@ describe("joinGame - success case", () => {
     });
 
     // Assert
-    expect(result).toEqual({ playerId: "mock-player-id" });
+    expect(result).toEqual({ playerId: "mock-id", playerSecretId: "mock-id" });
 
     expect(updateGameInDatabase).toHaveBeenCalledWith("JO7BPzEtvwnkFQx8JWc9", {
       players: {
         mockUnion: expect.objectContaining({
-          id: "mock-player-id",
+          id: "mock-id",
           name: "Alice",
           host: false,
           dice: [],
@@ -53,6 +53,12 @@ describe("joinGame - success case", () => {
         }),
       },
       status: "playing",
+      secrets: {
+        mockUnion: {
+          id: "mock-id",
+          secret: "mock-id",
+        },
+      },
     });
   });
 

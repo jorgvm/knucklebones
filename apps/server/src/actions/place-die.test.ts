@@ -40,6 +40,12 @@ describe("actionPlaceDie", () => {
       version: 1,
       created: "2025-04-30T18:49:56.973Z",
       winner: null,
+      secrets: [
+        {
+          id: "player-1",
+          secret: "9f950028-fe29-4732-bfde-71ef9cca3085",
+        },
+      ],
     };
 
     vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);
@@ -57,6 +63,7 @@ describe("actionPlaceDie", () => {
     const result = await actionPlaceDie({
       gameId: "valid-game-id",
       playerId: "player-1",
+      playerSecretId: "9f950028-fe29-4732-bfde-71ef9cca3085",
       rackNumber: 1,
     });
 
@@ -108,6 +115,16 @@ describe("actionPlaceDie", () => {
       version: 1,
       created: "",
       winner: null,
+      secrets: [
+        {
+          id: "player-1",
+          secret: "9f950028-fe29-4732-bfde-71ef9cca3085",
+        },
+        {
+          id: "player-2",
+          secret: "12350028-fe29-4732-bfde-71ef9cca3123",
+        },
+      ],
     };
 
     vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);
@@ -126,9 +143,10 @@ describe("actionPlaceDie", () => {
       actionPlaceDie({
         gameId: "valid-game-id",
         playerId: "player-1", // this player can't play, test should fail
+        playerSecretId: "9f950028-fe29-4732-bfde-71ef9cca3085",
         rackNumber: 1,
       })
-    ).rejects.toThrow("Illegal move");
+    ).rejects.toThrow("Move is not allowed");
   });
 
   it("throws an error if attempting to add a fourth die to a rack", async () => {
@@ -155,6 +173,16 @@ describe("actionPlaceDie", () => {
       version: 1,
       created: "",
       winner: null,
+      secrets: [
+        {
+          id: "player-1",
+          secret: "9f950028-fe29-4732-bfde-71ef9cca3085",
+        },
+        {
+          id: "player-2",
+          secret: "12350028-fe29-4732-bfde-71ef9cca3123",
+        },
+      ],
     };
 
     vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);
@@ -173,8 +201,9 @@ describe("actionPlaceDie", () => {
       actionPlaceDie({
         gameId: "valid-game-id",
         playerId: "player-1",
+        playerSecretId: "9f950028-fe29-4732-bfde-71ef9cca3085",
         rackNumber: 1, // this rack is already full, test should fail
       })
-    ).rejects.toThrow("Illegal move");
+    ).rejects.toThrow("Move is not allowed");
   });
 });

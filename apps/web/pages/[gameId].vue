@@ -1,11 +1,15 @@
 <script setup lang="ts">
   import { provide } from "vue";
-  import type { GameData } from "@shared/types";
-  import { COOKIE_PLAYER_ID } from "@shared/utilities/constants";
+  import type { GameData, PlayerSecretId } from "@shared/types";
+  import {
+    COOKIE_PLAYER_ID,
+    COOKIE_PLAYER_SECRET_ID,
+  } from "@shared/utilities/constants";
   import type { SocketService } from "~/utilities/socket-service";
 
   const route = useRoute();
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
+  const cookiePlayerSecretId = useCookie(COOKIE_PLAYER_SECRET_ID);
   const gameId = route.params.gameId.toString();
 
   const gameDefaults: GameData = {
@@ -17,6 +21,7 @@
     players: [],
     version: 1,
     active_player: "",
+    secrets: [],
   };
 
   const gameData: Ref<GameData> = ref(gameDefaults);
@@ -43,7 +48,6 @@
   watch(isConnected, (newIsConnected) => {
     if (newIsConnected && gameId) {
       // Re-subscribe when the socket reconnects
-
       socketService.sendSubscribeToGame({ gameId: gameId });
     }
   });
@@ -59,8 +63,9 @@
 
         socketService.socket.value.on(
           "joinGameResult",
-          (data: { playerId: string }) => {
+          (data: { playerId: string; playerSecretId: PlayerSecretId }) => {
             cookiePlayerId.value = data.playerId;
+            cookiePlayerSecretId.value = data.playerSecretId;
           },
         );
       }
@@ -70,6 +75,10 @@
 
   // Provider
   provide("gameData", gameData);
+
+  watch(gameData, (newGameData) => {
+    console.log(toRaw(newGameData));
+  });
 
   const showLoadingScreen = computed(() => {
     // There might be a brief moment where the game has started, but the id cookie is not set, in that case, show the loading screen

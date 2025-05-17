@@ -2,7 +2,6 @@ import { GameData } from "@knucklebones/shared/types.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionGetGame } from "~/actions/get-game.js";
 import { getGameFromDatabase } from "~/utilities/firebase.js";
-import { OPPONENT_ID } from "@knucklebones/shared/utilities/constants.js";
 
 // Mocks
 vi.mock("~/utilities/firebase", () => ({
@@ -31,6 +30,7 @@ describe("actionGetGame", () => {
       status: "playing",
       version: 1,
       created: "2025-01-01T00:00:00Z",
+      secrets: [],
     };
 
     // Mocks
@@ -46,13 +46,14 @@ describe("actionGetGame", () => {
     expect(result).toEqual({
       players: [
         { id: player1Id, name: "Alice", host: true, dice: [], score: 0 },
-        { id: OPPONENT_ID, name: "Bob", host: false, dice: [], score: 0 }, // we're expecting opponent id to be changed
+        { id: player2Id, name: "Bob", host: false, dice: [], score: 0 },
       ],
       active_player: player1Id,
       new_die: 4,
       winner: null,
       status: "playing",
       version: 1,
+      secrets: [],
     });
   });
 
