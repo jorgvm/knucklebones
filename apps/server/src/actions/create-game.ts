@@ -1,4 +1,5 @@
 import {
+  GameData,
   ResultCreateGameData,
   SendCreateGameData,
 } from "@knucklebones/shared/types.js";
@@ -10,7 +11,7 @@ import { rollDie } from "~/utilities/roll-die.js";
 export const actionCreateGame = async ({
   playerName,
 }: SendCreateGameData): Promise<ResultCreateGameData> => {
-  const sanitizedName = sanitizeName(playerName.trim());
+  const sanitizedName = sanitizeName(playerName).trim();
 
   if (!sanitizedName) {
     throw new Error("No valid name was supplied");
@@ -20,7 +21,7 @@ export const actionCreateGame = async ({
   const playerId = generateId();
   const playerSecretId = generateId();
 
-  const gameId = await createGameInDatabase({
+  const newGameData: GameData = {
     created: new Date().toISOString(),
     version: 1,
     players: [
@@ -32,12 +33,15 @@ export const actionCreateGame = async ({
         score: 0,
       },
     ],
-    active_player: playerId,
+    active_player: "",
     status: "lobby",
     winner: [],
     new_die: rollDie(),
     secrets: [{ id: playerId, secret: playerSecretId }],
-  });
+  };
+
+  // Push to database
+  const gameId = await createGameInDatabase(newGameData);
 
   if (!gameId) {
     throw new Error();

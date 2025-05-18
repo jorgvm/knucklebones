@@ -65,6 +65,7 @@ export const actionPlaceDie = async ({
     status: "active",
     value: gameData.new_die,
   };
+
   activePlayer.dice.push(newDie);
 
   // Remove dice from opponent

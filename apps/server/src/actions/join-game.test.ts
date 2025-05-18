@@ -17,6 +17,11 @@ vi.mock("~/utilities/generate-id", () => ({
   generateId: () => "mock-id",
 }));
 
+// Mock other utilities
+vi.mock("~/utilities/random-int-between", () => ({
+  randomIntBetween: () => 0, // always pick first player to go first
+}));
+
 vi.mock("firebase/firestore", () => ({
   arrayUnion: (val: unknown) => ({ mockUnion: val }),
 }));
@@ -30,7 +35,7 @@ describe("joinGame - success case", () => {
     // Arrange
     vi.mocked(getGameFromDatabase).mockResolvedValue({
       ...mockGameData,
-      players: [],
+      players: [mockGameData.players[0]],
     });
 
     // Act
@@ -52,6 +57,7 @@ describe("joinGame - success case", () => {
           score: 0,
         }),
       },
+      active_player: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
       status: "playing",
       secrets: {
         mockUnion: {

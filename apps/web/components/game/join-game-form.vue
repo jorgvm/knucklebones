@@ -1,11 +1,15 @@
 <script lang="ts" setup>
   import { ref } from "vue";
-  import { MAX_PLAYER_NAME_LENGTH } from "@shared/utilities/constants";
+  import {
+    COOKIE_PLAYER_NAME,
+    MAX_PLAYER_NAME_LENGTH,
+  } from "@shared/utilities/constants";
   import { sanitizeName } from "@shared/utilities/sanitise";
   import { useRoute } from "nuxt/app";
   import type { SocketService } from "~/utilities/socket-service";
 
   const route = useRoute();
+  const cookiePlayerName = useCookie(COOKIE_PLAYER_NAME);
 
   const socketService = inject<SocketService>("socketService");
 
@@ -13,7 +17,7 @@
     throw new Error("Socket service not defined");
   }
 
-  const playerName = ref("");
+  const playerName = ref(String(cookiePlayerName.value ?? ""));
   const isSubmitting = ref(false);
 
   const onSubmit = async () => {
@@ -25,6 +29,8 @@
     isSubmitting.value = true;
 
     const gameId = route.params.gameId as string;
+
+    cookiePlayerName.value = playerName.value;
     socketService.sendJoinGame({ gameId, playerName: playerName.value });
   };
 
@@ -32,6 +38,7 @@
     const input = event.target as HTMLInputElement;
     playerName.value = sanitizeName(input.value);
   };
+
   const isLoading = computed(
     () => isSubmitting.value || !socketService.isConnected,
   );

@@ -8,11 +8,13 @@ import {
   sanitizeName,
 } from "@knucklebones/shared/utilities/sanitise.js";
 import { arrayUnion } from "firebase/firestore";
+
 import {
   getGameFromDatabase,
   updateGameInDatabase,
 } from "~/utilities/firebase.js";
 import { generateId } from "~/utilities/generate-id.js";
+import { randomIntBetween } from "~/utilities/random-int-between.js";
 
 export const actionJoinGame = async ({
   playerName,
@@ -27,16 +29,19 @@ export const actionJoinGame = async ({
 
   // Check if game exists
   const gameData = await getGameFromDatabase(gameId);
+
   if (!gameData) {
     throw new Error("While joining game, game was not found.");
   }
-  if (gameData.players.length >= 2) {
+
+  if (gameData.players.length > 1) {
     throw new Error("Can't join game, there are already two players.");
   }
 
   // Create new player
   const playerId = generateId();
   const playerSecretId = generateId();
+
   const newPlayer: Player = {
     host: false,
     dice: [],
@@ -47,9 +52,14 @@ export const actionJoinGame = async ({
 
   const newPlayerSecret = { id: playerId, secret: playerSecretId };
 
+  // Randomize which player gets to play first
+  const players = [gameData.players[0].id, playerId];
+  const newActivePlayer = players[randomIntBetween(0, 1)];
+
   // Join game
   await updateGameInDatabase(gameId, {
     players: arrayUnion(newPlayer),
+    active_player: newActivePlayer,
     status: "playing",
     secrets: arrayUnion(newPlayerSecret),
   });

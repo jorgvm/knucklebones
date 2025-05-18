@@ -38,7 +38,6 @@ export type GameStatus =
 export type GameData = {
   active_player: PlayerId | null;
   created: string;
-  id: GameId;
   new_die: number;
   players: Player[];
   status: GameStatus;

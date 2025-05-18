@@ -48,7 +48,7 @@ describe("actionCreateGame - success case", () => {
             score: 0,
           }),
         ],
-        active_player: "mock-id",
+        active_player: "",
         new_die: 3,
         status: "lobby",
         winner: [],

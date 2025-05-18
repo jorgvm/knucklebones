@@ -2,6 +2,7 @@
   import { ref } from "vue";
   import {
     COOKIE_PLAYER_ID,
+    COOKIE_PLAYER_NAME,
     COOKIE_PLAYER_SECRET_ID,
     MAX_PLAYER_NAME_LENGTH,
   } from "@shared/utilities/constants";
@@ -12,12 +13,13 @@
   import type { ResultCreateGameData } from "@shared/types";
   import type { SocketService } from "~/utilities/socket-service";
 
-  const playerName = ref("");
-  const isSubmitting = ref(false);
-  const router = useRouter();
-
+  const cookiePlayerName = useCookie(COOKIE_PLAYER_NAME);
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
   const cookiePlayerSecretId = useCookie(COOKIE_PLAYER_SECRET_ID);
+
+  const playerName = ref(String(cookiePlayerName.value ?? ""));
+  const isSubmitting = ref(false);
+  const router = useRouter();
 
   const socketService = inject<SocketService>("socketService");
 
@@ -32,6 +34,7 @@
     }
 
     isSubmitting.value = true;
+    cookiePlayerName.value = playerName.value;
     socketService.sendCreateGame({ playerName: playerName.value });
   };
 

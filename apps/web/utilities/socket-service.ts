@@ -12,7 +12,6 @@ import type {
 export type SocketService = typeof socketService;
 
 const socket = ref<Socket | null>(null);
-const messages = ref<string[]>([]);
 const isConnected = ref(false);
 
 const connect = () => {
@@ -24,10 +23,6 @@ const connect = () => {
 
     socket.value.on("connect", () => {
       isConnected.value = true;
-    });
-
-    socket.value.on("message", (message: string) => {
-      messages.value.push(message);
     });
 
     socket.value.on("disconnect", () => {
@@ -60,16 +55,16 @@ const submit = (payload: {
   }
 };
 
-const sendCreateGame = ({ playerName }: SendCreateGameData) => {
-  submit({ action: "createGame", data: { playerName } });
+const sendCreateGame = (data: SendCreateGameData) => {
+  submit({ action: "createGame", data });
 };
 
-const sendJoinGame = ({ gameId, playerName }: SendJoinGameData) => {
-  submit({ action: "joinGame", data: { gameId, playerName } });
+const sendJoinGame = (data: SendJoinGameData) => {
+  submit({ action: "joinGame", data });
 };
 
-const sendSubscribeToGame = ({ gameId }: SubscribeToGameData) => {
-  submit({ action: "subscribeToGame", data: { gameId } });
+const sendSubscribeToGame = (data: SubscribeToGameData) => {
+  submit({ action: "subscribeToGame", data });
 };
 
 const sendPlaceDie = (data: SendPlaceDieData) => {

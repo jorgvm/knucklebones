@@ -29,7 +29,6 @@ describe("actionPlaceDie", () => {
   it("successfully places a die and updates the game", async () => {
     // Arrange: mock valid inputs and game data
     const mockGameData: GameData = {
-      id: "1",
       players: [
         { id: "player-1", name: "Alice", host: true, dice: [], score: 0 },
         { id: "player-2", name: "Bob", host: false, dice: [], score: 0 },
@@ -94,7 +93,6 @@ describe("actionPlaceDie", () => {
   it("throws an error if its not the player's turn", async () => {
     // Arrange: mock valid inputs and game data
     const mockGameData: GameData = {
-      id: "1",
       players: [
         {
           id: "player-1",
@@ -152,7 +150,6 @@ describe("actionPlaceDie", () => {
   it("throws an error if attempting to add a fourth die to a rack", async () => {
     // Arrange: mock valid inputs and game data
     const mockGameData: GameData = {
-      id: "1",
       players: [
         {
           id: "player-1",
