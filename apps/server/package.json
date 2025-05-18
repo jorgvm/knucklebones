@@ -8,7 +8,8 @@
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "pnpm eslint './src/**/*.{ts,tsx}'"
   },
   "keywords": [],
   "author": "",
@@ -21,8 +22,11 @@
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "eslint": "^9.26.0",
     "tsx": "^4.19.4",
     "typescript": "^5.6.3",
+    "typescript-eslint": "^8.32.1",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.1.2"
   }

@@ -1,7 +1,6 @@
 import {
-  PlayerName,
-  PlayerSecretId,
   ResultCreateGameData,
+  SendCreateGameData,
 } from "@knucklebones/shared/types.js";
 import { sanitizeName } from "@knucklebones/shared/utilities/sanitise.js";
 import { createGameInDatabase } from "~/utilities/firebase.js";
@@ -10,9 +9,7 @@ import { rollDie } from "~/utilities/roll-die.js";
 
 export const actionCreateGame = async ({
   playerName,
-}: {
-  playerName: PlayerName;
-}): Promise<ResultCreateGameData> => {
+}: SendCreateGameData): Promise<ResultCreateGameData> => {
   const sanitizedName = sanitizeName(playerName.trim());
 
   if (!sanitizedName) {

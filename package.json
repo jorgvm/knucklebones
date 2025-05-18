@@ -6,6 +6,7 @@
     "dev": "turbo run dev",
     "dev:server": "turbo run dev --filter=@knucklebones/server",
     "dev:web": "turbo run dev --filter=@knucklebones/web",
+    "check": "pnpm typecheck && pnpm test && pnpm lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "lint": "turbo run lint",

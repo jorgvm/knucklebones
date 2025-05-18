@@ -1,9 +1,7 @@
 import type {
-  GameId,
   Player,
-  PlayerName,
-  PlayerSecretId,
   ResultJoinGameData,
+  SendJoinGameData,
 } from "@knucklebones/shared/types.js";
 import {
   isValidFirebaseDocumentId,
@@ -19,10 +17,7 @@ import { generateId } from "~/utilities/generate-id.js";
 export const actionJoinGame = async ({
   playerName,
   gameId,
-}: {
-  playerName: PlayerName;
-  gameId: GameId;
-}): Promise<ResultJoinGameData> => {
+}: SendJoinGameData): Promise<ResultJoinGameData> => {
   const sanitizedName = sanitizeName(playerName);
 
   // All ids should be valid

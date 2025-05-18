@@ -9,12 +9,7 @@
 
   import { useRouter, useCookie } from "nuxt/app";
 
-  import type {
-    GameId,
-    PlayerId,
-    PlayerSecretId,
-    ResultCreateGameData,
-  } from "@shared/types";
+  import type { ResultCreateGameData } from "@shared/types";
   import type { SocketService } from "~/utilities/socket-service";
 
   const playerName = ref("");

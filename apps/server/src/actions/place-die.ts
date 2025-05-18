@@ -1,10 +1,7 @@
 import type {
-  GameId,
-  PlayerId,
-  RackNumber,
   GameData,
   Die,
-  PlayerSecretId,
+  SendPlaceDieData,
 } from "@knucklebones/shared/types.js";
 import {
   isValidFirebaseDocumentId,
@@ -27,12 +24,7 @@ export const actionPlaceDie = async ({
   playerId,
   playerSecretId,
   rackNumber,
-}: {
-  gameId: GameId;
-  playerId: PlayerId;
-  playerSecretId: PlayerSecretId;
-  rackNumber: RackNumber;
-}): Promise<{ result: string }> => {
+}: SendPlaceDieData): Promise<{ result: string }> => {
   // Validate input
   if (
     !isValidCryptoId(playerId) ||
