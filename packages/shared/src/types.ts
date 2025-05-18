@@ -43,7 +43,7 @@ export type GameData = {
   players: Player[];
   status: GameStatus;
   version: number;
-  winner: PlayerId | null;
+  winner: PlayerId[];
   secrets: PlayerSecret[];
 };
 

@@ -15,6 +15,7 @@ import {
   updateGameInDatabase,
 } from "~/utilities/firebase.js";
 import { isValidCryptoId, generateId } from "~/utilities/generate-id.js";
+import { getWinner } from "~/utilities/get-winner.js";
 import { isGameReady } from "~/utilities/is-game-ready.js";
 import { moveIsAllowed } from "~/utilities/move-is-allowed.js";
 import { removeDice } from "~/utilities/remove-dice.js";
@@ -92,9 +93,10 @@ export const actionPlaceDie = async ({
 
   // Check if game is done
   if (isGameReady(gameData)) {
+    const winner = getWinner(gameData.players);
     gameData.status = "finished";
     gameData.active_player = "";
-    // gameData.winner = // todo
+    gameData.winner = winner;
   }
 
   // Update game in database
@@ -103,6 +105,7 @@ export const actionPlaceDie = async ({
     players: gameData.players,
     new_die: gameData.new_die,
     status: gameData.status,
+    winner: gameData.winner,
   });
 
   return { result: "success" };

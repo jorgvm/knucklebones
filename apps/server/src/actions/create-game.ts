@@ -37,7 +37,7 @@ export const actionCreateGame = async ({
     ],
     active_player: playerId,
     status: "lobby",
-    winner: null,
+    winner: [],
     new_die: rollDie(),
     secrets: [{ id: playerId, secret: playerSecretId }],
   });

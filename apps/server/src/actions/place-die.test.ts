@@ -39,7 +39,7 @@ describe("actionPlaceDie", () => {
       status: "playing",
       version: 1,
       created: "2025-04-30T18:49:56.973Z",
-      winner: null,
+      winner: [],
       secrets: [
         {
           id: "player-1",
@@ -114,7 +114,7 @@ describe("actionPlaceDie", () => {
       status: "playing",
       version: 1,
       created: "",
-      winner: null,
+      winner: [],
       secrets: [
         {
           id: "player-1",
@@ -172,7 +172,7 @@ describe("actionPlaceDie", () => {
       status: "playing",
       version: 1,
       created: "",
-      winner: null,
+      winner: [],
       secrets: [
         {
           id: "player-1",

@@ -5,6 +5,7 @@ import type {
   SendPlaceDieData,
   SubscribeToGameData,
 } from "@knucklebones/shared/types.js";
+import { isValidFirebaseDocumentId } from "@knucklebones/shared/utilities/sanitise.js";
 import { onSnapshot } from "firebase/firestore";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -57,6 +58,10 @@ io.on("connection", (socket) => {
     // Subscribe to game
     socket.on("subscribeToGame", async (data: string) => {
       const { gameId }: SubscribeToGameData = JSON.parse(data);
+
+      if (!isValidFirebaseDocumentId(gameId)) {
+        throw new Error("Game id is not valid");
+      }
 
       // Join a socket.io room for the game
       socket.join(gameId);

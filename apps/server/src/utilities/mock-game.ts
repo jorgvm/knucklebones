@@ -9,7 +9,7 @@ export const mockGameData: GameData = {
   new_die: 3,
   status: "playing",
   active_player: "edc97af0-6e18-4c1b-a2a4-8dedc080dbf4",
-  winner: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
+  winner: ["adc7fece-0398-42f5-a62c-549ebaa9dbbb"],
   created: "2025-04-30T18:49:56.973Z",
   players: [
     {

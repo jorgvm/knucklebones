@@ -1,10 +1,6 @@
 <script setup lang="ts">
   import { provide } from "vue";
-  import type {
-    GameData,
-    PlayerSecretId,
-    ResultJoinGameData,
-  } from "@shared/types";
+  import type { GameData, ResultJoinGameData } from "@shared/types";
   import {
     COOKIE_PLAYER_ID,
     COOKIE_PLAYER_SECRET_ID,
@@ -21,7 +17,7 @@
     created: "",
     new_die: 1,
     status: "loading",
-    winner: "",
+    winner: [],
     players: [],
     version: 1,
     active_player: "",
@@ -100,12 +96,12 @@
   <GameLoading v-if="showLoadingScreen" />
 
   <div v-if="!showLoadingScreen">
+    <GameLobby v-if="gameData.status === 'lobby'" />
+
     <GameBoard
       v-if="gameData.status === 'playing' || gameData.status === 'finished'"
     />
 
-    <GameLobby v-if="gameData.status === 'lobby'" />
-
-    <div v-if="gameData.status === 'finished'">Winner!</div>
+    <GameWinner v-if="gameData.status === 'finished'" />
   </div>
 </template>

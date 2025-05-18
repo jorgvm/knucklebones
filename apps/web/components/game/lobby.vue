@@ -4,7 +4,7 @@
   import type { GameData } from "@shared/types";
   import { COOKIE_PLAYER_ID } from "@shared/utilities/constants";
 
-  const url = useRequestURL();
+  const gameUrl = useRequestURL();
 
   const gameData = inject<Ref<GameData>>("gameData");
 
@@ -27,7 +27,7 @@
 
     <p>Send them this link:</p>
 
-    <input type="text" disabled :value="url" class="w-[500px]" />
+    <input type="text" disabled :value="gameUrl" class="w-[500px]" />
   </div>
 
   <GameJoinGameForm v-if="!localPlayerIsHost" />
