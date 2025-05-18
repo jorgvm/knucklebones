@@ -3,6 +3,7 @@ import type {
   Player,
   PlayerName,
   PlayerSecretId,
+  ResultJoinGameData,
 } from "@knucklebones/shared/types.js";
 import {
   isValidFirebaseDocumentId,
@@ -21,7 +22,7 @@ export const actionJoinGame = async ({
 }: {
   playerName: PlayerName;
   gameId: GameId;
-}): Promise<{ playerId: string; playerSecretId: PlayerSecretId }> => {
+}): Promise<ResultJoinGameData> => {
   const sanitizedName = sanitizeName(playerName);
 
   // All ids should be valid

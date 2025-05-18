@@ -1,4 +1,8 @@
-import { PlayerName, PlayerSecretId } from "@knucklebones/shared/types.js";
+import {
+  PlayerName,
+  PlayerSecretId,
+  ResultCreateGameData,
+} from "@knucklebones/shared/types.js";
 import { sanitizeName } from "@knucklebones/shared/utilities/sanitise.js";
 import { createGameInDatabase } from "~/utilities/firebase.js";
 import { generateId } from "~/utilities/generate-id.js";
@@ -8,11 +12,7 @@ export const actionCreateGame = async ({
   playerName,
 }: {
   playerName: PlayerName;
-}): Promise<{
-  playerId: string;
-  gameId: string;
-  playerSecretId: PlayerSecretId;
-}> => {
+}): Promise<ResultCreateGameData> => {
   const sanitizedName = sanitizeName(playerName.trim());
 
   if (!sanitizedName) {

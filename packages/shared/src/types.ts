@@ -1,7 +1,5 @@
 export type DieStatus = "active" | "removed";
 
-export type RackNumber = number;
-
 export type Die = {
   created: string;
   id: string;
@@ -10,16 +8,12 @@ export type Die = {
   value: number;
 };
 
+export type RackNumber = number;
 export type Rack = Die[];
-
 export type Racks = [Rack, Rack, Rack];
-
 export type PlayerId = string;
-
 export type PlayerSecretId = string;
-
 export type GameId = string;
-
 export type PlayerName = string;
 
 export type Player = {
@@ -37,7 +31,7 @@ export type PlayerSecret = {
 
 export type GameStatus =
   | "loading" // fetching game data
-  | "lobby" // waiting on more players
+  | "lobby" // game has been created, waiting on second player
   | "playing" // playing the game
   | "finished"; // there is a winner
 
@@ -59,6 +53,7 @@ export type GameMessagePayload =
   | SendCreateGameData
   | SendPlaceDieData;
 
+// Client to server actions
 export type SubscribeToGameData = { gameId: GameId };
 export type SendJoinGameData = { gameId: string; playerName: string };
 export type SendCreateGameData = { playerName: string };
@@ -67,6 +62,17 @@ export type SendPlaceDieData = {
   playerId: PlayerId;
   playerSecretId: PlayerSecretId;
   rackNumber: RackNumber;
+};
+
+// Server to client actions
+export type ResultJoinGameData = {
+  playerId: PlayerId;
+  playerSecretId: PlayerSecretId;
+};
+export type ResultCreateGameData = {
+  playerId: PlayerId;
+  gameId: GameId;
+  playerSecretId: PlayerSecretId;
 };
 
 export type SocketAction =

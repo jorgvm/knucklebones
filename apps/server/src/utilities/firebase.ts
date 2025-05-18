@@ -67,7 +67,7 @@ export const createGameInDatabase = async (
  * Retrieve GameData
  */
 export const getGameFromDatabase = async (gameId: string) => {
-  const docRef = doc(db, firebaseCollectionId, gameId);
+  const docRef = getDocRef(gameId);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -77,6 +77,9 @@ export const getGameFromDatabase = async (gameId: string) => {
   }
 };
 
+/**
+ * Retrieves a Firestore document reference for a specific game.
+ */
 export const getDocRef = (
   gameId: GameId
 ): DocumentReference<DocumentData, DocumentData> => {

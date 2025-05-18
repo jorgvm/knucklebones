@@ -1,6 +1,10 @@
 <script setup lang="ts">
   import { provide } from "vue";
-  import type { GameData, PlayerSecretId } from "@shared/types";
+  import type {
+    GameData,
+    PlayerSecretId,
+    ResultJoinGameData,
+  } from "@shared/types";
   import {
     COOKIE_PLAYER_ID,
     COOKIE_PLAYER_SECRET_ID,
@@ -63,7 +67,7 @@
 
         socketService.socket.value.on(
           "joinGameResult",
-          (data: { playerId: string; playerSecretId: PlayerSecretId }) => {
+          (data: ResultJoinGameData) => {
             cookiePlayerId.value = data.playerId;
             cookiePlayerSecretId.value = data.playerSecretId;
           },

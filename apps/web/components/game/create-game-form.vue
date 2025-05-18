@@ -9,7 +9,12 @@
 
   import { useRouter, useCookie } from "nuxt/app";
 
-  import type { GameId, PlayerId, PlayerSecretId } from "@shared/types";
+  import type {
+    GameId,
+    PlayerId,
+    PlayerSecretId,
+    ResultCreateGameData,
+  } from "@shared/types";
   import type { SocketService } from "~/utilities/socket-service";
 
   const playerName = ref("");
@@ -48,15 +53,7 @@
     () => socketService.socket.value,
     (socket) => {
       socket?.on("createGameResult", (data) => {
-        const {
-          playerId,
-          gameId,
-          playerSecretId,
-        }: {
-          playerSecretId: PlayerSecretId;
-          playerId: PlayerId;
-          gameId: GameId;
-        } = data;
+        const { playerId, gameId, playerSecretId }: ResultCreateGameData = data;
 
         cookiePlayerId.value = playerId;
         cookiePlayerSecretId.value = playerSecretId;

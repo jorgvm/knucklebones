@@ -1,20 +1,21 @@
 import type {
-  GameId,
-  PlayerName,
+  GameData,
   SendCreateGameData,
   SendJoinGameData,
   SendPlaceDieData,
   SubscribeToGameData,
 } from "@knucklebones/shared/types.js";
-import { getDoc, onSnapshot } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { actionCreateGame } from "~/actions/create-game.js";
 import { actionJoinGame } from "~/actions/join-game.js";
 import { actionPlaceDie } from "~/actions/place-die.js";
-import { getDocRef } from "~/utilities/firebase.js";
+import { getDocRef, getGameFromDatabase } from "~/utilities/firebase.js";
+import { toPublicGameData } from "~/utilities/to-public-gamedata.js";
 
 const httpServer = createServer();
+
 const io = new Server(httpServer, {
   cors: {
     origin: process.env.CORS_ALLOWED_URL,
@@ -61,26 +62,22 @@ io.on("connection", (socket) => {
       socket.join(gameId);
 
       // Upon subscription, always send game data
-      const docRef = getDocRef(gameId);
-      const docSnap = await getDoc(docRef);
+      const gameData = await getGameFromDatabase(gameId);
+      const publicGameData = toPublicGameData(gameData);
+      socket.emit("gameUpdate", publicGameData);
 
-      if (docSnap.exists()) {
-        const gameData = docSnap.data();
-        socket.emit("gameUpdate", gameData);
-      } else {
-        console.error("error, game not found");
-        socket.emit("error", "Game not found");
-      }
-
-      // If it doesnt exist, set up Firebase listener
+      // If gameListener does not exist, set it up
       if (!gameListeners.has(gameId)) {
+        const docRef = getDocRef(gameId);
         const unsubscribe = onSnapshot(docRef, (onSnapshotDocSnap) => {
           // When Firebase is updated, send game data
           if (onSnapshotDocSnap.exists()) {
-            const gameData = onSnapshotDocSnap.data();
-            io.to(gameId).emit("gameUpdate", gameData);
+            const gameData = onSnapshotDocSnap.data() as GameData;
+            const publicGameData = toPublicGameData(gameData);
+
+            io.to(gameId).emit("gameUpdate", publicGameData);
           } else {
-            console.error("error, game not found during firebase update");
+            console.error("Game not found during firebase update");
             io.to(gameId).emit("error", "Game not found during subscription");
           }
         });

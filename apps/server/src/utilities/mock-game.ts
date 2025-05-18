@@ -148,4 +148,14 @@ export const mockGameData: GameData = {
       score: 37,
     },
   ],
+  secrets: [
+    {
+      id: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
+      secret: "81b60505-c079-4199-9db4-b6bf81515b82",
+    },
+    {
+      id: "edc97af0-6e18-4c1b-a2a4-8dedc080dbf4",
+      secret: "f9939b0b-c7eb-46b0-9beb-d801601e7ba2",
+    },
+  ],
 };
