@@ -35,7 +35,12 @@
 
     isSubmitting.value = true;
     cookiePlayerName.value = playerName.value;
-    socketService.sendCreateGame({ playerName: playerName.value });
+
+    socketService.sendCreateGame({
+      playerName: playerName.value,
+      playerId: cookiePlayerId.value || null,
+      playerSecretId: cookiePlayerSecretId.value || null,
+    });
   };
 
   const handleInput = (event: Event) => {

@@ -31,28 +31,27 @@ io.on("connection", (socket) => {
   try {
     // Create game
     socket.on("createGame", async (data: string) => {
-      const { playerName }: SendCreateGameData = JSON.parse(data);
+      const parsedData: SendCreateGameData = JSON.parse(data);
 
-      const result = await actionCreateGame({ playerName });
+      const result = await actionCreateGame(parsedData);
 
       socket.emit("createGameResult", result);
     });
 
     // Join game
     socket.on("joinGame", async (data: string) => {
-      const { playerName, gameId }: SendJoinGameData = JSON.parse(data);
+      const parsedData: SendJoinGameData = JSON.parse(data);
 
-      const result = await actionJoinGame({ playerName, gameId });
+      const result = await actionJoinGame(parsedData);
 
       socket.emit("joinGameResult", result);
     });
 
     // Place die
     socket.on("placeDie", async (data: string) => {
-      const { gameId, playerId, playerSecretId, rackNumber }: SendPlaceDieData =
-        JSON.parse(data);
+      const parsedData: SendPlaceDieData = JSON.parse(data);
 
-      await actionPlaceDie({ gameId, playerId, playerSecretId, rackNumber });
+      await actionPlaceDie(parsedData);
     });
 
     // Subscribe to game

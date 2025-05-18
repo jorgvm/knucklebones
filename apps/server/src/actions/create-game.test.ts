@@ -7,7 +7,8 @@ vi.mock("~/utilities/firebase", () => ({
   createGameInDatabase: vi.fn(),
 }));
 
-vi.mock("~/utilities/generate-id", () => ({
+vi.mock(import("~/utilities/generate-id.js"), async (importOriginal) => ({
+  ...(await importOriginal()),
   generateId: () => "mock-id",
 }));
 
@@ -27,6 +28,8 @@ describe("actionCreateGame - success case", () => {
     // Act
     const result = await actionCreateGame({
       playerName: " Alice Doe ",
+      playerId: null,
+      playerSecretId: null,
     });
 
     // Assert
@@ -56,10 +59,58 @@ describe("actionCreateGame - success case", () => {
     );
   });
 
+  it("creates a new game with pre-filled ids", async () => {
+    // Arrange
+    vi.mocked(createGameInDatabase).mockResolvedValue("mock-game-id");
+
+    // Act
+    const result = await actionCreateGame({
+      playerName: " Alice Doe ",
+      playerId: "002368b8-92ab-4f26-858b-135172487934",
+      playerSecretId: "15c6cb3e-31bc-4f8f-83ce-ca6b36e03897",
+    });
+
+    // Assert
+    expect(result).toEqual({
+      playerId: "002368b8-92ab-4f26-858b-135172487934",
+      playerSecretId: "15c6cb3e-31bc-4f8f-83ce-ca6b36e03897",
+      gameId: "mock-game-id",
+    });
+
+    expect(createGameInDatabase).toHaveBeenCalledWith(
+      expect.objectContaining({
+        version: 1,
+        players: [
+          expect.objectContaining({
+            id: "002368b8-92ab-4f26-858b-135172487934",
+            name: "Alice Doe",
+            host: true,
+            dice: [],
+            score: 0,
+          }),
+        ],
+        active_player: "",
+        new_die: 3,
+        status: "lobby",
+        winner: [],
+        secrets: [
+          {
+            id: "002368b8-92ab-4f26-858b-135172487934",
+            secret: "15c6cb3e-31bc-4f8f-83ce-ca6b36e03897",
+          },
+        ],
+      })
+    );
+  });
+
   it("throws error when playerName is invalid", async () => {
     // Act & Assert
-    await expect(actionCreateGame({ playerName: "!@#" })).rejects.toThrow(
-      "No valid name was supplied"
-    );
+    await expect(
+      actionCreateGame({
+        playerName: "!@#",
+        playerId: null,
+        playerSecretId: null,
+      })
+    ).rejects.toThrow("No valid name was supplied");
   });
 });

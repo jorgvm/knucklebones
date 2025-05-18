@@ -12,8 +12,8 @@ vi.mock("~/utilities/firebase", () => ({
   updateGameInDatabase: vi.fn(),
 }));
 
-// Mock other utilities
-vi.mock("~/utilities/generate-id", () => ({
+vi.mock(import("~/utilities/generate-id.js"), async (importOriginal) => ({
+  ...(await importOriginal()),
   generateId: () => "mock-id",
 }));
 
@@ -42,6 +42,8 @@ describe("joinGame - success case", () => {
     const result = await actionJoinGame({
       playerName: "Alice",
       gameId: "JO7BPzEtvwnkFQx8JWc9",
+      playerId: null,
+      playerSecretId: null,
     });
 
     // Assert
@@ -68,6 +70,48 @@ describe("joinGame - success case", () => {
     });
   });
 
+  it("adds a new player when prefilling ids", async () => {
+    // Arrange
+    vi.mocked(getGameFromDatabase).mockResolvedValue({
+      ...mockGameData,
+      players: [mockGameData.players[0]],
+    });
+
+    // Act
+    const result = await actionJoinGame({
+      playerName: "Alice",
+      gameId: "JO7BPzEtvwnkFQx8JWc9",
+      playerId: "48b54530-d2cd-4395-b264-0579d7684d84",
+      playerSecretId: "2cfb8540-afc4-4a42-b129-4dfdbffc9883",
+    });
+
+    // Assert
+    expect(result).toEqual({
+      playerId: "48b54530-d2cd-4395-b264-0579d7684d84",
+      playerSecretId: "2cfb8540-afc4-4a42-b129-4dfdbffc9883",
+    });
+
+    expect(updateGameInDatabase).toHaveBeenCalledWith("JO7BPzEtvwnkFQx8JWc9", {
+      players: {
+        mockUnion: expect.objectContaining({
+          id: "48b54530-d2cd-4395-b264-0579d7684d84",
+          name: "Alice",
+          host: false,
+          dice: [],
+          score: 0,
+        }),
+      },
+      active_player: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
+      status: "playing",
+      secrets: {
+        mockUnion: {
+          id: "48b54530-d2cd-4395-b264-0579d7684d84",
+          secret: "2cfb8540-afc4-4a42-b129-4dfdbffc9883",
+        },
+      },
+    });
+  });
+
   it("throws error when playerName is invalid", async () => {
     // Arrange: Make sanitizeName return an invalid/empty name
     vi.mocked(getGameFromDatabase).mockResolvedValue({
@@ -80,6 +124,8 @@ describe("joinGame - success case", () => {
       actionJoinGame({
         playerName: "!@#",
         gameId: "JO7BPzEtvwnkFQx8JWc9",
+        playerId: null,
+        playerSecretId: null,
       })
     ).rejects.toThrow("Invalid input.");
   });
@@ -95,8 +141,28 @@ describe("joinGame - success case", () => {
     await expect(
       actionJoinGame({
         playerName: "Alice",
-        gameId: "xxx",
+        gameId: "this-id-is-not-valid",
+        playerId: null,
+        playerSecretId: null,
       })
     ).rejects.toThrow("Invalid input.");
+  });
+
+  it("throws error when player id is invalid", async () => {
+    // Arrange: Make sanitizeName return an invalid/empty name
+    vi.mocked(getGameFromDatabase).mockResolvedValue({
+      ...mockGameData,
+      players: [],
+    });
+
+    // Act & Assert
+    await expect(
+      actionJoinGame({
+        playerName: "Alice",
+        gameId: "JO7BPzEtvwnkFQx8JWc9",
+        playerId: "this-is-not-valid",
+        playerSecretId: null,
+      })
+    ).rejects.toThrow("Player id not valid");
   });
 });

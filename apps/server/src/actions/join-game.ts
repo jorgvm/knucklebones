@@ -13,18 +13,30 @@ import {
   getGameFromDatabase,
   updateGameInDatabase,
 } from "~/utilities/firebase.js";
-import { generateId } from "~/utilities/generate-id.js";
+import { generateId, isValidCryptoId } from "~/utilities/generate-id.js";
 import { randomIntBetween } from "~/utilities/random-int-between.js";
 
 export const actionJoinGame = async ({
   playerName,
   gameId,
+  playerId: providedPlayerId,
+  playerSecretId: providedPlayerSecretId,
 }: SendJoinGameData): Promise<ResultJoinGameData> => {
   const sanitizedName = sanitizeName(playerName);
 
   // All ids should be valid
   if (!sanitizedName || !isValidFirebaseDocumentId(gameId)) {
     throw new Error("Invalid input.");
+  }
+
+  // If player already has id, verify
+  if (providedPlayerId && !isValidCryptoId(providedPlayerId)) {
+    throw new Error("Player id not valid");
+  }
+
+  // If player already has secret id, verify
+  if (providedPlayerSecretId && !isValidCryptoId(providedPlayerSecretId)) {
+    throw new Error("Player id not valid");
   }
 
   // Check if game exists
@@ -39,8 +51,8 @@ export const actionJoinGame = async ({
   }
 
   // Create new player
-  const playerId = generateId();
-  const playerSecretId = generateId();
+  const playerId = providedPlayerId || generateId();
+  const playerSecretId = providedPlayerSecretId || generateId();
 
   const newPlayer: Player = {
     host: false,

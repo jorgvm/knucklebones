@@ -1,7 +1,9 @@
 <script lang="ts" setup>
   import { ref } from "vue";
   import {
+    COOKIE_PLAYER_ID,
     COOKIE_PLAYER_NAME,
+    COOKIE_PLAYER_SECRET_ID,
     MAX_PLAYER_NAME_LENGTH,
   } from "@shared/utilities/constants";
   import { sanitizeName } from "@shared/utilities/sanitise";
@@ -9,7 +11,10 @@
   import type { SocketService } from "~/utilities/socket-service";
 
   const route = useRoute();
+
   const cookiePlayerName = useCookie(COOKIE_PLAYER_NAME);
+  const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
+  const cookiePlayerSecretId = useCookie(COOKIE_PLAYER_SECRET_ID);
 
   const socketService = inject<SocketService>("socketService");
 
@@ -31,7 +36,12 @@
     const gameId = route.params.gameId as string;
 
     cookiePlayerName.value = playerName.value;
-    socketService.sendJoinGame({ gameId, playerName: playerName.value });
+    socketService.sendJoinGame({
+      gameId,
+      playerName: playerName.value,
+      playerId: cookiePlayerId.value || null,
+      playerSecretId: cookiePlayerSecretId.value || null,
+    });
   };
 
   const handleInput = (event: Event) => {

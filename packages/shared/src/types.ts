@@ -54,8 +54,17 @@ export type GameMessagePayload =
 
 // Client to server actions
 export type SubscribeToGameData = { gameId: GameId };
-export type SendJoinGameData = { gameId: string; playerName: string };
-export type SendCreateGameData = { playerName: string };
+export type SendJoinGameData = {
+  gameId: string;
+  playerName: string;
+  playerId: string | null;
+  playerSecretId: string | null;
+};
+export type SendCreateGameData = {
+  playerName: string;
+  playerId: string | null;
+  playerSecretId: string | null;
+};
 export type SendPlaceDieData = {
   gameId: GameId;
   playerId: PlayerId;

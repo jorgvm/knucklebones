@@ -13,7 +13,6 @@
   const gameId = route.params.gameId.toString();
 
   const gameDefaults: GameData = {
-    id: "",
     created: "",
     new_die: 1,
     status: "loading",

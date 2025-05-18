@@ -26,18 +26,18 @@ export const moveIsAllowed = ({
 }): boolean => {
   // It should be this player's turn
   if (activePlayer?.id !== gameActivePlayerId) {
-    return false;
+    throw new Error("It's not the players turn");
   }
 
   // It should be an active game
   if (gameStatus !== "playing") {
-    return false;
+    throw new Error("Game is not active");
   }
 
   // Submitted secret should match the secret in the game data
   const playerSecret = secrets.find((secret) => secret.id === activePlayer.id);
   if (!playerSecret?.secret || playerSecret.secret !== playerSecretId) {
-    return false;
+    throw new Error("Secret is not correct");
   }
 
   const playerActiveDice = activePlayer.dice.filter(
@@ -49,7 +49,7 @@ export const moveIsAllowed = ({
 
   // Chosen rack should not be full
   if (diceInTargetRack.length >= 3) {
-    return false;
+    throw new Error("Rack is already full");
   }
 
   // Move is allowed

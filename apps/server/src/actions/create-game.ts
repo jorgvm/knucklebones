@@ -5,11 +5,13 @@ import {
 } from "@knucklebones/shared/types.js";
 import { sanitizeName } from "@knucklebones/shared/utilities/sanitise.js";
 import { createGameInDatabase } from "~/utilities/firebase.js";
-import { generateId } from "~/utilities/generate-id.js";
+import { generateId, isValidCryptoId } from "~/utilities/generate-id.js";
 import { rollDie } from "~/utilities/roll-die.js";
 
 export const actionCreateGame = async ({
   playerName,
+  playerId: providedPlayerId,
+  playerSecretId: providedPlayerSecretId,
 }: SendCreateGameData): Promise<ResultCreateGameData> => {
   const sanitizedName = sanitizeName(playerName).trim();
 
@@ -17,9 +19,19 @@ export const actionCreateGame = async ({
     throw new Error("No valid name was supplied");
   }
 
+  // If player already has id, verify
+  if (providedPlayerId && !isValidCryptoId(providedPlayerId)) {
+    throw new Error("Player id not valid");
+  }
+
+  // If player already has secret id, verify
+  if (providedPlayerSecretId && !isValidCryptoId(providedPlayerSecretId)) {
+    throw new Error("Player id not valid");
+  }
+
   // Create game
-  const playerId = generateId();
-  const playerSecretId = generateId();
+  const playerId = providedPlayerId || generateId();
+  const playerSecretId = providedPlayerSecretId || generateId();
 
   const newGameData: GameData = {
     created: new Date().toISOString(),
