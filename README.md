@@ -6,17 +6,6 @@ A small game to play around with Vue and Nuxt.
 
 See readme files in /app folders.
 
-# Firebase
-
-To play the game on your (local) environment, you need your own Firebase database.
-
-- Create an account on Firebase [firebase.google.com](https://firebase.google.com/)
-- Duplicate .env.example to .env
-- Create a new project and app, place the received tokens in the .env file
-- Create a "Firestore Database" in development mode.
-- Create a collection, put the id in FIREBASE_COLLECTION_ID
-- Now fire up the game. The game will create the data structure on Firebase
-
 # Game rules
 
 - The game consists of two 3x3 boards, each belonging to their respective player.

@@ -44,6 +44,7 @@ export type GameData = {
   version: number;
   winner: PlayerId[];
   secrets: PlayerSecret[];
+  rematch_id: GameId | null;
 };
 
 export type GameMessagePayload =
@@ -71,6 +72,11 @@ export type SendPlaceDieData = {
   playerSecretId: PlayerSecretId;
   rackNumber: RackNumber;
 };
+export type SendCreateRematch = {
+  previousPlayers: Player[];
+  previousSecrets: PlayerSecret[];
+  previousWinner: PlayerId[];
+};
 
 // Server to client actions
 export type ResultJoinGameData = {
@@ -81,6 +87,9 @@ export type ResultCreateGameData = {
   playerId: PlayerId;
   gameId: GameId;
   playerSecretId: PlayerSecretId;
+};
+export type ResultCreateRematch = {
+  gameId: GameId;
 };
 
 export type SocketAction =

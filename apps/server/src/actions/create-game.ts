@@ -50,13 +50,14 @@ export const actionCreateGame = async ({
     winner: [],
     new_die: rollDie(),
     secrets: [{ id: playerId, secret: playerSecretId }],
+    rematch_id: null,
   };
 
   // Push to database
   const gameId = await createGameInDatabase(newGameData);
 
   if (!gameId) {
-    throw new Error();
+    throw new Error("Something went wrong during game creation");
   }
 
   return {

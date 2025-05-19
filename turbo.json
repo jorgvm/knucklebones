@@ -17,13 +17,21 @@
         "FIREBASE_COLLECTION_ID"
       ]
     },
-    "check": {},
+    "check": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {},
-    "test": {},
-    "typecheck": {}
+    "lint": {
+      "cache": false
+    },
+    "test": {
+      "cache": false
+    },
+    "typecheck": {
+      "cache": false
+    }
   }
 }

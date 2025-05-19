@@ -157,4 +157,5 @@ export const mockGameData: GameData = {
       secret: "f9939b0b-c7eb-46b0-9beb-d801601e7ba2",
     },
   ],
+  rematch_id: null,
 };

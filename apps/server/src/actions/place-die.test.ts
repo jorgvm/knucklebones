@@ -1,7 +1,8 @@
-import { GameData } from "@knucklebones/shared/types.js";
+import { Die, GameData } from "@knucklebones/shared/types.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionPlaceDie } from "~/actions/place-die.js";
 import { getGameFromDatabase } from "~/utilities/firebase.js";
+import { createGameInDatabase } from "~/utilities/firebase.js";
 
 // Mock gamedata
 const mockGameDataSetup: GameData = {
@@ -35,12 +36,26 @@ const mockGameDataSetup: GameData = {
       secret: "12350028-fe29-4732-bfde-71ef9cca3123",
     },
   ],
+  rematch_id: null,
 };
+
+const allDiceMinusOne: Die[] = [
+  { id: "die-1", rack: 0, created: "", status: "active", value: 1 },
+  { id: "die-2", rack: 0, created: "", status: "active", value: 1 },
+  { id: "die-3", rack: 0, created: "", status: "active", value: 1 },
+  { id: "die-4", rack: 1, created: "", status: "active", value: 1 },
+  { id: "die-5", rack: 1, created: "", status: "active", value: 1 },
+  { id: "die-6", rack: 1, created: "", status: "active", value: 1 },
+  { id: "die-7", rack: 2, created: "", status: "active", value: 1 },
+  { id: "die-8", rack: 2, created: "", status: "active", value: 1 },
+  // make sure rack 2 is mising one die
+];
 
 // Mocks
 vi.mock("~/utilities/firebase", () => ({
   getGameFromDatabase: vi.fn(),
   updateGameInDatabase: vi.fn(),
+  createGameInDatabase: vi.fn(),
 }));
 
 vi.mock(
@@ -184,6 +199,7 @@ describe("actionPlaceDie", () => {
           secret: "9f950028-fe29-4732-bfde-71ef9cca3085",
         },
       ],
+      rematch_id: null,
     };
 
     vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);
@@ -197,5 +213,28 @@ describe("actionPlaceDie", () => {
         rackNumber: 1,
       })
     ).rejects.toThrow("Secret is not correct");
+  });
+
+  //
+  it("updates game with rematch_id when the last die is placed", async () => {
+    // Arrange: mock game data where only one placement remains
+    const mockGameData = structuredClone(mockGameDataSetup);
+
+    vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);
+    vi.mocked(createGameInDatabase).mockResolvedValue("mock-rematch-id");
+
+    mockGameData.players[1].dice = allDiceMinusOne;
+
+    // Act: call the function to place the last die
+    await actionPlaceDie({
+      gameId: "valid-game-id",
+      playerId: "player-2",
+      playerSecretId: "12350028-fe29-4732-bfde-71ef9cca3123",
+      rackNumber: 2,
+    });
+
+    // Assert: Ensure updateGameInDatabase was called with a game state containing a rematch_id
+    expect(mockGameData.status).toBe("finished");
+    expect(mockGameData.rematch_id).toBe("mock-rematch-id");
   });
 });

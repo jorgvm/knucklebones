@@ -7,6 +7,7 @@ import {
   isValidFirebaseDocumentId,
   isRackNumber,
 } from "@knucklebones/shared/utilities/sanitise.js";
+import { actionCreateRematch } from "~/actions/create-rematch.js";
 import {
   getGameFromDatabase,
   updateGameInDatabase,
@@ -85,11 +86,21 @@ export const actionPlaceDie = async ({
   gameData.active_player = opponent.id;
 
   // Check if game is done
+  // let rematchId: GameId | null = null;
+
   if (isGameReady(gameData)) {
     const winner = getWinner(gameData.players);
     gameData.status = "finished";
     gameData.active_player = "";
     gameData.winner = winner;
+
+    // Create rematch
+    const { gameId: newGameId } = await actionCreateRematch({
+      previousPlayers: gameData.players,
+      previousSecrets: gameData.secrets,
+      previousWinner: winner,
+    });
+    gameData.rematch_id = newGameId;
   }
 
   // Update game in database
@@ -99,6 +110,7 @@ export const actionPlaceDie = async ({
     new_die: gameData.new_die,
     status: gameData.status,
     winner: gameData.winner,
+    rematch_id: gameData.rematch_id,
   });
 
   return { result: "success" };

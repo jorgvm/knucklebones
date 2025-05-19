@@ -21,5 +21,9 @@
     <div v-if="isTie">It's a tie!</div>
 
     <div v-if="!isTie">Winner: {{ winnerName }}!</div>
+
+    <RouterLink v-if="gameData.rematch_id" :to="gameData.rematch_id"
+      >Rematch!</RouterLink
+    >
   </div>
 </template>
