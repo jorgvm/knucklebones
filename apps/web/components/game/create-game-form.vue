@@ -48,45 +48,56 @@
     playerName.value = sanitizeName(input.value);
   };
 
-  const isLoading = computed(
-    () => isSubmitting.value || !socketService.isConnected,
-  );
+  const isLoading = computed(() => {
+    console.log(isSubmitting.value, !socketService.isConnected);
+    return isSubmitting.value || !socketService.isConnected;
+  });
 
-  watch(
-    () => socketService.socket.value,
-    (socket) => {
-      socket?.on("createGameResult", (data) => {
-        const { playerId, gameId, playerSecretId }: ResultCreateGameData = data;
+  const handleCreateGameResult = (data: ResultCreateGameData) => {
+    console.log("createGameResult", data);
+    const { playerId, gameId, playerSecretId }: ResultCreateGameData = data;
 
-        cookiePlayerId.value = playerId;
-        cookiePlayerSecretId.value = playerSecretId;
+    cookiePlayerId.value = playerId;
+    cookiePlayerSecretId.value = playerSecretId;
 
-        isSubmitting.value = false;
-        router.push("/" + gameId);
-      });
-    },
-  );
+    isSubmitting.value = false;
+    router.push("/" + gameId);
+  };
+
+  onMounted(() => {
+    if (socketService.socket.value) {
+      socketService.socket.value.on("createGameResult", handleCreateGameResult);
+    }
+  });
+
+  onBeforeUnmount(() => {
+    if (socketService.socket.value) {
+      socketService.socket.value.off(
+        "createGameResult",
+        handleCreateGameResult,
+      );
+    }
+  });
 </script>
 
 <template>
-  <div>
-    <form class="flex max-w-[300px] flex-col" @submit.prevent="onSubmit">
-      <h1>Creating game</h1>
-      <span>What is your name?</span>
+  <form class="box flex max-w-[300px] flex-col" @submit.prevent="onSubmit">
+    <h1>Creating game</h1>
 
-      <input
-        v-model="playerName"
-        type="text"
-        :disabled="isLoading"
-        class="border border-amber-300"
-        :maxlength="MAX_PLAYER_NAME_LENGTH"
-        minlength="3"
-        @input="handleInput"
-      />
+    <span>What is your name?</span>
 
-      <button type="submit" :disabled="isLoading">
-        {{ isLoading ? "loading..." : "create game" }}
-      </button>
-    </form>
-  </div>
+    <input
+      v-model="playerName"
+      type="text"
+      :disabled="isLoading"
+      class="mb-4 border border-amber-300"
+      :maxlength="MAX_PLAYER_NAME_LENGTH"
+      minlength="3"
+      @input="handleInput"
+    />
+
+    <button type="submit" :disabled="isLoading" class="button">
+      {{ isLoading ? "loading..." : "create game" }}
+    </button>
+  </form>
 </template>

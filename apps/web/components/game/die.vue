@@ -9,7 +9,7 @@
   <div
     :class="
       twMerge(
-        'text-center text-2xl opacity-100 transition-opacity duration-500',
+        'flex size-10 items-center justify-center opacity-100 transition-opacity duration-500',
         die.status === 'removed' && 'opacity-0',
       )
     "

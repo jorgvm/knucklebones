@@ -29,12 +29,15 @@ const gameListeners = new Map<string, () => void>();
 
 io.on("connection", (socket) => {
   try {
+    console.log("client connected", socket.id);
+
     // Create game
     socket.on("createGame", async (data: string) => {
       const parsedData: SendCreateGameData = JSON.parse(data);
 
       const result = await actionCreateGame(parsedData);
 
+      console.log("emit result", result);
       socket.emit("createGameResult", result);
     });
 
@@ -56,6 +59,7 @@ io.on("connection", (socket) => {
 
     // Subscribe to game
     socket.on("subscribeToGame", async (data: string) => {
+      console.log("subscribing to game");
       const { gameId }: SubscribeToGameData = JSON.parse(data);
 
       if (!isValidFirebaseDocumentId(gameId)) {

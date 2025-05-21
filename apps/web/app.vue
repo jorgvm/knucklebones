@@ -17,4 +17,6 @@
 
 <template>
   <NuxtPage />
+
+  <GameGrainyOverlay />
 </template>

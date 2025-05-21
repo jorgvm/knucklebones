@@ -30,6 +30,7 @@ export const actionCreateGame = async ({
   }
 
   // Create game
+  console.log("creating game");
   const playerId = providedPlayerId || generateId();
   const playerSecretId = providedPlayerSecretId || generateId();
 

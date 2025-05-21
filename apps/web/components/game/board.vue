@@ -20,6 +20,8 @@
   <div class="flex flex-col gap-8">
     <GamePlayerSection :player-id="opponentId" :is-local-player="false" />
 
+    <div>-----</div>
+
     <GamePlayerSection
       :player-id="cookiePlayerId || ''"
       :is-local-player="true"

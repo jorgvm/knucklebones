@@ -2,6 +2,7 @@
   import type { GameData, PlayerId, RackNumber } from "@shared/types";
   import { COOKIE_PLAYER_SECRET_ID } from "@shared/utilities/constants";
   import { getRacks } from "@shared/utilities/get-racks";
+  import { twMerge } from "tailwind-merge";
   import type { SocketService } from "~/utilities/socket-service";
 
   const { playerId, isLocalPlayer } = defineProps<{
@@ -64,25 +65,53 @@
 </script>
 
 <template>
-  <div v-if="player">
-    <div v-if="isLocalPlayer">new: {{ gameData.new_die }}</div>
-    <div>{{ player.name }}</div>
-    <div class="flex">
+  <div
+    v-if="player"
+    :class="
+      twMerge(
+        'flex flex-col items-center justify-between gap-4',
+        isLocalPlayer && 'flex-col-reverse',
+      )
+    "
+  >
+    <div v-if="isLocalPlayer" class="absolute top-0 left-0">
+      new: {{ gameData.new_die }}
+    </div>
+
+    <div class="break-all">
+      <span
+        class="rounded-2xl border border-neutral-800 bg-purple-950/60 px-4 py-2 text-lg font-semibold uppercase shadow backdrop-blur-md"
+      >
+        {{ player.name }}
+      </span>
+    </div>
+
+    <div class="relative flex gap-4">
       <button
         v-for="(rack, index) in racks"
         :key="index"
-        class="flex min-h-20 flex-col border border-amber-900 p-4"
+        class="flex min-w-6 flex-col"
         :disabled="
           !canPlay || rack.filter((i) => i.status === 'active').length >= 3
         "
         @click="() => handlePlaceDie(index)"
       >
-        <GameDice v-for="die in rack" :key="die.id" :die="die" />
+        <div class="flex flex-col gap-4">
+          <div
+            v-for="n in 3"
+            :key="n"
+            class="aspect-square size-10 rounded bg-black opacity-25"
+          />
+        </div>
+
+        <div class="absolute top-0 flex flex-col gap-4">
+          <GameDie v-for="die in rack" :key="die.id" :die="die" />
+        </div>
       </button>
     </div>
 
-    <div>my score: {{ player.score }}</div>
+    <!-- <div>my score: {{ player.score }}</div>
 
-    {{ canPlay ? "your turn!" : "" }}
+    {{ canPlay ? "your turn!" : "" }} -->
   </div>
 </template>
