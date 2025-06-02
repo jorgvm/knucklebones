@@ -18,12 +18,13 @@
 
 <template>
   <div class="flex flex-col gap-8">
-    <GamePlayerSection :player-id="opponentId" :is-local-player="false" />
-
-    <div>-----</div>
+    <GamePlayerSection
+      :section-player-id="opponentId"
+      :is-local-player="false"
+    />
 
     <GamePlayerSection
-      :player-id="cookiePlayerId || ''"
+      :section-player-id="cookiePlayerId || ''"
       :is-local-player="true"
     />
   </div>

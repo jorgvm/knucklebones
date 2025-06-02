@@ -81,18 +81,18 @@
 </script>
 
 <template>
-  <form class="box flex max-w-[300px] flex-col" @submit.prevent="onSubmit">
+  <form class="box flex flex-col" @submit.prevent="onSubmit">
     <h1>Creating game</h1>
 
-    <span>What is your name?</span>
-
-    <input
+    <UiTextInput
       v-model="playerName"
+      label="What is your name?"
       type="text"
       :disabled="isLoading"
-      class="mb-4 border border-amber-300"
+      class="mb-4"
       :maxlength="MAX_PLAYER_NAME_LENGTH"
       minlength="3"
+      name="player-name"
       @input="handleInput"
     />
 

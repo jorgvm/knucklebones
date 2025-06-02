@@ -9,8 +9,6 @@
 </script>
 
 <template>
-  <div>
-    <GameCreateGameForm />
-    <GameLoading v-if="!socketService.isConnected.value" />
-  </div>
+  <GameCreateGameForm />
+  <GameLoading v-if="!socketService.isConnected.value" />
 </template>

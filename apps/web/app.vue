@@ -16,7 +16,9 @@
 </script>
 
 <template>
-  <NuxtPage />
+  <GameWrapper>
+    <NuxtPage />
+  </GameWrapper>
 
-  <GameGrainyOverlay />
+  <!-- <GameGrainyOverlay /> -->
 </template>

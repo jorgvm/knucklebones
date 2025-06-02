@@ -16,6 +16,15 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "@nuxt/image",
     "@nuxt/test-utils",
+    [
+      "@nuxtjs/google-fonts",
+      {
+        families: {
+          "Metal Mania": true,
+        },
+        display: "swap",
+      },
+    ],
   ],
   vite: {
     plugins: [tailwindcss()],

@@ -5,8 +5,8 @@
   import { twMerge } from "tailwind-merge";
   import type { SocketService } from "~/utilities/socket-service";
 
-  const { playerId, isLocalPlayer } = defineProps<{
-    playerId: PlayerId;
+  const { sectionPlayerId, isLocalPlayer } = defineProps<{
+    sectionPlayerId: PlayerId;
     isLocalPlayer: boolean;
   }>();
 
@@ -29,7 +29,7 @@
   }
 
   const player = computed(() =>
-    gameData.value.players?.find((i) => i.id === playerId),
+    gameData.value.players?.find((i) => i.id === sectionPlayerId),
   );
 
   const racks = computed(() => {
@@ -40,7 +40,10 @@
   });
 
   // For the player in this player-section, is it the turn to play?
-  const myTurn = computed(() => gameData.value.active_player === playerId);
+  const myTurn = computed(
+    () => gameData.value.active_player === sectionPlayerId,
+  );
+
   const canPlay = computed(
     () => isLocalPlayer && myTurn.value && !isLoading.value,
   );
@@ -57,7 +60,7 @@
 
     socketService.sendPlaceDie({
       gameId: gameId.toString(),
-      playerId,
+      playerId: sectionPlayerId,
       playerSecretId: String(cookiePlayerSecretId.value),
       rackNumber,
     });
@@ -74,40 +77,57 @@
       )
     "
   >
-    <div v-if="isLocalPlayer" class="absolute top-0 left-0">
-      new: {{ gameData.new_die }}
-    </div>
-
-    <div class="break-all">
+    <div class="relative z-10">
       <span
-        class="rounded-2xl border border-neutral-800 bg-purple-950/60 px-4 py-2 text-lg font-semibold uppercase shadow backdrop-blur-md"
+        class="block rounded-2xl border border-neutral-800 bg-purple-950/60 px-4 py-2 text-lg font-semibold break-all uppercase shadow backdrop-blur-md"
       >
         {{ player.name }}
       </span>
+
+      <GameDie
+        v-if="myTurn"
+        :value="gameData.new_die"
+        :class="
+          twMerge(
+            'absolute top-1/2 -left-4 mb-0 -translate-x-full -translate-y-1/2',
+            !isLocalPlayer && '-right-4 left-auto translate-x-full',
+          )
+        "
+      />
     </div>
 
     <div class="relative flex gap-4">
-      <button
+      <div
         v-for="(rack, index) in racks"
         :key="index"
-        class="flex min-w-6 flex-col"
-        :disabled="
-          !canPlay || rack.filter((i) => i.status === 'active').length >= 3
-        "
-        @click="() => handlePlaceDie(index)"
+        class="relative flex min-w-6 flex-col overflow-hidden rounded-2xl bg-white/10 p-4"
       >
         <div class="flex flex-col gap-4">
           <div
             v-for="n in 3"
             :key="n"
-            class="aspect-square size-10 rounded bg-black opacity-25"
+            class="aspect-square size-14 rounded bg-[#460707]"
           />
         </div>
 
-        <div class="absolute top-0 flex flex-col gap-4">
-          <GameDie v-for="die in rack" :key="die.id" :die="die" />
+        <div class="absolute top-4 left-4 flex flex-col">
+          <GameDie
+            v-for="die in rack"
+            :key="die.id"
+            :value="die.value"
+            :status="die.status"
+          />
         </div>
-      </button>
+
+        <button
+          v-if="canPlay"
+          class="absolute top-0 left-0 h-full w-full cursor-pointer bg-white opacity-0 transition-all hover:opacity-10 disabled:opacity-0"
+          :disabled="
+            !canPlay || rack.filter((i) => i.status === 'active').length >= 3
+          "
+          @click="() => handlePlaceDie(index)"
+        />
+      </div>
     </div>
 
     <!-- <div>my score: {{ player.score }}</div>

@@ -55,24 +55,26 @@
 </script>
 
 <template>
-  <div>
-    <form class="flex max-w-[300px] flex-col" @submit.prevent="onSubmit">
-      <h1>Joining game</h1>
-      <span>What is your name?</span>
+  <form class="box flex flex-col" @submit.prevent="onSubmit">
+    <h1>Joining game</h1>
 
-      <input
-        v-model="playerName"
-        type="text"
-        :disabled="isLoading || !socketService.isConnected"
-        class="border border-amber-300"
-        :maxlength="MAX_PLAYER_NAME_LENGTH"
-        minlength="3"
-        @input="handleInput"
-      />
+    <UiTextInput
+      v-model="playerName"
+      label="What is your name?"
+      type="text"
+      :disabled="isLoading || !socketService.isConnected"
+      class="mb-2"
+      :maxlength="MAX_PLAYER_NAME_LENGTH"
+      minlength="3"
+      @input="handleInput"
+    />
 
-      <button type="submit" :disabled="isLoading || !socketService.isConnected">
-        {{ isLoading ? "loading..." : "join game" }}
-      </button>
-    </form>
-  </div>
+    <button
+      type="submit"
+      :disabled="isLoading || !socketService.isConnected"
+      class="button"
+    >
+      {{ isLoading ? "loading..." : "join game" }}
+    </button>
+  </form>
 </template>
