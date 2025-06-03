@@ -21,6 +21,7 @@ export default defineNuxtConfig({
       {
         families: {
           "Metal Mania": true,
+          "Asap Condensed": true,
         },
         display: "swap",
       },

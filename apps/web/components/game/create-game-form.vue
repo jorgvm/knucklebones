@@ -49,12 +49,10 @@
   };
 
   const isLoading = computed(() => {
-    console.log(isSubmitting.value, !socketService.isConnected);
     return isSubmitting.value || !socketService.isConnected;
   });
 
   const handleCreateGameResult = (data: ResultCreateGameData) => {
-    console.log("createGameResult", data);
     const { playerId, gameId, playerSecretId }: ResultCreateGameData = data;
 
     cookiePlayerId.value = playerId;

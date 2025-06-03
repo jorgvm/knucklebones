@@ -3,9 +3,10 @@
 </script>
 
 <template>
+  <h1 class="mb-6 text-5xl uppercase">Knucklesbones</h1>
+
   <div class="box w-full">
     <div class="flex flex-col gap-4">
-      <h1 class="uppercase">Knucklesbones</h1>
       <RouterLink to="/create" class="button">Create game</RouterLink>
       <RouterLink to="/tutorial" class="button">Tutorial</RouterLink>
     </div>

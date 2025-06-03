@@ -14,8 +14,8 @@
   <div
     :class="
       twMerge(
-        'mb-4 flex size-14 scale-110 items-center justify-center overflow-hidden bg-[url(img/die.png)] bg-cover text-black opacity-100 transition-all duration-500',
-        status === 'removed' && 'mb-0 h-0',
+        'mb-4 flex size-14 scale-110 items-center justify-center overflow-hidden bg-[url(img/die.png)] bg-cover text-black transition-all duration-1000',
+        status === 'removed' && 'mb-0 h-0 scale-0',
       )
     "
   >

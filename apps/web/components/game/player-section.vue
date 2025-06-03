@@ -72,17 +72,15 @@
     v-if="player"
     :class="
       twMerge(
-        'flex flex-col items-center justify-between gap-4',
+        'flex flex-col items-center justify-between gap-1',
         isLocalPlayer && 'flex-col-reverse',
       )
     "
   >
     <div class="relative z-10">
-      <span
-        class="block rounded-2xl border border-neutral-800 bg-purple-950/60 px-4 py-2 text-lg font-semibold break-all uppercase shadow backdrop-blur-md"
-      >
+      <h1 class="block uppercase">
         {{ player.name }}
-      </span>
+      </h1>
 
       <GameDie
         v-if="myTurn"
@@ -100,14 +98,10 @@
       <div
         v-for="(rack, index) in racks"
         :key="index"
-        class="relative flex min-w-6 flex-col overflow-hidden rounded-2xl bg-white/10 p-4"
+        class="relative flex min-w-6 flex-col overflow-hidden rounded-2xl bg-black/10 p-4"
       >
-        <div class="flex flex-col gap-4">
-          <div
-            v-for="n in 3"
-            :key="n"
-            class="aspect-square size-14 rounded bg-[#460707]"
-          />
+        <div class="flex flex-col gap-4 rounded bg-[url(/img/bgr-purple.jpg)]">
+          <div v-for="n in 3" :key="n" class="aspect-square size-14 rounded" />
         </div>
 
         <div class="absolute top-4 left-4 flex flex-col">
@@ -121,7 +115,7 @@
 
         <button
           v-if="canPlay"
-          class="absolute top-0 left-0 h-full w-full cursor-pointer bg-white opacity-0 transition-all hover:opacity-10 disabled:opacity-0"
+          class="absolute top-0 left-0 h-full w-full cursor-pointer bg-red-600 opacity-0 mix-blend-color transition-all hover:opacity-100 active:opacity-100 disabled:opacity-0"
           :disabled="
             !canPlay || rack.filter((i) => i.status === 'active').length >= 3
           "
@@ -129,9 +123,5 @@
         />
       </div>
     </div>
-
-    <!-- <div>my score: {{ player.score }}</div>
-
-    {{ canPlay ? "your turn!" : "" }} -->
   </div>
 </template>

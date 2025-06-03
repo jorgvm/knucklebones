@@ -76,6 +76,7 @@
   // Provider
   provide("gameData", gameData);
 
+  // During development, log the game state
   watch(gameData, (newGameData) => {
     console.log(toRaw(newGameData));
   });
@@ -101,7 +102,5 @@
     <GameBoard
       v-if="gameData.status === 'playing' || gameData.status === 'finished'"
     />
-
-    <GameWinner v-if="gameData.status === 'finished'" />
   </div>
 </template>

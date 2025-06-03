@@ -1,27 +1,37 @@
 @import "tailwindcss";
 
-body {
+@layer base {
+  h1 {
+    font-size: var(--text-3xl);
+    font-family: "Metal Mania";
+  }
+  h2 {
+    font-size: var(--text-2xl);
+    font-family: "Metal Mania";
+  }
+}
+
+.header-font {
   font-family: "Metal Mania";
-  @apply bg-black bg-cover;
+}
+
+body {
+  font-family: "Asap Condensed";
+  @apply bg-black;
 }
 
 body::before {
-  background: black url("img/app-bgr.jpg") no-repeat 0 0;
-  @apply pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-50;
-}
-
-h1 {
-  @apply text-2xl;
+  background: black url("/img/app-bgr.jpg") no-repeat 0 0;
+  content: "";
+  @apply pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-40;
 }
 
 .button {
-  @apply cursor-pointer rounded-xl border-3 border-black/30 bg-[#7232ab] bg-cover px-6 py-3 text-2xl hover:border-white/50;
-}
-
-button:disabled {
-  @apply cursor-not-allowed;
+  font-family: "Metal Mania";
+  background: #29103c url("/img/bgr-purple.jpg") no-repeat 0 0;
+  @apply block cursor-pointer rounded-xl border-3 border-[#29103c] bg-cover px-6 py-3 text-2xl hover:border-white/50 active:translate-y-0.5 disabled:cursor-not-allowed;
 }
 
 .box {
-  @apply rounded-3xl border-8 border-black/10 bg-black/60 p-8;
+  @apply max-w-[400px] rounded-3xl border-8 border-black/10 bg-black p-8;
 }

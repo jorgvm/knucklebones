@@ -1,8 +1,10 @@
 <script lang="ts" setup>
   import { inject } from "vue";
-
   import type { GameData } from "@shared/types";
   import { COOKIE_PLAYER_ID } from "@shared/utilities/constants";
+  import { twMerge } from "tailwind-merge";
+
+  const showCopied = ref(false);
 
   const shareURL = useRequestURL()
     .toString()
@@ -24,22 +26,39 @@
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(shareURL.toString());
+    showCopied.value = true;
+
+    setTimeout(() => {
+      showCopied.value = false;
+    }, 1000);
   };
 </script>
 
 <template>
-  <div v-if="localPlayerIsHost" class="box">
-    <h1>Waiting for other players</h1>
+  <div v-if="localPlayerIsHost" class="box flex flex-col gap-4">
+    <h1>Lobby</h1>
 
-    <p>Send them this link:</p>
+    <p>Send this link to a friend:</p>
 
-    <span>
+    <p class="font-mono">
       {{ shareURL.toString() }}
-    </span>
+    </p>
 
-    <button class="button ml-4" type="button" @click="handleCopyToClipboard">
-      copy
-    </button>
+    <div class="flex items-center gap-4">
+      <button class="button" type="button" @click="handleCopyToClipboard">
+        copy
+      </button>
+
+      <p
+        :class="
+          twMerge('opacity-0 transition-all', showCopied && 'opacity-100')
+        "
+      >
+        copied!
+      </p>
+    </div>
+
+    <p>When they join, the game will automatically start!</p>
   </div>
 
   <GameJoinGameForm v-if="!localPlayerIsHost" />

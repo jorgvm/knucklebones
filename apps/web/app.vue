@@ -16,9 +16,11 @@
 </script>
 
 <template>
-  <GameWrapper>
+  <div
+    class="flex min-h-svh flex-col items-center justify-center bg-cover p-4 text-neutral-200"
+  >
     <NuxtPage />
-  </GameWrapper>
+  </div>
 
   <!-- <GameGrainyOverlay /> -->
 </template>

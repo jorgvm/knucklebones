@@ -23,6 +23,8 @@
       :is-local-player="false"
     />
 
+    <GameNotifications />
+
     <GamePlayerSection
       :section-player-id="cookiePlayerId || ''"
       :is-local-player="true"
