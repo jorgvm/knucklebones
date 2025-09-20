@@ -1,13 +1,19 @@
 @import "tailwindcss";
 
+@theme {
+  --color-hotpink: hotpink;
+}
+
 @layer base {
   h1 {
     font-size: var(--text-3xl);
     font-family: "Metal Mania";
+    text-shadow: 1px 1px black;
   }
   h2 {
     font-size: var(--text-2xl);
     font-family: "Metal Mania";
+    text-shadow: 1px 1px black;
   }
 }
 
@@ -16,12 +22,12 @@
 }
 
 body {
-  font-family: "Asap Condensed";
+  font-family: "Lacquer";
   @apply bg-black;
 }
 
 body::before {
-  background: black url("/img/app-bgr.jpg") no-repeat 0 0;
+  background: black url("/img/app-bgr.jpg") no-repeat center center;
   content: "";
   @apply pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-40;
 }

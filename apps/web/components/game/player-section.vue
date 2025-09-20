@@ -44,9 +44,12 @@
     () => gameData.value.active_player === sectionPlayerId,
   );
 
+  // You can only make a move for yourself
   const canPlay = computed(
     () => isLocalPlayer && myTurn.value && !isLoading.value,
   );
+
+  const isFinished = gameData.value.status === "finished";
 
   watch(gameData, () => {
     // After making a move and new data is fetched, set loading to false
@@ -72,28 +75,30 @@
     v-if="player"
     :class="
       twMerge(
-        'flex flex-col items-center justify-between gap-1',
+        'flex flex-col items-center justify-between gap-1 transition-all duration-500',
         isLocalPlayer && 'flex-col-reverse',
+        !isFinished && !myTurn && 'brightness-50',
       )
     "
   >
+    <!-- player name and score -->
     <div class="relative z-10">
-      <h1 class="block uppercase">
-        {{ player.name }}
-      </h1>
-
-      <GameDie
-        v-if="myTurn"
-        :value="gameData.new_die"
+      <h1
         :class="
           twMerge(
-            'absolute top-1/2 -left-4 mb-0 -translate-x-full -translate-y-1/2',
-            !isLocalPlayer && '-right-4 left-auto translate-x-full',
+            'flex items-center gap-4 text-red-500 uppercase text-shadow-md text-shadow-red-500',
+            myTurn && '',
           )
         "
-      />
+      >
+        {{ player.name }}
+        <span v-if="isFinished" class="text-sm">
+          ({{ player.score }} {{ player.score === 1 ? "point" : "points" }})
+        </span>
+      </h1>
     </div>
 
+    <!-- player racks with dice -->
     <div class="relative flex gap-4">
       <div
         v-for="(rack, index) in racks"
@@ -101,7 +106,7 @@
         class="relative flex min-w-6 flex-col overflow-hidden rounded-2xl bg-black/10 p-4"
       >
         <div class="flex flex-col gap-4 rounded bg-[url(/img/bgr-purple.jpg)]">
-          <div v-for="n in 3" :key="n" class="aspect-square size-14 rounded" />
+          <div v-for="n in 3" :key="n" class="aspect-square size-12 rounded" />
         </div>
 
         <div class="absolute top-4 left-4 flex flex-col">

@@ -38,7 +38,7 @@
   <div v-if="localPlayerIsHost" class="box flex flex-col gap-4">
     <h1>Lobby</h1>
 
-    <p>Send this link to a friend:</p>
+    <p>To start the game, send this link to a friend!</p>
 
     <p class="font-mono">
       {{ shareURL.toString() }}
@@ -57,8 +57,6 @@
         copied!
       </p>
     </div>
-
-    <p>When they join, the game will automatically start!</p>
   </div>
 
   <GameJoinGameForm v-if="!localPlayerIsHost" />

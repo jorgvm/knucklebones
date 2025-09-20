@@ -17,7 +17,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-8">
+  <div class="flex flex-col gap-2">
     <GamePlayerSection
       :section-player-id="opponentId"
       :is-local-player="false"

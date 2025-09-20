@@ -94,7 +94,7 @@
 </script>
 
 <template>
-  <GameLoading v-if="showLoadingScreen" />
+  <GameLoading :active="showLoadingScreen" />
 
   <div v-if="!showLoadingScreen">
     <GameLobby v-if="gameData.status === 'lobby'" />

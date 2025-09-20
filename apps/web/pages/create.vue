@@ -10,5 +10,5 @@
 
 <template>
   <GameCreateGameForm />
-  <GameLoading v-if="!socketService.isConnected.value" />
+  <GameLoading :active="!socketService.isConnected.value" />
 </template>

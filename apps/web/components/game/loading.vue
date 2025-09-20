@@ -1,8 +1,13 @@
 <script setup lang="ts">
+  import { twMerge } from "tailwind-merge";
   import { ref, onMounted, onUnmounted } from "vue";
 
+  const { active } = defineProps<{
+    active: boolean;
+  }>();
+
   const dots = ref("");
-  let intervalId;
+  let intervalId: ReturnType<typeof setInterval>;
 
   onMounted(() => {
     // prevent body scroll
@@ -25,12 +30,17 @@
 </script>
 
 <template>
-  <h2
-    class="fixed top-0 left-0 z-50 flex size-full items-center justify-center bg-black text-6xl"
+  <div
+    :class="
+      twMerge(
+        'pointer-events-none fixed top-0 left-0 z-50 flex size-full items-center justify-center bg-black opacity-0 transition-opacity duration-500',
+        active && 'pointer-events-auto opacity-100',
+      )
+    "
   >
-    <span class="relative block">
+    <h2 class="relative text-6xl">
       Loading
       <span class="absolute -right-2 translate-x-full">{{ dots }}</span>
-    </span>
-  </h2>
+    </h2>
+  </div>
 </template>

@@ -86,8 +86,6 @@ export const actionPlaceDie = async ({
   gameData.active_player = opponent.id;
 
   // Check if game is done
-  // let rematchId: GameId | null = null;
-
   if (isGameReady(gameData)) {
     const winner = getWinner(gameData.players);
     gameData.status = "finished";

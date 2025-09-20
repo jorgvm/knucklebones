@@ -6,11 +6,11 @@
   <h1 class="mb-6 text-5xl uppercase">Knucklesbones</h1>
 
   <div class="box w-full">
-    <div class="flex flex-col gap-4">
+    <div class="duration flex flex-col gap-4">
       <RouterLink to="/create" class="button">Create game</RouterLink>
       <RouterLink to="/tutorial" class="button">Tutorial</RouterLink>
     </div>
   </div>
 
-  <GameLoading v-if="!socketService.isConnected.value" />
+  <GameLoading :active="!socketService.isConnected.value" />
 </template>
