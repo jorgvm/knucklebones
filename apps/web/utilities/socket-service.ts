@@ -1,7 +1,10 @@
 import { io, type Socket } from "socket.io-client";
 import { ref } from "vue";
 import type {
+  DataHandler,
   GameMessagePayload,
+  ResultCreateGameData,
+  ResultJoinGameData,
   SendCreateGameData,
   SendJoinGameData,
   SendPlaceDieData,
@@ -44,23 +47,34 @@ const disconnect = () => {
   }
 };
 
-const submit = (payload: {
-  action: SocketAction;
-  data: GameMessagePayload;
-}) => {
+const submit = (
+  payload: {
+    action: SocketAction;
+    data: GameMessagePayload;
+  },
+  callback?:
+    | DataHandler<ResultCreateGameData>
+    | DataHandler<ResultJoinGameData>,
+) => {
   if (socket.value && isConnected.value) {
-    socket.value.emit(payload.action, JSON.stringify(payload.data));
+    socket.value.emit(payload.action, JSON.stringify(payload.data), callback);
   } else {
-    console.warn("Socket.IO is not connected");
+    console.error("Socket.IO is not connected");
   }
 };
 
-const sendCreateGame = (data: SendCreateGameData) => {
-  submit({ action: "createGame", data });
+const sendCreateGame = (
+  data: SendCreateGameData,
+  callback: DataHandler<ResultCreateGameData>,
+) => {
+  submit({ action: "createGame", data }, callback);
 };
 
-const sendJoinGame = (data: SendJoinGameData) => {
-  submit({ action: "joinGame", data });
+const sendJoinGame = (
+  data: SendJoinGameData,
+  callback: DataHandler<ResultJoinGameData>,
+) => {
+  submit({ action: "joinGame", data }, callback);
 };
 
 const sendSubscribeToGame = (data: SubscribeToGameData) => {

@@ -1,5 +1,8 @@
 import type {
+  DataHandler,
   GameData,
+  ResultCreateGameData,
+  ResultJoinGameData,
   SendCreateGameData,
   SendJoinGameData,
   SendPlaceDieData,
@@ -32,23 +35,30 @@ io.on("connection", (socket) => {
     console.log("client connected", socket.id);
 
     // Create game
-    socket.on("createGame", async (data: string) => {
-      const parsedData: SendCreateGameData = JSON.parse(data);
+    socket.on(
+      "createGame",
+      async (data: string, callback: DataHandler<ResultCreateGameData>) => {
+        const parsedData: SendCreateGameData = JSON.parse(data);
 
-      const result = await actionCreateGame(parsedData);
+        const result = await actionCreateGame(parsedData);
+        console.log("create game", result);
 
-      console.log("emit result", result);
-      socket.emit("createGameResult", result);
-    });
+        callback(result);
+      }
+    );
 
     // Join game
-    socket.on("joinGame", async (data: string) => {
-      const parsedData: SendJoinGameData = JSON.parse(data);
+    socket.on(
+      "joinGame",
+      async (data: string, callback: DataHandler<ResultJoinGameData>) => {
+        const parsedData: SendJoinGameData = JSON.parse(data);
 
-      const result = await actionJoinGame(parsedData);
+        const result = await actionJoinGame(parsedData);
 
-      socket.emit("joinGameResult", result);
-    });
+        console.log("join game", result);
+        callback(result);
+      }
+    );
 
     // Place die
     socket.on("placeDie", async (data: string) => {

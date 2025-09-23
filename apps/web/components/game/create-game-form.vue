@@ -28,19 +28,22 @@
   }
 
   const onSubmit = async () => {
-    if (!playerName.value.trim()) {
-      console.warn("Player name is empty");
+    const playerNameTrimmed = playerName.value.trim();
+    if (!playerNameTrimmed) {
       return;
     }
 
     isSubmitting.value = true;
-    cookiePlayerName.value = playerName.value;
+    cookiePlayerName.value = playerNameTrimmed;
 
-    socketService.sendCreateGame({
-      playerName: playerName.value,
-      playerId: cookiePlayerId.value || null,
-      playerSecretId: cookiePlayerSecretId.value || null,
-    });
+    socketService.sendCreateGame(
+      {
+        playerName: playerNameTrimmed,
+        playerId: cookiePlayerId.value || null,
+        playerSecretId: cookiePlayerSecretId.value || null,
+      },
+      handleCreateGameResult,
+    );
   };
 
   const handleInput = (event: Event) => {
@@ -52,30 +55,17 @@
     return isSubmitting.value || !socketService.isConnected;
   });
 
-  const handleCreateGameResult = (data: ResultCreateGameData) => {
-    const { playerId, gameId, playerSecretId }: ResultCreateGameData = data;
-
+  const handleCreateGameResult = ({
+    playerId,
+    gameId,
+    playerSecretId,
+  }: ResultCreateGameData) => {
     cookiePlayerId.value = playerId;
     cookiePlayerSecretId.value = playerSecretId;
 
     isSubmitting.value = false;
     router.push("/" + gameId);
   };
-
-  onMounted(() => {
-    if (socketService.socket.value) {
-      socketService.socket.value.on("createGameResult", handleCreateGameResult);
-    }
-  });
-
-  onBeforeUnmount(() => {
-    if (socketService.socket.value) {
-      socketService.socket.value.off(
-        "createGameResult",
-        handleCreateGameResult,
-      );
-    }
-  });
 </script>
 
 <template>

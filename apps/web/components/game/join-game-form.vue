@@ -9,6 +9,11 @@
   import { sanitizeName } from "@shared/utilities/sanitise";
   import { useRoute } from "nuxt/app";
   import type { SocketService } from "~/utilities/socket-service";
+  import type { ResultJoinGameData } from "@shared/types";
+
+  const { updatePlayerCookies } = defineProps<{
+    updatePlayerCookies: (d: ResultJoinGameData) => void;
+  }>();
 
   const route = useRoute();
 
@@ -36,12 +41,16 @@
     const gameId = route.params.gameId as string;
 
     cookiePlayerName.value = playerName.value;
-    socketService.sendJoinGame({
-      gameId,
-      playerName: playerName.value,
-      playerId: cookiePlayerId.value || null,
-      playerSecretId: cookiePlayerSecretId.value || null,
-    });
+
+    socketService.sendJoinGame(
+      {
+        gameId,
+        playerName: playerName.value,
+        playerId: cookiePlayerId.value || null,
+        playerSecretId: cookiePlayerSecretId.value || null,
+      },
+      updatePlayerCookies, // Handle cookie updates in in [gameId] page, which has the latest version
+    );
   };
 
   const handleInput = (event: Event) => {

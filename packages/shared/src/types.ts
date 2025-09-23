@@ -97,3 +97,5 @@ export type SocketAction =
   | "joinGame"
   | "subscribeToGame"
   | "placeDie";
+
+export type DataHandler<T> = (data: T) => void;

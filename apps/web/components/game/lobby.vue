@@ -58,6 +58,4 @@
       </p>
     </div>
   </div>
-
-  <GameJoinGameForm v-if="!localPlayerIsHost" />
 </template>

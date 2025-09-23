@@ -38,6 +38,12 @@
     gameData.value.players.some((i) => i.id === cookiePlayerId.value),
   );
 
+  const localPlayerIsHost = computed(() =>
+    Boolean(
+      gameData.value.players?.find((i) => i.id === cookiePlayerId.value)?.host,
+    ),
+  );
+
   onMounted(() => {
     // Subscribe to the game when the component mounts and the socket is connected
     if (isConnected.value && gameId) {
@@ -57,21 +63,20 @@
     () => socketService.socket.value,
     () => {
       if (socketService.socket.value) {
+        // Receive game updates
         socketService.socket.value.on("gameUpdate", (data: GameData) => {
           gameData.value = data;
         });
-
-        socketService.socket.value.on(
-          "joinGameResult",
-          (data: ResultJoinGameData) => {
-            cookiePlayerId.value = data.playerId;
-            cookiePlayerSecretId.value = data.playerSecretId;
-          },
-        );
       }
     },
     { immediate: true },
   );
+
+  const updatePlayerCookies = (data: ResultJoinGameData) => {
+    // Handle cookie updates in gameId
+    cookiePlayerId.value = data.playerId;
+    cookiePlayerSecretId.value = data.playerSecretId;
+  };
 
   // Provider
   provide("gameData", gameData);
@@ -84,12 +89,14 @@
   const showLoadingScreen = computed(() => {
     // There might be a brief moment where the game has started, but the id cookie is not set, in that case, show the loading screen
     // This will also hide the game for players that not in the game
-    const playerIsNotInGame =
+    const playerIsNotInActiveGame =
       !playerIsInGame.value && gameData.value.status === "playing";
     const socketIsNotConnected = !socketService.isConnected.value;
     const gameStatusIsLoading = gameData.value.status === "loading";
 
-    return playerIsNotInGame || socketIsNotConnected || gameStatusIsLoading;
+    return (
+      playerIsNotInActiveGame || socketIsNotConnected || gameStatusIsLoading
+    );
   });
 </script>
 
@@ -101,6 +108,11 @@
 
     <GameBoard
       v-if="gameData.status === 'playing' || gameData.status === 'finished'"
+    />
+
+    <GameJoinGameForm
+      v-if="!localPlayerIsHost && !playerIsInGame"
+      :update-player-cookies="updatePlayerCookies"
     />
   </div>
 </template>
