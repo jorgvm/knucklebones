@@ -92,7 +92,7 @@
         "
       >
         {{ player.name }}
-        <span v-if="isFinished" class="text-sm">
+        <span v-if="isFinished" class="font-mono text-sm">
           ({{ player.score }} {{ player.score === 1 ? "point" : "points" }})
         </span>
       </h1>

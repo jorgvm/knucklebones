@@ -18,6 +18,8 @@
 
 <template>
   <div class="flex flex-col gap-2">
+    <GameSound />
+
     <GamePlayerSection
       :section-player-id="opponentId"
       :is-local-player="false"

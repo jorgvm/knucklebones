@@ -2,6 +2,7 @@ import type {
   GameData,
   Die,
   SendPlaceDieData,
+  GameAction,
 } from "@knucklebones/shared/types.js";
 import {
   isValidFirebaseDocumentId,
@@ -70,11 +71,23 @@ export const actionPlaceDie = async ({
   activePlayer.dice.push(newDie);
 
   // Remove dice from opponent
-  opponent.dice = removeDice({
+  const latestActions: GameAction[] = ["die_placed"];
+  const newOpponentDice = removeDice({
     dice: opponent.dice,
     rackNumber,
     dieValue: gameData.new_die,
   });
+  const opponentRemoved = opponent.dice.filter(
+    (i) => i.status === "removed"
+  ).length;
+  const newOpponentRemoved = newOpponentDice.filter(
+    (i) => i.status === "removed"
+  ).length;
+
+  if (newOpponentRemoved > opponentRemoved) {
+    opponent.dice = newOpponentDice;
+    latestActions.push("die_removed");
+  }
 
   // Roll new die
   gameData.new_die = rollDie();
@@ -91,6 +104,7 @@ export const actionPlaceDie = async ({
     gameData.status = "finished";
     gameData.active_player = "";
     gameData.winner = winner;
+    latestActions.push("game_finished");
 
     // Create rematch
     const { gameId: newGameId } = await actionCreateRematch({
@@ -109,6 +123,7 @@ export const actionPlaceDie = async ({
     status: gameData.status,
     winner: gameData.winner,
     rematch_id: gameData.rematch_id,
+    latest_actions: latestActions,
   });
 
   return { result: "success" };

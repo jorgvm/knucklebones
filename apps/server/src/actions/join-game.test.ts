@@ -18,7 +18,7 @@ vi.mock(import("~/utilities/generate-id.js"), async (importOriginal) => ({
 }));
 
 // Mock other utilities
-vi.mock("~/utilities/random-int-between", () => ({
+vi.mock("@knucklebones/shared/utilities/random-int-between.js", () => ({
   randomIntBetween: () => 0, // always pick first player to go first
 }));
 

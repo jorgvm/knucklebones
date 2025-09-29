@@ -21,3 +21,7 @@ See readme files in /app folders.
 - Each player has three racks.
 - Each rack can have 0 to 3 dice.
 - One item is called a 'die'
+
+# Thanks to
+
+- https://freesound.org

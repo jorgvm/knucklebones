@@ -14,7 +14,7 @@ import {
   updateGameInDatabase,
 } from "~/utilities/firebase.js";
 import { generateId, isValidCryptoId } from "~/utilities/generate-id.js";
-import { randomIntBetween } from "~/utilities/random-int-between.js";
+import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
 
 export const actionJoinGame = async ({
   playerName,

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { randomIntBetween } from "~/utilities/random-int-between.js";
+import { randomIntBetween } from "./random-int-between.js";
 
 describe("randomIntBetween", () => {
   it("returns a number within the range", () => {

@@ -1,3 +1,8 @@
+/**
+ * Return a random int between x and y, including min and max
+ *
+ * @example randomIntBetween(0,3); // 0, 1, 2 or 3
+ */
 export const randomIntBetween = (min: number, max: number): number => {
   if (!Number.isInteger(min) || !Number.isInteger(max)) {
     throw new TypeError("Both min and max must be integers");

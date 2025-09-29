@@ -9,7 +9,7 @@ vi.mock("~/utilities/firebase", () => ({
   createGameInDatabase: vi.fn(),
 }));
 
-vi.mock("~/utilities/random-int-between", () => ({
+vi.mock("@knucklebones/shared/utilities/random-int-between.js", () => ({
   randomIntBetween: vi.fn(), // Mock this to control random player selection
 }));
 
@@ -92,7 +92,7 @@ describe("actionCreateRematch", () => {
     // Arrange
     vi.mocked(createGameInDatabase).mockResolvedValue("rematch-game-id-tie");
     // Mock other utilities
-    vi.mock("~/utilities/random-int-between", () => ({
+    vi.mock("@knucklebones/shared/utilities/random-int-between.js", () => ({
       randomIntBetween: () => 1, // in this test always pick second player to go first
     }));
     const previousWinner: PlayerId[] = ["player-1", "player-2"]; // It was a tie

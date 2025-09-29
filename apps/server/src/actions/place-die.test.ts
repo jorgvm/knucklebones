@@ -37,6 +37,7 @@ const mockGameDataSetup: GameData = {
     },
   ],
   rematch_id: null,
+  latest_actions: [],
 };
 
 const allDiceMinusOne: Die[] = [
@@ -200,6 +201,7 @@ describe("actionPlaceDie", () => {
         },
       ],
       rematch_id: null,
+      latest_actions: [],
     };
 
     vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);

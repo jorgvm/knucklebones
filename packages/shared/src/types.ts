@@ -29,6 +29,12 @@ export type PlayerSecret = {
   secret: PlayerSecretId;
 };
 
+export type GameAction =
+  | "game_created"
+  | "die_placed"
+  | "die_removed"
+  | "game_finished";
+
 export type GameStatus =
   | "loading" // fetching game data
   | "lobby" // game has been created, waiting on second player
@@ -45,6 +51,7 @@ export type GameData = {
   winner: PlayerId[];
   secrets: PlayerSecret[];
   rematch_id: GameId | null;
+  latest_actions: GameAction[];
 };
 
 export type GameMessagePayload =

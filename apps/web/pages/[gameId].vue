@@ -22,6 +22,7 @@
     active_player: "",
     secrets: [],
     rematch_id: null,
+    latest_actions: [],
   };
 
   const gameData: Ref<GameData> = ref(gameDefaults);

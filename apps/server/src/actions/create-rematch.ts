@@ -5,7 +5,8 @@ import {
   SendCreateRematch,
 } from "@knucklebones/shared/types.js";
 import { createGameInDatabase } from "~/utilities/firebase.js";
-import { randomIntBetween } from "~/utilities/random-int-between.js";
+import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
+
 import { rollDie } from "~/utilities/roll-die.js";
 
 export const actionCreateRematch = async ({
@@ -17,6 +18,7 @@ export const actionCreateRematch = async ({
   if (previousWinner.length > 1) {
     // It was at tie, choose a random player to go first
     const random = randomIntBetween(0, 1);
+
     newActivePlayer = previousPlayers[random].id;
   } else {
     // The loser in the last game gets to play first
@@ -48,6 +50,7 @@ export const actionCreateRematch = async ({
     status: "playing",
     version: 1,
     winner: [],
+    latest_actions: [],
   };
 
   // Push to database

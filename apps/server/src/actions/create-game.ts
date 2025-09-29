@@ -30,7 +30,6 @@ export const actionCreateGame = async ({
   }
 
   // Create game
-
   const playerId = providedPlayerId || generateId();
   const playerSecretId = providedPlayerSecretId || generateId();
 
@@ -52,6 +51,7 @@ export const actionCreateGame = async ({
     new_die: rollDie(),
     secrets: [{ id: playerId, secret: playerSecretId }],
     rematch_id: null,
+    latest_actions: ["game_created"],
   };
 
   // Push to database

@@ -158,4 +158,5 @@ export const mockGameData: GameData = {
     },
   ],
   rematch_id: null,
+  latest_actions: [],
 };
