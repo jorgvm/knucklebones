@@ -9,6 +9,6 @@
 </script>
 
 <template>
-  <GameCreateGameForm />
+  <GameCreateGameForm type="multiplayer" />
   <GameLoading :active="!socketService.isConnected.value" />
 </template>

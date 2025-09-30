@@ -13,6 +13,7 @@ export const actionCreateRematch = async ({
   previousPlayers,
   previousSecrets,
   previousWinner,
+  previousType,
 }: SendCreateRematch): Promise<ResultCreateRematch> => {
   let newActivePlayer;
   if (previousWinner.length > 1) {
@@ -51,6 +52,7 @@ export const actionCreateRematch = async ({
     version: 1,
     winner: [],
     latest_actions: [],
+    type: previousType,
   };
 
   // Push to database

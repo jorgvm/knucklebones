@@ -31,9 +31,10 @@ export type PlayerSecret = {
 
 export type GameAction =
   | "game_created"
+  | "game_started"
+  | "game_finished"
   | "die_placed"
-  | "die_removed"
-  | "game_finished";
+  | "die_removed";
 
 export type GameStatus =
   | "loading" // fetching game data
@@ -52,7 +53,10 @@ export type GameData = {
   secrets: PlayerSecret[];
   rematch_id: GameId | null;
   latest_actions: GameAction[];
+  type: GameType;
 };
+
+export type GameType = "singleplayer" | "multiplayer";
 
 export type GameMessagePayload =
   | SubscribeToGameData
@@ -72,6 +76,7 @@ export type SendCreateGameData = {
   playerName: string;
   playerId: string | null;
   playerSecretId: string | null;
+  type: GameType;
 };
 export type SendPlaceDieData = {
   gameId: GameId;
@@ -83,6 +88,7 @@ export type SendCreateRematch = {
   previousPlayers: Player[];
   previousSecrets: PlayerSecret[];
   previousWinner: PlayerId[];
+  previousType: GameType;
 };
 
 // Server to client actions

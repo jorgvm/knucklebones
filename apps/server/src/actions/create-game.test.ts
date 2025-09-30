@@ -30,6 +30,7 @@ describe("actionCreateGame - success case", () => {
       playerName: " Alice Doe ",
       playerId: null,
       playerSecretId: null,
+      type: "multiplayer",
     });
 
     // Assert
@@ -68,6 +69,7 @@ describe("actionCreateGame - success case", () => {
       playerName: " Alice Doe ",
       playerId: "002368b8-92ab-4f26-858b-135172487934",
       playerSecretId: "15c6cb3e-31bc-4f8f-83ce-ca6b36e03897",
+      type: "multiplayer",
     });
 
     // Assert
@@ -110,6 +112,7 @@ describe("actionCreateGame - success case", () => {
         playerName: "!@#",
         playerId: null,
         playerSecretId: null,
+        type: "multiplayer",
       })
     ).rejects.toThrow("No valid name was supplied");
   });

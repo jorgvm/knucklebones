@@ -74,6 +74,7 @@ export const actionJoinGame = async ({
     active_player: newActivePlayer,
     status: "playing",
     secrets: arrayUnion(newPlayerSecret),
+    latest_actions: ["game_started"],
   });
 
   return {

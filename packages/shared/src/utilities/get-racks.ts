@@ -1,7 +1,7 @@
 import type { Die, Racks } from "../types.js";
 
 /**
- * Group the dice into three racks, based on the unorderd list of dice
+ * Group the dice into three racks, based on the unordered list of dice
  *
  */
 export const getRacks = (dice: Die[], filtered = false): Racks => {

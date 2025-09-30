@@ -51,6 +51,7 @@ describe("actionCreateRematch", () => {
       previousPlayers: [mockPlayer1, mockPlayer2],
       previousSecrets: mockSecrets,
       previousWinner,
+      previousType: "multiplayer",
     });
 
     // Assert
@@ -102,6 +103,7 @@ describe("actionCreateRematch", () => {
       previousPlayers: [mockPlayer1, mockPlayer2],
       previousSecrets: mockSecrets,
       previousWinner,
+      previousType: "multiplayer",
     });
 
     // Assert
@@ -126,6 +128,7 @@ describe("actionCreateRematch", () => {
         previousPlayers: [mockPlayer1], // only pass one player, this should fail
         previousSecrets: mockSecrets,
         previousWinner,
+        previousType: "multiplayer",
       })
     ).rejects.toThrow("There was a problem choosing a new player");
   });
@@ -142,6 +145,7 @@ describe("actionCreateRematch", () => {
         previousPlayers: [mockPlayer1, mockPlayer2],
         previousSecrets: mockSecrets,
         previousWinner,
+        previousType: "multiplayer",
       })
     ).rejects.toThrow("Something went wrong during rematch creation");
   });

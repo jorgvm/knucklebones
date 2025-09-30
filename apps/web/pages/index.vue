@@ -7,7 +7,8 @@
 
   <div class="box w-full">
     <div class="duration flex flex-col gap-4">
-      <RouterLink to="/create" class="button">Create game</RouterLink>
+      <RouterLink to="/singleplayer" class="button">Singleplayer</RouterLink>
+      <RouterLink to="/multiplayer" class="button">Multiplayer</RouterLink>
       <RouterLink to="/tutorial" class="button">Tutorial</RouterLink>
     </div>
   </div>

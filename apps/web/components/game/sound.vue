@@ -57,7 +57,7 @@
     }
 
     if (newGameData.latest_actions.includes("game_created")) {
-      playSound("start-game-1");
+      playSound("start-game-1", 0.2);
     }
 
     if (newGameData.latest_actions.includes("game_finished") && gameWon.value) {

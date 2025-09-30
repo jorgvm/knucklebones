@@ -17,9 +17,11 @@ import { isValidCryptoId, generateId } from "~/utilities/generate-id.js";
 import { getWinner } from "~/utilities/get-winner.js";
 import { isGameReady } from "~/utilities/is-game-ready.js";
 import { moveIsAllowed } from "~/utilities/move-is-allowed.js";
+import { nextBotMove } from "~/utilities/next-bot-move.js";
 import { removeDice } from "~/utilities/remove-dice.js";
 import { rollDie } from "~/utilities/roll-die.js";
 import { getPlayerScore } from "~/utilities/score.js";
+import { botId, botSecretId } from "~/utilities/server-id.js";
 
 export const actionPlaceDie = async ({
   gameId,
@@ -111,6 +113,7 @@ export const actionPlaceDie = async ({
       previousPlayers: gameData.players,
       previousSecrets: gameData.secrets,
       previousWinner: winner,
+      previousType: gameData.type,
     });
     gameData.rematch_id = newGameId;
   }
@@ -125,6 +128,24 @@ export const actionPlaceDie = async ({
     rematch_id: gameData.rematch_id,
     latest_actions: latestActions,
   });
+
+  // If player made a move and game is singleplayer, wait and then place a die
+  if (
+    gameData.status === "playing" &&
+    gameData.type === "singleplayer" &&
+    activePlayer.id !== botId
+  ) {
+    setTimeout(() => {
+      const rackNumber = nextBotMove({ gameData, newDie: gameData.new_die });
+
+      actionPlaceDie({
+        gameId,
+        playerId: botId,
+        playerSecretId: botSecretId,
+        rackNumber,
+      });
+    }, 2000);
+  }
 
   return { result: "success" };
 };

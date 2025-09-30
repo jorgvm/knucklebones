@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { ref } from "vue";
+  import { useRouter, useCookie } from "nuxt/app";
   import {
     COOKIE_PLAYER_ID,
     COOKIE_PLAYER_NAME,
@@ -7,11 +8,10 @@
     MAX_PLAYER_NAME_LENGTH,
   } from "@shared/utilities/constants";
   import { sanitizeName } from "@shared/utilities/sanitise";
-
-  import { useRouter, useCookie } from "nuxt/app";
-
-  import type { ResultCreateGameData } from "@shared/types";
+  import type { GameType, ResultCreateGameData } from "@shared/types";
   import type { SocketService } from "~/utilities/socket-service";
+
+  const { type } = defineProps<{ type: GameType }>();
 
   const cookiePlayerName = useCookie(COOKIE_PLAYER_NAME);
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
@@ -41,6 +41,7 @@
         playerName: playerNameTrimmed,
         playerId: cookiePlayerId.value || null,
         playerSecretId: cookiePlayerSecretId.value || null,
+        type,
       },
       handleCreateGameResult,
     );

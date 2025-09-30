@@ -6,6 +6,7 @@ import { GameData } from "@knucklebones/shared/types.js";
 export const mockGameData: GameData = {
   version: 66,
   new_die: 3,
+  type: "multiplayer",
   status: "playing",
   active_player: "edc97af0-6e18-4c1b-a2a4-8dedc080dbf4",
   winner: ["adc7fece-0398-42f5-a62c-549ebaa9dbbb"],

@@ -60,6 +60,7 @@ describe("joinGame - success case", () => {
         }),
       },
       active_player: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
+      latest_actions: ["game_started"],
       status: "playing",
       secrets: {
         mockUnion: {
@@ -102,6 +103,7 @@ describe("joinGame - success case", () => {
         }),
       },
       active_player: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
+      latest_actions: ["game_started"],
       status: "playing",
       secrets: {
         mockUnion: {
