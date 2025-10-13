@@ -49,7 +49,7 @@
     () => isLocalPlayer && myTurn.value && !isLoading.value,
   );
 
-  const isFinished = gameData.value.status === "finished";
+  const isFinished = computed(() => gameData.value.status === "finished");
 
   watch(gameData, () => {
     // After making a move and new data is fetched, set loading to false

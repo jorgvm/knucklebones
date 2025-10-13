@@ -17,7 +17,7 @@
   const cookiePlayerId = useCookie(COOKIE_PLAYER_ID);
   const cookiePlayerSecretId = useCookie(COOKIE_PLAYER_SECRET_ID);
 
-  const playerName = ref(String(cookiePlayerName.value ?? ""));
+  const playerName = ref("");
   const isSubmitting = ref(false);
   const router = useRouter();
 
@@ -26,6 +26,13 @@
   if (!socketService) {
     throw new Error("Socket service not defined");
   }
+
+  watchEffect(() => {
+    // Update name based on cookie
+    if (cookiePlayerName.value) {
+      playerName.value = cookiePlayerName.value;
+    }
+  });
 
   const onSubmit = async () => {
     const playerNameTrimmed = playerName.value.trim();

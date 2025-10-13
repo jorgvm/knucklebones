@@ -8,6 +8,7 @@ import { createGameInDatabase } from "~/utilities/firebase.js";
 import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
 
 import { rollDie } from "~/utilities/roll-die.js";
+import { botId } from "~/utilities/server-id.js";
 
 export const actionCreateRematch = async ({
   previousPlayers,
@@ -16,10 +17,13 @@ export const actionCreateRematch = async ({
   previousType,
 }: SendCreateRematch): Promise<ResultCreateRematch> => {
   let newActivePlayer;
-  if (previousWinner.length > 1) {
+
+  if (previousPlayers.some((i) => i.id === botId)) {
+    // If singleplayer game, player always goes first
+    newActivePlayer = previousPlayers.find((i) => i.id !== botId)?.id;
+  } else if (previousWinner.length > 1) {
     // It was at tie, choose a random player to go first
     const random = randomIntBetween(0, 1);
-
     newActivePlayer = previousPlayers[random].id;
   } else {
     // The loser in the last game gets to play first

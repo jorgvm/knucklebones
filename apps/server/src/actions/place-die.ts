@@ -4,6 +4,7 @@ import type {
   SendPlaceDieData,
   GameAction,
 } from "@knucklebones/shared/types.js";
+import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
 import {
   isValidFirebaseDocumentId,
   isRackNumber,
@@ -135,8 +136,12 @@ export const actionPlaceDie = async ({
     gameData.type === "singleplayer" &&
     activePlayer.id !== botId
   ) {
+    const randomWait = randomIntBetween(1000, 2500);
     setTimeout(() => {
-      const rackNumber = nextBotMove({ gameData, newDie: gameData.new_die });
+      const rackNumber = nextBotMove({
+        gameData,
+        newDieValue: gameData.new_die,
+      });
 
       actionPlaceDie({
         gameId,
@@ -144,7 +149,7 @@ export const actionPlaceDie = async ({
         playerSecretId: botSecretId,
         rackNumber,
       });
-    }, 2000);
+    }, randomWait);
   }
 
   return { result: "success" };
