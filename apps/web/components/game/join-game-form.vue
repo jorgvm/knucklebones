@@ -64,7 +64,7 @@
 </script>
 
 <template>
-  <form class="box flex flex-col" @submit.prevent="onSubmit">
+  <UiBox @submit.prevent="onSubmit">
     <h1>Joining game</h1>
 
     <UiTextInput
@@ -78,12 +78,8 @@
       @input="handleInput"
     />
 
-    <button
-      type="submit"
-      :disabled="isLoading || !socketService.isConnected"
-      class="button"
-    >
+    <UiButton type="submit" :disabled="isLoading || !socketService.isConnected">
       {{ isLoading ? "loading..." : "join game" }}
-    </button>
-  </form>
+    </UiButton>
+  </UiBox>
 </template>

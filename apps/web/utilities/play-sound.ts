@@ -49,6 +49,11 @@ export const handleGameSounds = (
   localPlayerId?: PlayerId,
 ): void => {
   const actions: GameAction[] = newGameData.latest_actions;
+
+  if (!actions?.length) {
+    return;
+  }
+
   const { gameWon, gameLost } = checkGameStatus(
     newGameData,
     localPlayerId || "",

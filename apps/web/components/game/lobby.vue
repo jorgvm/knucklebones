@@ -35,7 +35,7 @@
 </script>
 
 <template>
-  <div v-if="localPlayerIsHost" class="box flex flex-col gap-4">
+  <UiBox v-if="localPlayerIsHost">
     <h1>Lobby</h1>
 
     <p>To start the game, send this link to a friend!</p>
@@ -45,9 +45,7 @@
     </p>
 
     <div class="flex items-center gap-4">
-      <button class="button" type="button" @click="handleCopyToClipboard">
-        copy
-      </button>
+      <UiButton @click="handleCopyToClipboard">copy</UiButton>
 
       <p
         :class="
@@ -57,5 +55,5 @@
         copied!
       </p>
     </div>
-  </div>
+  </UiBox>
 </template>

@@ -88,6 +88,11 @@
   });
 
   const showLoadingScreen = computed(() => {
+    console.log("gamedata", gameData);
+    if (gameData.value.status === "not-found") {
+      return false;
+    }
+
     // There might be a brief moment where the game has started, but the id cookie is not set, in that case, show the loading screen
     // This will also hide the game for players that not in the game
     const playerIsNotInActiveGame =
@@ -108,12 +113,24 @@
     <GameLobby v-if="gameData.status === 'lobby'" />
 
     <GameBoard
-      v-if="gameData.status === 'playing' || gameData.status === 'finished'"
+      v-if="
+        playerIsInGame &&
+        (gameData.status === 'playing' || gameData.status === 'finished')
+      "
     />
 
     <GameJoinGameForm
-      v-if="!localPlayerIsHost && !playerIsInGame"
+      v-if="
+        gameData.status === 'lobby' && !localPlayerIsHost && !playerIsInGame
+      "
       :update-player-cookies="updatePlayerCookies"
+    />
+
+    <GameNotFound
+      v-if="
+        gameData.status === 'not-found' ||
+        (gameData.status !== 'lobby' && !playerIsInGame)
+      "
     />
   </div>
 </template>

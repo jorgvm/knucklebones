@@ -1,43 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  --color-hotpink: hotpink;
+  --color-purple-dark: #29103c;
+  --font-header: "Metal Mania", system-ui, sans-serif;
+  --font-body: "Lacquer", system-ui, sans-serif;
+}
+
+@layer utilities {
+  .font-header {
+    font-family: var(--font-header);
+  }
+  .font-body {
+    font-family: var(--font-body);
+  }
 }
 
 @layer base {
   h1 {
-    font-size: var(--text-3xl);
-    font-family: "Metal Mania";
+    @apply mb-2 font-header text-3xl;
     text-shadow: 1px 1px black;
   }
   h2 {
-    font-size: var(--text-2xl);
-    font-family: "Metal Mania";
+    @apply mb-2 font-header text-2xl;
     text-shadow: 1px 1px black;
   }
 }
 
-.header-font {
-  font-family: "Metal Mania";
-}
-
 body {
-  font-family: "Lacquer";
-  @apply bg-black;
+  @apply bg-black font-body text-lg;
 }
 
+/* Background and dark overlay */
 body::before {
-  background: black url("/img/app-bgr.jpg") no-repeat center center;
+  background: black url("/img/app-bgr.jpg") repeat-x center center;
+  background-size: auto 100%;
   content: "";
-  @apply pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-40;
-}
-
-.button {
-  font-family: "Metal Mania";
-  background: #29103c url("/img/bgr-purple.jpg") no-repeat 0 0;
-  @apply block cursor-pointer rounded-xl border-3 border-[#29103c] bg-cover px-6 py-3 text-2xl hover:border-white/50 active:translate-y-0.5 disabled:cursor-not-allowed;
-}
-
-.box {
-  @apply max-w-[400px] rounded-3xl border-8 border-black/10 bg-black p-8;
+  @apply pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-20;
 }

@@ -99,7 +99,11 @@
     </div>
 
     <!-- player racks with dice -->
-    <div class="relative flex gap-4">
+    <div
+      :class="
+        twMerge('relative flex gap-4', isFinished && 'opacity-20 blur-md')
+      "
+    >
       <div
         v-for="(rack, index) in racks"
         :key="index"
@@ -120,6 +124,7 @@
 
         <button
           v-if="canPlay"
+          type="button"
           class="absolute top-0 left-0 h-full w-full cursor-pointer bg-red-600 opacity-0 mix-blend-color transition-all hover:opacity-100 active:opacity-100 disabled:opacity-0"
           :disabled="
             !canPlay || rack.filter((i) => i.status === 'active').length >= 3

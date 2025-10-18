@@ -73,7 +73,7 @@ export const getGameFromDatabase = async (gameId: string) => {
   if (docSnap.exists()) {
     return docSnap.data() as GameData;
   } else {
-    throw new Error("Game not found in firebase");
+    return gameNotFound;
   }
 };
 
@@ -84,4 +84,18 @@ export const getDocRef = (
   gameId: GameId
 ): DocumentReference<DocumentData, DocumentData> => {
   return doc(db, firebaseCollectionId, gameId);
+};
+
+const gameNotFound: GameData = {
+  active_player: "",
+  created: "",
+  latest_actions: [],
+  new_die: 1,
+  players: [],
+  rematch_id: null,
+  secrets: [],
+  status: "not-found",
+  type: "multiplayer",
+  version: 1,
+  winner: [],
 };

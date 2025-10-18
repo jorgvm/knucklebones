@@ -77,23 +77,25 @@
 </script>
 
 <template>
-  <form class="box flex flex-col" @submit.prevent="onSubmit">
-    <h1>Creating game</h1>
+  <UiBox>
+    <form class="flex flex-col" @submit.prevent="onSubmit">
+      <h1>Creating game</h1>
 
-    <UiTextInput
-      v-model="playerName"
-      label="What is your name?"
-      type="text"
-      :disabled="isLoading"
-      class="mb-4"
-      :maxlength="MAX_PLAYER_NAME_LENGTH"
-      minlength="3"
-      name="player-name"
-      @input="handleInput"
-    />
+      <UiTextInput
+        v-model="playerName"
+        label="What is your name?"
+        type="text"
+        :disabled="isLoading"
+        class="mb-4"
+        :maxlength="MAX_PLAYER_NAME_LENGTH"
+        minlength="3"
+        name="player-name"
+        @input="handleInput"
+      />
 
-    <button type="submit" :disabled="isLoading" class="button">
-      {{ isLoading ? "loading..." : "create game" }}
-    </button>
-  </form>
+      <UiButton type="submit" :disabled="isLoading">
+        {{ isLoading ? "loading..." : "create game" }}
+      </UiButton>
+    </form>
+  </UiBox>
 </template>

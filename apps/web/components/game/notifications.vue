@@ -11,13 +11,11 @@
     throw new Error("GameData was not provided");
   }
 
-  const winnerName = computed(
-    () =>
-      gameData.value.players.find((p) => p.id === gameData.value.winner[0])
-        ?.name,
-  );
-
   const isTie = computed(() => gameData.value.winner.length > 1);
+
+  const localPlayerWon = computed(() =>
+    gameData.value.players.some((p) => p.id === cookiePlayerId.value),
+  );
 
   const nowPlayingName = computed(() => {
     const playerId = gameData.value.active_player;
@@ -30,7 +28,7 @@
 </script>
 
 <template>
-  <div class="h-8 w-full text-2xl text-yellow-700">
+  <div class="flex min-h-8 w-full justify-center text-2xl text-yellow-400">
     <div
       v-if="gameData.status === 'playing'"
       class="flex items-center justify-center gap-4 text-center"
@@ -44,18 +42,24 @@
       />
     </div>
 
-    <div v-if="gameData.status === 'finished'" class="flex items-center gap-4">
-      <span v-if="isTie">It's a tie!</span>
+    <div
+      v-if="gameData.status === 'finished'"
+      class="absolute top-1/2 z-10 flex w-full -translate-y-1/2 flex-col items-center justify-center gap-4 py-20"
+    >
+      <span v-if="isTie" class="text-4xl">It's a tie!</span>
 
-      <span v-if="!isTie">Winner: {{ winnerName }}!</span>
+      <span v-if="!isTie" class="text-4xl">{{
+        localPlayerWon ? "You won!" : "You lose!"
+      }}</span>
 
-      <RouterLink
+      <UiButton
         v-if="gameData.rematch_id"
-        class="button"
         :to="gameData.rematch_id"
+        :small="true"
+        class="mt-4"
       >
-        Rematch!
-      </RouterLink>
+        Rematch
+      </UiButton>
     </div>
   </div>
 </template>

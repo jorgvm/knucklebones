@@ -40,7 +40,8 @@ export type GameStatus =
   | "loading" // fetching game data
   | "lobby" // game has been created, waiting on second player
   | "playing" // playing the game
-  | "finished"; // there is a winner
+  | "finished" // there is a winner
+  | "not-found"; // game was not found on server
 
 export type GameData = {
   active_player: PlayerId | null;

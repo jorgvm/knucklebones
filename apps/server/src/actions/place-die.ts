@@ -137,6 +137,7 @@ export const actionPlaceDie = async ({
     activePlayer.id !== botId
   ) {
     const randomWait = randomIntBetween(1000, 2500);
+
     setTimeout(() => {
       const rackNumber = nextBotMove({
         gameData,

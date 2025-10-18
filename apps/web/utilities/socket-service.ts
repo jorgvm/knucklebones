@@ -59,7 +59,9 @@ const submit = (
   if (socket.value && isConnected.value) {
     socket.value.emit(payload.action, JSON.stringify(payload.data), callback);
   } else {
-    console.error("Socket.IO is not connected");
+    console.error("Socket.IO is not connected, try to connect.");
+
+    connect();
   }
 };
 

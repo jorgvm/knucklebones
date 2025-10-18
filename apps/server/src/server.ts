@@ -81,6 +81,7 @@ io.on("connection", (socket) => {
 
       // Upon subscription, always send game data
       const gameData = await getGameFromDatabase(gameId);
+
       const publicGameData = toPublicGameData(gameData);
       socket.emit("gameUpdate", publicGameData);
 
