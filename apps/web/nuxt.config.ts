@@ -4,6 +4,11 @@ import path from "path";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      title: "Knucklebones",
+    },
+  },
   alias: {
     "@shared": path.resolve(__dirname, "../../packages/shared/src"),
   },
