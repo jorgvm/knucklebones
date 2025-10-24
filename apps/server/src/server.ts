@@ -18,7 +18,17 @@ import { actionPlaceDie } from "~/actions/place-die.js";
 import { getDocRef, getGameFromDatabase } from "~/utilities/firebase.js";
 import { toPublicGameData } from "~/utilities/to-public-gamedata.js";
 
-const httpServer = createServer();
+const httpServer = createServer((req, res) => {
+  // Add a simple handler for health ping
+  if (req.url === "/health") {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+
+    res.end("OK");
+  } else {
+    res.writeHead(404);
+    res.end("Not Found");
+  }
+});
 
 const io = new Server(httpServer, {
   cors: {
