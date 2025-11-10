@@ -56,7 +56,6 @@
         v-if="gameData.rematch_id"
         :to="gameData.rematch_id"
         :small="true"
-        class="mt-4"
       >
         Rematch
       </UiButton>

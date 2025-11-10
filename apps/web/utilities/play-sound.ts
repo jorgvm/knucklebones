@@ -1,5 +1,7 @@
 import type { GameAction, GameData, PlayerId } from "@shared/types";
 import { randomIntBetween } from "@shared/utilities/random-int-between";
+import { waitFor } from "@shared/utilities/wait-for";
+import { vibrate } from "~/utilities/vibrate";
 
 export type Sound =
   | "start-game-1"
@@ -44,10 +46,10 @@ export const checkGameStatus = (
   };
 };
 
-export const handleGameSounds = (
+export const handleGameSounds = async (
   newGameData: GameData,
   localPlayerId?: PlayerId,
-): void => {
+): Promise<void> => {
   const actions: GameAction[] = newGameData.latest_actions;
 
   if (!actions?.length) {
@@ -79,6 +81,8 @@ export const handleGameSounds = (
   }
 
   if (actions.includes("die_removed")) {
+    await waitFor(1000);
+    vibrate();
     playSound("destroy-1", 0.8);
   }
 };

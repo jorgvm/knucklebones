@@ -9,6 +9,7 @@ import {
   isValidFirebaseDocumentId,
   isRackNumber,
 } from "@knucklebones/shared/utilities/sanitise.js";
+import { waitFor } from "@knucklebones/shared/utilities/wait-for.js";
 import { actionCreateRematch } from "~/actions/create-rematch.js";
 import {
   getGameFromDatabase,
@@ -131,26 +132,32 @@ export const actionPlaceDie = async ({
   });
 
   // If player made a move and game is singleplayer, wait and then place a die
+
   if (
     gameData.status === "playing" &&
     gameData.type === "singleplayer" &&
     activePlayer.id !== botId
   ) {
-    const randomWait = randomIntBetween(1000, 2500);
+    let randomWaitTime = randomIntBetween(1000, 2500);
 
-    setTimeout(() => {
-      const rackNumber = nextBotMove({
-        gameData,
-        newDieValue: gameData.new_die,
-      });
+    if (gameData.latest_actions.includes("die_removed")) {
+      // Wait longer, so actions dont follow each other too fast
+      randomWaitTime += 3000;
+    }
 
-      actionPlaceDie({
-        gameId,
-        playerId: botId,
-        playerSecretId: botSecretId,
-        rackNumber,
-      });
-    }, randomWait);
+    await waitFor(randomWaitTime);
+
+    const rackNumber = nextBotMove({
+      gameData,
+      newDieValue: gameData.new_die,
+    });
+
+    actionPlaceDie({
+      gameId,
+      playerId: botId,
+      playerSecretId: botSecretId,
+      rackNumber,
+    });
   }
 
   return { result: "success" };

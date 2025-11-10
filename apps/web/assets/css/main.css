@@ -13,6 +13,52 @@
   .font-body {
     font-family: var(--font-body);
   }
+
+  @keyframes remove {
+    60% {
+      filter: hue-rotate(-30deg) saturate(4.1);
+      transform: scale(1.1);
+      margin-bottom: 16px;
+      height: 48px;
+    }
+    80% {
+      transform: scale(0);
+      margin-bottom: 16px;
+      height: 48px;
+    }
+    100% {
+      transform: scale(0);
+      margin-bottom: 0;
+      height: 0;
+    }
+  }
+
+  .animate-remove {
+    animation: remove 2s forwards;
+  }
+
+  @keyframes glow {
+    0% {
+      transform: translateZ(0px);
+      mix-blend-mode: color;
+      opacity: 0%;
+    }
+    1% {
+      opacity: 0%;
+    }
+    50% {
+      mix-blend-mode: color;
+      opacity: 50%;
+    }
+    100% {
+      mix-blend-mode: color;
+      opacity: 0%;
+    }
+  }
+
+  .animate-glow {
+    animation: glow 3s infinite;
+  }
 }
 
 @layer base {

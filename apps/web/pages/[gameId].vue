@@ -88,21 +88,14 @@
   });
 
   const showLoadingScreen = computed(() => {
-    console.log("gamedata", gameData);
     if (gameData.value.status === "not-found") {
       return false;
     }
 
-    // There might be a brief moment where the game has started, but the id cookie is not set, in that case, show the loading screen
-    // This will also hide the game for players that not in the game
-    const playerIsNotInActiveGame =
-      !playerIsInGame.value && gameData.value.status === "playing";
     const socketIsNotConnected = !socketService.isConnected.value;
     const gameStatusIsLoading = gameData.value.status === "loading";
 
-    return (
-      playerIsNotInActiveGame || socketIsNotConnected || gameStatusIsLoading
-    );
+    return socketIsNotConnected || gameStatusIsLoading;
   });
 </script>
 

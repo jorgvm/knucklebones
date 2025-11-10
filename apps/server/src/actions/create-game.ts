@@ -80,7 +80,7 @@ export const actionCreateGame = async ({
         {
           host: true,
           id: botId,
-          name: "Beelzebub",
+          name: "Knucklebot",
           dice: [],
           score: 0,
         },
