@@ -142,7 +142,7 @@ export const actionPlaceDie = async ({
 
     if (gameData.latest_actions.includes("die_removed")) {
       // Wait longer, so actions dont follow each other too fast
-      randomWaitTime += 3000;
+      randomWaitTime += 2000;
     }
 
     await waitFor(randomWaitTime);

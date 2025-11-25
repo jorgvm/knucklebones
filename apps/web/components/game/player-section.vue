@@ -92,46 +92,23 @@
         "
       >
         {{ player.name }}
-        <span v-if="isFinished" class="font-mono text-sm">
+        <span class="font-mono text-sm">
           ({{ player.score }} {{ player.score === 1 ? "point" : "points" }})
         </span>
       </h1>
     </div>
 
     <!-- player racks with dice -->
-    <div
-      :class="
-        twMerge('relative flex gap-4', isFinished && 'opacity-20 blur-md')
-      "
-    >
-      <div
+    <div class="relative flex gap-4">
+      <GameRack
         v-for="(rack, index) in racks"
         :key="index"
-        class="relative flex min-w-6 flex-col overflow-hidden rounded-2xl bg-black/10 p-4"
-      >
-        <div class="flex flex-col gap-4 rounded bg-[url(/img/bgr-purple.jpg)]">
-          <div v-for="n in 3" :key="n" class="aspect-square size-12 rounded" />
-        </div>
-
-        <div class="absolute top-4 left-4 flex flex-col">
-          <GameDie
-            v-for="die in rack"
-            :key="die.id"
-            :value="die.value"
-            :status="die.status"
-          />
-        </div>
-
-        <button
-          v-if="canPlay"
-          type="button"
-          class="absolute top-0 left-0 h-full w-full cursor-pointer bg-red-600 opacity-0 mix-blend-color transition-all hover:opacity-100 active:opacity-100 disabled:opacity-0"
-          :disabled="
-            !canPlay || rack.filter((i) => i.status === 'active').length >= 3
-          "
-          @click="() => handlePlaceDie(index)"
-        />
-      </div>
+        :rack="rack"
+        :rack-number="index"
+        :can-play="canPlay"
+        :is-finished="isFinished"
+        :handle-place-die="handlePlaceDie"
+      />
     </div>
   </div>
 </template>

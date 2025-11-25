@@ -14,7 +14,7 @@
   const isTie = computed(() => gameData.value.winner.length > 1);
 
   const localPlayerWon = computed(() =>
-    gameData.value.players.some((p) => p.id === cookiePlayerId.value),
+    gameData.value.winner.some((p) => p === cookiePlayerId.value),
   );
 
   const nowPlayingName = computed(() => {
@@ -49,7 +49,7 @@
       <span v-if="isTie" class="text-4xl">It's a tie!</span>
 
       <span v-if="!isTie" class="text-4xl">{{
-        localPlayerWon ? "You won!" : "You lose!"
+        localPlayerWon ? "You won!" : "You lost!"
       }}</span>
 
       <UiButton

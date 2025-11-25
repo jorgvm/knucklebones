@@ -44,8 +44,5 @@
     "
   >
     <Icon :name="iconName" size="3.5em" class="opacity-80" />
-    <span class="absolute text-xs">
-      {{ iconName }}
-    </span>
   </div>
 </template>
