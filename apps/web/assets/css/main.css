@@ -4,6 +4,7 @@
   --color-purple-dark: #29103c;
   --font-header: "Metal Mania", system-ui, sans-serif;
   --font-body: "Lacquer", system-ui, sans-serif;
+  --font-clear: Georgia, "Times New Roman", Times, serif;
 }
 
 @layer utilities {
@@ -12,6 +13,10 @@
   }
   .font-body {
     font-family: var(--font-body);
+  }
+  .font-clear {
+    font-family: var(--font-clear);
+    font-size: 0.8em;
   }
 
   @keyframes remove {

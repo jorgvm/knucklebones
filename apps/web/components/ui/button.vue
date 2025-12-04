@@ -18,7 +18,7 @@
 
   const baseClasses = computed(() =>
     twMerge(
-      "bg-purple-dark bg-[url('/img/bgr-purple.jpg')] bg-no-repeat bg-[position:0_0]",
+      "bg-purple-dark bg-[url('/img/bgr-purple.jpg')] bg-no-repeat bg-[position:0_0] hue-rotate-[70deg]",
       "text-center text-white block cursor-pointer rounded-xl border-3 border-[#29103c] bg-cover px-6 py-3 text-2xl hover:border-white/50 active:translate-y-0.5 disabled:cursor-not-allowed",
       small && "px-2 text-xl py-1",
       className,
