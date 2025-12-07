@@ -23,6 +23,7 @@
     secrets: [],
     rematch_id: null,
     latest_actions: [],
+    type: "multiplayer",
   };
 
   const gameData: Ref<GameData> = ref(gameDefaults);
