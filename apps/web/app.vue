@@ -21,6 +21,4 @@
   >
     <NuxtPage />
   </div>
-
-  <!-- <GameGrainyOverlay /> -->
 </template>

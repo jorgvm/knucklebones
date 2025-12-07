@@ -17,9 +17,26 @@ import { actionJoinGame } from "~/actions/join-game.js";
 import { actionPlaceDie } from "~/actions/place-die.js";
 import { getDocRef, getGameFromDatabase } from "~/utilities/firebase.js";
 import { toPublicGameData } from "~/utilities/to-public-gamedata.js";
+import * as Sentry from "@sentry/node";
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  sendDefaultPii: true,
+  debug: true,
+});
+
+// Handle errors
+process.on("unhandledRejection", (reason, promise) => {
+  Sentry.captureMessage("Unhandled rejection", { extra: { reason } });
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
+process.on("uncaughtException", (error) => {
+  Sentry.captureException(error);
+  console.error("Uncaught Exception:", error);
+});
 
 const httpServer = createServer((req, res) => {
-  // Add a simple handler for health ping
+  // Handle health ping
   if (req.url === "/health") {
     res.writeHead(200, { "Content-Type": "text/plain" });
 
@@ -41,88 +58,79 @@ const io = new Server(httpServer, {
 const gameListeners = new Map<string, () => void>();
 
 io.on("connection", (socket) => {
-  try {
-    console.log("client connected", socket.id);
+  console.log("client connected", socket.id);
 
-    // Create game
-    socket.on(
-      "createGame",
-      async (data: string, callback: DataHandler<ResultCreateGameData>) => {
-        const parsedData: SendCreateGameData = JSON.parse(data);
+  // Create game
+  socket.on(
+    "createGame",
+    async (data: string, callback: DataHandler<ResultCreateGameData>) => {
+      const parsedData: SendCreateGameData = JSON.parse(data);
 
-        const result = await actionCreateGame(parsedData);
-        console.log("create game", result);
+      const result = await actionCreateGame(parsedData);
+      console.log("create game", result);
 
-        callback(result);
-      }
-    );
+      callback(result);
+    }
+  );
 
-    // Join game
-    socket.on(
-      "joinGame",
-      async (data: string, callback: DataHandler<ResultJoinGameData>) => {
-        const parsedData: SendJoinGameData = JSON.parse(data);
+  // Join game
+  socket.on(
+    "joinGame",
+    async (data: string, callback: DataHandler<ResultJoinGameData>) => {
+      const parsedData: SendJoinGameData = JSON.parse(data);
 
-        const result = await actionJoinGame(parsedData);
+      const result = await actionJoinGame(parsedData);
 
-        console.log("join game", result);
-        callback(result);
-      }
-    );
+      console.log("join game", result);
+      callback(result);
+    }
+  );
 
-    // Place die
-    socket.on("placeDie", async (data: string) => {
-      const parsedData: SendPlaceDieData = JSON.parse(data);
+  // Place die
+  socket.on("placeDie", async (data: string) => {
+    const parsedData: SendPlaceDieData = JSON.parse(data);
 
-      await actionPlaceDie(parsedData);
-    });
+    await actionPlaceDie(parsedData);
+  });
 
-    // Subscribe to game
-    socket.on("subscribeToGame", async (data: string) => {
-      console.log("subscribing to game");
-      const { gameId }: SubscribeToGameData = JSON.parse(data);
+  // Subscribe to game
+  socket.on("subscribeToGame", async (data: string) => {
+    console.log("subscribing to game");
+    const { gameId }: SubscribeToGameData = JSON.parse(data);
 
-      if (!isValidFirebaseDocumentId(gameId)) {
-        throw new Error("Game id is not valid");
-      }
+    if (!isValidFirebaseDocumentId(gameId)) {
+      console.error("not valid");
+      io.to(gameId).emit("error", "Game not found during subscription");
+    }
 
-      // Join a socket.io room for the game
-      socket.join(gameId);
+    // Join a socket.io room for the game
+    socket.join(gameId);
 
-      // Upon subscription, always send game data
-      const gameData = await getGameFromDatabase(gameId);
+    // Upon subscription, always send game data
+    const gameData = await getGameFromDatabase(gameId);
 
-      const publicGameData = toPublicGameData(gameData);
-      socket.emit("gameUpdate", publicGameData);
+    const publicGameData = toPublicGameData(gameData);
+    socket.emit("gameUpdate", publicGameData);
 
-      // If gameListener does not exist, set it up
-      if (!gameListeners.has(gameId)) {
-        const docRef = getDocRef(gameId);
-        const unsubscribe = onSnapshot(docRef, (onSnapshotDocSnap) => {
-          // When Firebase is updated, send game data
-          if (onSnapshotDocSnap.exists()) {
-            const gameData = onSnapshotDocSnap.data() as GameData;
-            const publicGameData = toPublicGameData(gameData);
+    // If gameListener does not exist, set it up
+    if (!gameListeners.has(gameId)) {
+      const docRef = getDocRef(gameId);
+      const unsubscribe = onSnapshot(docRef, (onSnapshotDocSnap) => {
+        // When Firebase is updated, send game data
+        if (onSnapshotDocSnap.exists()) {
+          const gameData = onSnapshotDocSnap.data() as GameData;
+          const publicGameData = toPublicGameData(gameData);
 
-            io.to(gameId).emit("gameUpdate", publicGameData);
-          } else {
-            console.error("Game not found during firebase update");
-            io.to(gameId).emit("error", "Game not found during subscription");
-          }
-        });
+          io.to(gameId).emit("gameUpdate", publicGameData);
+        } else {
+          console.error("Game not found during firebase update");
+          io.to(gameId).emit("error", "Game not found during subscription");
+        }
+      });
 
-        gameListeners.set(gameId, unsubscribe);
-      }
-    });
-
-    // Disconnect
-    socket.on("disconnect", () => {
-      // todo, loop through rooms and clean up listeners here if no one is left
-    });
-  } catch (e) {
-    console.error("Something went wrong in the server");
-    console.dir(e, { depth: null });
-  }
+      gameListeners.set(gameId, unsubscribe);
+    }
+  });
 });
 
 // Use the PORT environment variable, fall back to 8080 for local development
