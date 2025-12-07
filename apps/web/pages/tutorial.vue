@@ -5,6 +5,7 @@
   import TutorialMultiplier2 from "~/components/tutorial/multiplier-2.vue";
   import TutorialRemove from "~/components/tutorial/remove.vue";
   import TutorialSummary from "~/components/tutorial/summary.vue";
+  import { twMerge } from "tailwind-merge";
 
   const sliderRef = ref<HTMLElement>();
   const currentSlide = ref(0);
@@ -36,6 +37,10 @@
     goToSlide(Math.min(currentSlide.value + 1, totalSlides - 1));
   };
 
+  const previous = () => {
+    goToSlide(Math.max(currentSlide.value - 1, 0));
+  };
+
   const slide =
     "flex w-[100vw] snap-center snap-always items-center justify-center grow-0 shrink-0 px-8";
 </script>
@@ -57,7 +62,21 @@
       </div>
     </div>
 
-    <div class="flex justify-center">
+    <div class="flex items-center justify-center gap-4">
+      <button
+        type="button"
+        :class="
+          twMerge(
+            'flex cursor-pointer items-center rounded-full bg-gray-900 p-2',
+            currentSlide === 0 && 'cursor-not-allowed opacity-10',
+          )
+        "
+        :disabled="currentSlide === 0"
+        @click="previous"
+      >
+        <Icon name="ep:arrow-left-bold" size="20px" />
+      </button>
+
       <UiButton v-if="currentSlide !== totalSlides - 1" @click="next"
         >Next
       </UiButton>

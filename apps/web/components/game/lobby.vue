@@ -3,6 +3,7 @@
   import type { GameData } from "@shared/types";
   import { COOKIE_PLAYER_ID } from "@shared/utilities/constants";
   import { twMerge } from "tailwind-merge";
+  import { waitFor } from "@shared/utilities/wait-for";
 
   const showCopied = ref(false);
 
@@ -24,13 +25,13 @@
     ),
   );
 
-  const handleCopyToClipboard = () => {
+  const handleCopyToClipboard = async () => {
     navigator.clipboard.writeText(shareURL.toString());
-    showCopied.value = true;
 
-    setTimeout(() => {
-      showCopied.value = false;
-    }, 1000);
+    // show message
+    showCopied.value = true;
+    await waitFor(1000);
+    showCopied.value = false;
   };
 </script>
 

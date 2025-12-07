@@ -1,77 +1,76 @@
 <script lang="ts" setup>
   import type { Rack } from "@shared/types";
+  import { waitFor } from "@shared/utilities/wait-for";
 
   const racksOpponent: Rack[] = reactive([[], [], []]);
   const racks: Rack[] = reactive([[], [], []]);
 
-  const runAnimation = () => {
+  const runAnimation = async () => {
     // Step 1: Add three dice to opponent (3, 2, 2)
-    setTimeout(() => {
-      racksOpponent[0].push(
-        {
-          created: "",
-          id: "0",
-          rack: 0,
-          status: "active",
-          value: 3,
-        },
-        {
-          created: "",
-          id: "1",
-          rack: 0,
-          status: "active",
-          value: 2,
-        },
-        {
-          created: "",
-          id: "2",
-          rack: 0,
-          status: "active",
-          value: 2,
-        },
-      );
-
-      racksOpponent[1].push({
+    racksOpponent[0].push(
+      {
         created: "",
         id: "0",
-        rack: 1,
+        rack: 0,
+        status: "active",
+        value: 3,
+      },
+      {
+        created: "",
+        id: "1",
+        rack: 0,
         status: "active",
         value: 2,
-      });
+      },
+      {
+        created: "",
+        id: "2",
+        rack: 0,
+        status: "active",
+        value: 2,
+      },
+    );
 
-      // Step 2: Add one die to player and mark opponent 2's as removed
-      setTimeout(() => {
-        racks[0].push({
-          created: "",
-          id: "3",
-          rack: 0,
-          status: "active",
-          value: 2,
-        });
+    racksOpponent[1].push({
+      created: "",
+      id: "0",
+      rack: 1,
+      status: "active",
+      value: 2,
+    });
 
-        racksOpponent[0].forEach((die) => {
-          if (die.value === 2) {
-            die.status = "removed";
-          }
-        });
+    // Step 2: Add one die to player and mark opponent 2's as removed
+    await waitFor(1000);
 
-        // Step 3: Clear board completely
-        setTimeout(() => {
-          racks[0] = [];
-          racksOpponent[0] = [];
-          racksOpponent[1] = [];
+    racks[0].push({
+      created: "",
+      id: "3",
+      rack: 0,
+      status: "active",
+      value: 2,
+    });
 
-          // Step 4: Wait 1 second and start over
-          setTimeout(() => {
-            runAnimation();
-          }, 1000);
-        }, 3000);
-      }, 2000);
-    }, 0);
+    racksOpponent[0].forEach((die) => {
+      if (die.value === 2) {
+        die.status = "removed";
+      }
+    });
+
+    // Step 3: Clear board completely
+    await waitFor(2000);
+
+    racks[0] = [];
+    racksOpponent[0] = [];
+    racksOpponent[1] = [];
+
+    // Step 4: Wait 1 second and start over
+    await waitFor(1000);
+
+    runAnimation();
   };
 
-  onMounted(() => {
-    runAnimation();
+  onMounted(async () => {
+    await runAnimation();
   });
 </script>
 

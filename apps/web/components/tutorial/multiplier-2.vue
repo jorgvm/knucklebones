@@ -75,7 +75,7 @@
     </div>
 
     <div>
-      <div class="font-normal">The same dice in one column multiply!</div>
+      <div class="font-normal">Another multiplier example:</div>
       <p>
         <span class="font-clear"
           >5&times;3 + 5&times;3 + 5&times;3 = 45 points</span
