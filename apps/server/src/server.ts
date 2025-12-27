@@ -22,17 +22,17 @@ import * as Sentry from "@sentry/node";
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   sendDefaultPii: true,
-  debug: true,
+  debug: false,
 });
 
 // Handle errors
 process.on("unhandledRejection", (reason, promise) => {
-  Sentry.captureMessage("Unhandled rejection", { extra: { reason } });
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  Sentry.captureMessage("Unhandled rejection", { extra: { reason } });
 });
 process.on("uncaughtException", (error) => {
-  Sentry.captureException(error);
   console.error("Uncaught Exception:", error);
+  Sentry.captureException(error);
 });
 
 const httpServer = createServer((req, res) => {

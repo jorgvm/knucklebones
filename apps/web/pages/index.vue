@@ -11,5 +11,5 @@
     <UiButton to="/tutorial">Tutorial</UiButton>
   </UiBox>
 
-  <GameLoading :active="!socketService.isConnected.value" />
+  <UiLoading :active="!socketService.isConnected.value" />
 </template>

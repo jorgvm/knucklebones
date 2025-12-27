@@ -10,5 +10,5 @@
 
 <template>
   <GameCreateGameForm type="singleplayer" />
-  <GameLoading :active="!socketService.isConnected.value" />
+  <UiLoading :active="!socketService.isConnected.value" />
 </template>

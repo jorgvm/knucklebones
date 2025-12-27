@@ -114,6 +114,6 @@
       </h1>
     </div>
 
-    <div>Remove dice in the same column!</div>
+    <div>You can remove opponent dice in the same column!</div>
   </div>
 </template>

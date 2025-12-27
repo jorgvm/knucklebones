@@ -38,6 +38,11 @@
   };
 
   const previous = () => {
+    if (currentSlide.value === 0) {
+      navigateTo("/");
+      return;
+    }
+
     goToSlide(Math.max(currentSlide.value - 1, 0));
   };
 
@@ -65,13 +70,7 @@
     <div class="flex items-center justify-center gap-4">
       <button
         type="button"
-        :class="
-          twMerge(
-            'flex cursor-pointer items-center rounded-full bg-gray-900 p-2',
-            currentSlide === 0 && 'cursor-not-allowed opacity-10',
-          )
-        "
-        :disabled="currentSlide === 0"
+        class="flex cursor-pointer items-center rounded-full bg-gray-900 p-2"
         @click="previous"
       >
         <Icon name="ep:arrow-left-bold" size="20px" />
