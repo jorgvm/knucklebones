@@ -38,6 +38,7 @@ export default defineNuxtConfig({
   ],
 
   vite: {
+    // @ts-expect-error - Vite version mismatch between Nuxt and @tailwindcss/vite
     plugins: [tailwindcss()],
   },
 
