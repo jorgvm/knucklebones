@@ -28,7 +28,7 @@ describe("sanitizeName", () => {
   it("trims to max length", () => {
     const input = "ThisIsAVeryLongNameThatExceedsTwenty";
     const result = sanitizeName(input);
-    expect(result).toBe("ThisIsAVeryLongNameT");
+    expect(result).toBe("ThisIsAVeryLong");
     expect(result.length).toBe(MAX_PLAYER_NAME_LENGTH);
   });
 

@@ -3,7 +3,7 @@ import { MAX_PLAYER_NAME_LENGTH } from "./constants.js";
 /**
  * Sanitizes a name string by:
  * - Removing all characters except letters (A–Z, a–z) and spaces
- * - Truncating the result to a maximum of 20 characters
+ * - Truncating the result to a maximum of certain characters
  */
 export const sanitizeName = (input: string): string => {
   // Remove anything that's not a letter or space
@@ -14,7 +14,7 @@ export const sanitizeName = (input: string): string => {
 };
 
 /**
- * Checks if a string:
+ * Checks if Firebase document id is valid:
  * - Is exactly 20 characters long
  * - Contains only uppercase letters, lowercase letters, and number
  *
@@ -26,7 +26,7 @@ export const isValidFirebaseDocumentId = (value: string): boolean => {
 };
 
 /**
- * Check if value is valid rack number, 1 2 or 3
+ * Check if value is valid rack number: 1 2 or 3
  */
 export const isRackNumber = (value: number): boolean =>
   [0, 1, 2].includes(value);

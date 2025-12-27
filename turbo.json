@@ -30,7 +30,7 @@
     "test": {
       "cache": false
     },
-    "typecheck": {
+    "type-check": {
       "cache": false
     }
   }

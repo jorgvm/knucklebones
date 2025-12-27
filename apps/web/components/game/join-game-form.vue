@@ -32,7 +32,6 @@
 
   const onSubmit = async () => {
     if (!playerName.value.trim()) {
-      console.warn("Player name is empty or WebSocket is not connected.");
       return;
     }
 

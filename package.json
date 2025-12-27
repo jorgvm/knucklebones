@@ -6,8 +6,8 @@
     "dev": "turbo run dev",
     "dev:server": "turbo run dev --filter=@knucklebones/server",
     "dev:web": "turbo run dev --filter=@knucklebones/web",
-    "check": "pnpm typecheck && pnpm test && pnpm lint",
-    "type-check": "turbo run typecheck",
+    "check": "pnpm type-check && pnpm test && pnpm lint",
+    "type-check": "turbo run type-check",
     "test": "turbo run test",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

@@ -71,12 +71,10 @@ export const handleGameSounds = async (
   }
 
   if (actions.includes("game_finished") && gameWon) {
-    console.log("gamewon");
     playSound("won-2", 0.6);
   }
 
   if (actions.includes("game_finished") && gameLost) {
-    console.log("gamelost");
     playSound("lost-1", 0.3);
   }
 

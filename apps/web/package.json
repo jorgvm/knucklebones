@@ -8,8 +8,8 @@
     "lint": "pnpm eslint",
     "start": "node .output/server/index.mjs",
     "postinstall": "nuxi prepare",
-    "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "test": "vitest run --passWithNoTests",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@knucklebones/shared": "workspace:*",

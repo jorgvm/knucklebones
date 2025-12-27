@@ -83,11 +83,6 @@
   // Provider
   provide("gameData", gameData);
 
-  // During development, log the game state
-  watch(gameData, (newGameData) => {
-    console.log(toRaw(newGameData));
-  });
-
   const showLoadingScreen = computed(() => {
     if (gameData.value.status === "not-found") {
       return false;

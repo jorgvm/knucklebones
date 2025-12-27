@@ -5,7 +5,6 @@
   import TutorialMultiplier2 from "~/components/tutorial/multiplier-2.vue";
   import TutorialRemove from "~/components/tutorial/remove.vue";
   import TutorialSummary from "~/components/tutorial/summary.vue";
-  import { twMerge } from "tailwind-merge";
 
   const sliderRef = ref<HTMLElement>();
   const currentSlide = ref(0);
