@@ -58,17 +58,12 @@ const io = new Server(httpServer, {
 const gameListeners = new Map<string, () => void>();
 
 io.on("connection", (socket) => {
-  console.log("client connected", socket.id);
-
   // Create game
   socket.on(
     "createGame",
     async (data: string, callback: DataHandler<ResultCreateGameData>) => {
       const parsedData: SendCreateGameData = JSON.parse(data);
-
       const result = await actionCreateGame(parsedData);
-      console.log("create game", result);
-
       callback(result);
     }
   );
@@ -78,10 +73,7 @@ io.on("connection", (socket) => {
     "joinGame",
     async (data: string, callback: DataHandler<ResultJoinGameData>) => {
       const parsedData: SendJoinGameData = JSON.parse(data);
-
       const result = await actionJoinGame(parsedData);
-
-      console.log("join game", result);
       callback(result);
     }
   );
@@ -89,17 +81,15 @@ io.on("connection", (socket) => {
   // Place die
   socket.on("placeDie", async (data: string) => {
     const parsedData: SendPlaceDieData = JSON.parse(data);
-
     await actionPlaceDie(parsedData);
   });
 
   // Subscribe to game
   socket.on("subscribeToGame", async (data: string) => {
-    console.log("subscribing to game");
     const { gameId }: SubscribeToGameData = JSON.parse(data);
 
     if (!isValidFirebaseDocumentId(gameId)) {
-      console.error("not valid");
+      console.error("Invalid firebase id was supplied");
       io.to(gameId).emit("error", "Game not found during subscription");
     }
 
@@ -123,13 +113,29 @@ io.on("connection", (socket) => {
 
           io.to(gameId).emit("gameUpdate", publicGameData);
         } else {
-          console.error("Game not found during firebase update");
+          console.error("Game not found during Firebase update");
           io.to(gameId).emit("error", "Game not found during subscription");
         }
       });
 
       gameListeners.set(gameId, unsubscribe);
     }
+  });
+
+  socket.on("disconnect", () => {
+    // Check which rooms are now empty and clean up listeners
+    gameListeners.forEach((unsubscribe, gameId) => {
+      const room = io.sockets.adapter.rooms.get(gameId);
+      const roomSize = room ? room.size : 0;
+
+      if (roomSize === 0) {
+        unsubscribe();
+        gameListeners.delete(gameId);
+      }
+    });
+    console.log(
+      `User disconnected. Listeners remaining: ${gameListeners.size}`
+    );
   });
 });
 
@@ -139,3 +145,35 @@ const PORT = process.env.PORT || 8080;
 httpServer.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+// Graceful shutdown
+const shutdown = async () => {
+  console.log("Shutting down");
+
+  // Unsubscribe all Firestore listeners
+  console.log(`Cleaning up ${gameListeners.size} Firestore listeners`);
+  gameListeners.forEach((unsubscribe) => {
+    unsubscribe();
+  });
+  gameListeners.clear();
+
+  // Close socket.io
+  io.close(() => {
+    console.log("Socket.IO closed");
+  });
+
+  // Close server
+  httpServer.close(() => {
+    console.log("HTTP server closed");
+    process.exit(0);
+  });
+
+  // Force exit after timeout
+  setTimeout(() => {
+    console.error("forced shutdown after timeout");
+    process.exit(1);
+  }, 10000);
+};
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);

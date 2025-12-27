@@ -41,7 +41,7 @@
 
     <p>To start the game, send this link to a friend!</p>
 
-    <p class="font-mono">
+    <p class="overflow-hidden font-mono">
       {{ shareURL.toString() }}
     </p>
 
