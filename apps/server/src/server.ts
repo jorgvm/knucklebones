@@ -52,6 +52,7 @@ const io = new Server(httpServer, {
     origin: process.env.CORS_ALLOWED_URL,
     methods: ["GET", "POST"],
   },
+  maxHttpBufferSize: 1000,
 });
 
 // Track listeners to avoid duplicates
@@ -91,6 +92,7 @@ io.on("connection", (socket) => {
     if (!isValidFirebaseDocumentId(gameId)) {
       console.error("Invalid firebase id was supplied");
       io.to(gameId).emit("error", "Game not found during subscription");
+      return;
     }
 
     // Join a socket.io room for the game
@@ -115,6 +117,7 @@ io.on("connection", (socket) => {
         } else {
           console.error("Game not found during Firebase update");
           io.to(gameId).emit("error", "Game not found during subscription");
+          return;
         }
       });
 
