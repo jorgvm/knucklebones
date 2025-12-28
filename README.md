@@ -1,6 +1,6 @@
 # Knucklesbones
 
-A small game to play around with Vue and Nuxt.
+A little game built with Vue (Nuxt) and backend websockets server, to handle game actions and connect with a Firebase database.
 
 # Local setup
 
@@ -14,13 +14,6 @@ See readme files in /app folders.
 - If a player places multiple dice of the same value in the same column, the score awarded for each of those dice is multiplied by the number of dice of the same value in that column. e.g. if a column contains 4-1-4, then the score for that column is 4x2 + 1x1 + 4x2 = 17. Below is a multiplication table for reference and comparison:
 - When a player places a die, all dice of the same value in the corresponding column of the opponent's board gets destroyed. Players can use this mechanic to destroy their opponent's high-scoring combos.
 - The game ends when either player completely fills up their 3x3 board. The player with the higher score wins.
-
-# Naming
-
-- A gameboard has two player sections.
-- Each player has three racks.
-- Each rack can have 0 to 3 dice.
-- One item is called a 'die'
 
 # Thanks to
 
