@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import { config } from "~/config/env.js";
+import { config } from "~/config/config.js";
 import { httpServer } from "./http-server.js";
 
 export const io = new Server(httpServer, {

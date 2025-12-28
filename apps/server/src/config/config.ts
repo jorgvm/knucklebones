@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const config = {
+  nodeEnv: process.env.NODE_ENV,
   corsAllowedUrl: process.env.CORS_ALLOWED_URL,
   sentryDsn: process.env.SENTRY_DSN,
   port: process.env.PORT || 8080,

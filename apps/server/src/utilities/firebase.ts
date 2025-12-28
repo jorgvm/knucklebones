@@ -12,7 +12,7 @@ import {
   DocumentReference,
   DocumentData,
 } from "firebase/firestore";
-import { config } from "~/config/env.js";
+import { config } from "~/config/config.js";
 
 // Firebase setup
 const firebaseConfig = {

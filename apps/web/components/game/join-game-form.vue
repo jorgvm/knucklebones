@@ -63,22 +63,27 @@
 </script>
 
 <template>
-  <UiBox @submit.prevent="onSubmit">
-    <h1>Joining game</h1>
+  <UiBox>
+    <form @submit.prevent="onSubmit">
+      <h1>Joining game</h1>
 
-    <UiTextInput
-      v-model="playerName"
-      label="What is your name?"
-      type="text"
-      :disabled="isLoading || !socketService.isConnected"
-      class="mb-2"
-      :maxlength="MAX_PLAYER_NAME_LENGTH"
-      minlength="3"
-      @input="handleInput"
-    />
+      <UiTextInput
+        v-model="playerName"
+        label="What is your name?"
+        type="text"
+        :disabled="isLoading || !socketService.isConnected"
+        class="mb-2"
+        :maxlength="MAX_PLAYER_NAME_LENGTH"
+        minlength="3"
+        @input="handleInput"
+      />
 
-    <UiButton type="submit" :disabled="isLoading || !socketService.isConnected">
-      {{ isLoading ? "loading..." : "join game" }}
-    </UiButton>
+      <UiButton
+        type="submit"
+        :disabled="isLoading || !socketService.isConnected"
+      >
+        {{ isLoading ? "loading..." : "join game" }}
+      </UiButton>
+    </form>
   </UiBox>
 </template>

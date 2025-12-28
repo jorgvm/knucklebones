@@ -5,6 +5,7 @@ import { io } from "~/server/socket-server.js";
 import { registerCreateGameHandler } from "~/socket/handlers/create-game.handler.js";
 import { registerDisconnectHandler } from "~/socket/handlers/disconnect.handler.js";
 import { registerJoinGameHandler } from "~/socket/handlers/join-game.handler.js";
+import { registerLogHandler } from "~/socket/handlers/log-handler.js";
 import { registerPlaceDieHandler } from "~/socket/handlers/place-die.handler.js";
 import { registerSubscribeToGameHandler } from "~/socket/handlers/subscribe-to-game.handler.js";
 
@@ -17,8 +18,9 @@ setupErrorHandlers();
 // Initialize httpServer
 httpServer.listen(process.env.PORT || 8080);
 
-// Register socket event handlers
+// Initialize websockets, register event handlers
 io.on("connection", (socket) => {
+  registerLogHandler(socket);
   registerCreateGameHandler(socket);
   registerJoinGameHandler(socket);
   registerPlaceDieHandler(socket);

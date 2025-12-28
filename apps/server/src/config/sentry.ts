@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/node";
-import { config } from "./env.js";
+import { config } from "./config.js";
 
 export function initSentry() {
   Sentry.init({
