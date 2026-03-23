@@ -7,9 +7,13 @@
 
   const showCopied = ref(false);
 
-  const shareURL = useRequestURL()
-    .toString()
-    .replace(/^https?:\/\//, "");
+  const requestURL = useRequestURL();
+
+  const shareURL = requestURL.host + requestURL.pathname;
+
+  const qrCodeSrc = computed(
+    () => `/api/qrcode?url=${encodeURIComponent(requestURL.href)}`,
+  );
 
   const gameData = inject<Ref<GameData>>("gameData");
 
@@ -56,5 +60,6 @@
         copied!
       </p>
     </div>
+    <img :src="qrCodeSrc" class="size-48" />
   </UiBox>
 </template>
