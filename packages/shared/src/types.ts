@@ -44,6 +44,7 @@ export type GameStatus =
   | "not-found"; // game was not found on server
 
 export type GameData = {
+  id: string;
   active_player: PlayerId | null;
   created: string;
   new_die: number;

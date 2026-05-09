@@ -4,6 +4,7 @@ import { GameData } from "@knucklebones/shared/types.js";
  * Mocked game data
  */
 export const mockGameData: GameData = {
+  id: "edc97af0-6e18-4c1b-a2a4-8dedmockedid",
   version: 66,
   new_die: 3,
   type: "multiplayer",

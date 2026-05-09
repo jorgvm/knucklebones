@@ -3,16 +3,22 @@ import type {
   ResultJoinGameData,
   SendJoinGameData,
 } from "@knucklebones/shared/types.js";
-import type { Socket } from "socket.io";
+import type { Server, Socket } from "socket.io";
 import { actionJoinGame } from "~/actions/join-game.js";
 
-export function registerJoinGameHandler(socket: Socket) {
+export function registerJoinGameHandler(socket: Socket, io: Server): void {
   socket.on(
     "joinGame",
     async (data: string, callback: DataHandler<ResultJoinGameData>) => {
       const parsedData: SendJoinGameData = JSON.parse(data);
-      const result = await actionJoinGame(parsedData);
-      callback(result);
-    }
+      const { publicGameData, playerId, playerSecretId } =
+        await actionJoinGame(parsedData);
+
+      // Return ids for user
+      callback({ playerId, playerSecretId });
+
+      // Notify all players
+      io.to(publicGameData.id).emit("gameUpdate", publicGameData);
+    },
   );
 }

@@ -10,7 +10,8 @@
     "start": "node --max-old-space-size=200 dist/server.js",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "pnpm eslint './src/**/*.{ts,tsx}'"
+    "lint": "pnpm eslint './src/**/*.{ts,tsx}'",
+    "supabase-generate-types": "SUPABASE_ACCESS_TOKEN=[pta-token] pnpm supabase gen types typescript --project-id [project-id]  > src/supabase/database.types.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,14 +20,15 @@
   "dependencies": {
     "@knucklebones/shared": "workspace:*",
     "@sentry/node": "^10.32.1",
+    "@supabase/supabase-js": "^2.105.3",
     "dotenv": "^16.6.1",
-    "firebase": "^11.10.0",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "esbuild": "^0.28.0",
     "eslint": "^9.39.2",
+    "supabase": "^2.98.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.50.1",

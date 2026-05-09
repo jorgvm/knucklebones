@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/node";
 import { config } from "./config.js";
 
-export function initSentry() {
+export function initSentry(): void {
   Sentry.init({
     dsn: config.sentryDsn,
     sendDefaultPii: true,
@@ -9,7 +9,7 @@ export function initSentry() {
   });
 }
 
-export function setupErrorHandlers() {
+export function setupErrorHandlers(): void {
   // Handle errors
   process.on("unhandledRejection", (reason, promise) => {
     console.error("Unhandled Rejection at:", promise, "reason:", reason);

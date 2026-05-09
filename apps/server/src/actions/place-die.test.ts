@@ -1,11 +1,13 @@
 import { Die, GameData } from "@knucklebones/shared/types.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionPlaceDie } from "~/actions/place-die.js";
-import { getGameFromDatabase } from "~/utilities/firebase.js";
-import { createGameInDatabase } from "~/utilities/firebase.js";
+import { getGameFromDatabase } from "~/supabase/get-game.js";
+import { createGameInDatabase } from "~/supabase/create-game.js";
+import { updateGameInDatabase } from "~/supabase/update-game.js";
 
 // Mock gamedata
 const mockGameDataSetup: GameData = {
+  id: "a0b1c2d3-e4f5-4678-89ab-cdef01234567",
   players: [
     {
       id: "player-1",
@@ -54,10 +56,25 @@ const allDiceMinusOne: Die[] = [
 ];
 
 // Mocks
-vi.mock("~/utilities/firebase", () => ({
+vi.mock("~/supabase/get-game", () => ({
   getGameFromDatabase: vi.fn(),
+}));
+
+vi.mock("~/supabase/update-game", () => ({
   updateGameInDatabase: vi.fn(),
+}));
+
+vi.mock("~/supabase/create-game", () => ({
   createGameInDatabase: vi.fn(),
+}));
+
+vi.mock("~/utilities/generate-id", () => ({
+  generateId: () => "mock-die-id",
+  isValidCryptoId: () => true,
+}));
+
+vi.mock("~/utilities/roll-die", () => ({
+  rollDie: () => 3,
 }));
 
 vi.mock(
@@ -67,14 +84,15 @@ vi.mock(
 
     return {
       ...actual,
-      isValidFirebaseDocumentId: vi.fn(() => true),
+      isValidCryptoId: vi.fn(() => true),
     };
-  }
+  },
 );
 
 describe("actionPlaceDie", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(updateGameInDatabase).mockResolvedValue(mockGameDataSetup);
   });
 
   it("successfully places a die and updates the game", async () => {
@@ -82,15 +100,6 @@ describe("actionPlaceDie", () => {
     const mockGameData = structuredClone(mockGameDataSetup);
 
     vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);
-
-    vi.mock("~/utilities/generate-id", () => ({
-      generateId: () => "mock-die-id",
-      isValidCryptoId: () => true,
-    }));
-
-    vi.mock("~/utilities/roll-die", () => ({
-      rollDie: () => 3,
-    }));
 
     // Act: call the function with valid inputs
     const result = await actionPlaceDie({
@@ -105,7 +114,7 @@ describe("actionPlaceDie", () => {
 
     // Check the player's rack and die properties
     const placedDie = updatedPlayer.dice.find(
-      (die) => die.id === "mock-die-id"
+      (die) => die.id === "mock-die-id",
     );
 
     // Check new die
@@ -120,8 +129,8 @@ describe("actionPlaceDie", () => {
     expect(mockGameData.active_player).toBe("player-1");
     expect(mockGameData.new_die).toBe(3);
 
-    // Ensure the result is correct
-    expect(result).toEqual({ result: "success" });
+    // Result is public game data with secrets stripped
+    expect(result).toMatchObject({ status: "playing", secrets: [] });
   });
 
   it("throws an error if its not the player's turn", async () => {
@@ -130,15 +139,6 @@ describe("actionPlaceDie", () => {
 
     vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);
 
-    vi.mock("~/utilities/generate-id", () => ({
-      generateId: () => "mock-die-id",
-      isValidCryptoId: () => true,
-    }));
-
-    vi.mock("~/utilities/roll-die", () => ({
-      rollDie: () => 3,
-    }));
-
     // Act: call the function
     await expect(
       actionPlaceDie({
@@ -146,7 +146,7 @@ describe("actionPlaceDie", () => {
         playerId: "player-1", // this player can't play, test should fail
         playerSecretId: "9f950028-fe29-4732-bfde-71ef9cca3085",
         rackNumber: 1,
-      })
+      }),
     ).rejects.toThrow("It's not the players turn");
   });
 
@@ -162,15 +162,6 @@ describe("actionPlaceDie", () => {
 
     vi.mocked(getGameFromDatabase).mockResolvedValue(mockGameData);
 
-    vi.mock("~/utilities/generate-id", () => ({
-      generateId: () => "mock-die-id",
-      isValidCryptoId: () => true,
-    }));
-
-    vi.mock("~/utilities/roll-die", () => ({
-      rollDie: () => 3,
-    }));
-
     // Act: call the function
     await expect(
       actionPlaceDie({
@@ -178,13 +169,14 @@ describe("actionPlaceDie", () => {
         playerId: "player-2",
         playerSecretId: "12350028-fe29-4732-bfde-71ef9cca3123",
         rackNumber: 1, // this rack is already full, test should fail
-      })
+      }),
     ).rejects.toThrow("Rack is already full");
   });
 
   it("throws an error when secret is not correct", async () => {
     // Arrange: mock valid inputs and game data
     const mockGameData: GameData = {
+      id: "b1c2d3e4-f5a6-4789-abcd-ef0123456789",
       players: [
         { id: "player-1", name: "Alice", host: true, dice: [], score: 0 },
         { id: "player-2", name: "Bob", host: false, dice: [], score: 0 },
@@ -215,7 +207,7 @@ describe("actionPlaceDie", () => {
         playerId: "player-1",
         playerSecretId: "9f950028-fe29-4732-bfde-71ef9ccafake",
         rackNumber: 1,
-      })
+      }),
     ).rejects.toThrow("Secret is not correct");
   });
 
@@ -237,8 +229,15 @@ describe("actionPlaceDie", () => {
       rackNumber: 2,
     });
 
-    // Assert: Ensure updateGameInDatabase was called with a game state containing a rematch_id
     expect(mockGameData.status).toBe("finished");
     expect(mockGameData.rematch_id).toBe("mock-rematch-id");
+    expect(updateGameInDatabase).toHaveBeenCalledWith(
+      "valid-game-id",
+      expect.objectContaining({
+        status: "finished",
+        rematch_id: "mock-rematch-id",
+        winner: expect.any(Array),
+      }),
+    );
   });
 });

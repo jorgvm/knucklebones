@@ -1,15 +1,13 @@
 // Track listeners to avoid duplicates
 export const gameListeners = new Map<string, () => void>();
 
-export function addGameListener(gameId: string, unsubscribe: () => void) {
-  gameListeners.set(gameId, unsubscribe);
-}
-
 export function hasGameListener(gameId: string): boolean {
   return gameListeners.has(gameId);
 }
 
-export function cleanupEmptyRoomListeners(getRoomSize: (gameId: string) => number) {
+export function cleanupEmptyRoomListeners(
+  getRoomSize: (gameId: string) => number,
+): void {
   gameListeners.forEach((unsubscribe, gameId) => {
     const roomSize = getRoomSize(gameId);
 
@@ -20,7 +18,7 @@ export function cleanupEmptyRoomListeners(getRoomSize: (gameId: string) => numbe
   });
 }
 
-export function cleanupAllListeners() {
+export function cleanupAllListeners(): void {
   console.log(`Cleaning up ${gameListeners.size} Firestore listeners`);
   gameListeners.forEach((unsubscribe) => {
     unsubscribe();

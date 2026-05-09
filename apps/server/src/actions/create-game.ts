@@ -4,7 +4,7 @@ import {
   SendCreateGameData,
 } from "@knucklebones/shared/types.js";
 import { sanitizeName } from "@knucklebones/shared/utilities/sanitise.js";
-import { createGameInDatabase } from "~/utilities/firebase.js";
+import { createGameInDatabase } from "~/supabase/create-game.js";
 import { generateId, isValidCryptoId } from "~/utilities/generate-id.js";
 import { rollDie } from "~/utilities/roll-die.js";
 import { botId, botSecretId } from "~/utilities/server-id.js";
@@ -39,7 +39,7 @@ export const actionCreateGame = async ({
   const playerId = providedPlayerId || generateId();
   const playerSecretId = providedPlayerSecretId || generateId();
 
-  let newGameData: GameData;
+  let newGameData: Omit<GameData, "id">;
 
   if (type === "multiplayer") {
     newGameData = {

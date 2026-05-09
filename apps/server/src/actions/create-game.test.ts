@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionCreateGame } from "./create-game.js";
-import { createGameInDatabase } from "~/utilities/firebase.js";
+import { createGameInDatabase } from "~/supabase/create-game.js";
 
 // Mocks
-vi.mock("~/utilities/firebase", () => ({
+vi.mock("~/supabase/create-game", () => ({
   createGameInDatabase: vi.fn(),
 }));
 

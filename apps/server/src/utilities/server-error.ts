@@ -1,4 +1,4 @@
-export const serverError = (e: unknown) => {
+export const serverError = (e: unknown): void => {
   let message = "An unknown error occurred";
 
   if (e instanceof Error && e.message) {
@@ -10,3 +10,4 @@ export const serverError = (e: unknown) => {
     message: message,
   };
 };
+//todo

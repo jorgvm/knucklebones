@@ -14,18 +14,6 @@ export const sanitizeName = (input: string): string => {
 };
 
 /**
- * Checks if Firebase document id is valid:
- * - Is exactly 20 characters long
- * - Contains only uppercase letters, lowercase letters, and number
- *
- * For example: JO7BPzEtvwnkFQx8JWc9
- */
-export const isValidFirebaseDocumentId = (value: string): boolean => {
-  const pattern = /^[a-zA-Z0-9]{20}$/;
-  return pattern.test(value);
-};
-
-/**
  * Check if value is valid rack number: 1 2 or 3
  */
 export const isRackNumber = (value: number): boolean =>

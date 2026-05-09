@@ -1,6 +1,6 @@
 # Server app
 
-This is the server app, creating a websocket connection between client and Firebase database.
+This is the server app, creating a websocket connection between client and Supabase database.
 
 ## Firebase
 

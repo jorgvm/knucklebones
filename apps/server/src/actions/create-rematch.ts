@@ -4,8 +4,8 @@ import {
   ResultCreateRematch,
   SendCreateRematch,
 } from "@knucklebones/shared/types.js";
-import { createGameInDatabase } from "~/utilities/firebase.js";
 import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
+import { createGameInDatabase } from "~/supabase/create-game.js";
 
 import { rollDie } from "~/utilities/roll-die.js";
 import { botId } from "~/utilities/server-id.js";
@@ -28,7 +28,7 @@ export const actionCreateRematch = async ({
   } else {
     // The loser in the last game gets to play first
     newActivePlayer = previousPlayers.find(
-      (i) => i.id !== previousWinner[0]
+      (i) => i.id !== previousWinner[0],
     )?.id;
   }
 
@@ -45,7 +45,7 @@ export const actionCreateRematch = async ({
   }));
 
   // Create game
-  const newGameData: GameData = {
+  const newGameData: Omit<GameData, "id"> = {
     active_player: newActivePlayer,
     created: new Date().toISOString(),
     new_die: rollDie(),

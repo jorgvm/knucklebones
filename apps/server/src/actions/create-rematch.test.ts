@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import { createGameInDatabase } from "~/utilities/firebase.js";
+import { createGameInDatabase } from "~/supabase/create-game.js";
 import { PlayerId } from "@knucklebones/shared/types.js";
 import { actionCreateRematch } from "~/actions/create-rematch.js";
 
 // Mocks
-vi.mock("~/utilities/firebase", () => ({
+vi.mock("~/supabase/create-game", () => ({
   createGameInDatabase: vi.fn(),
 }));
 

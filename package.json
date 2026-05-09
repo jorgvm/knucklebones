@@ -18,6 +18,9 @@
   },
   "packageManager": "pnpm@10.5.2",
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "supabase"
+    ]
   }
 }

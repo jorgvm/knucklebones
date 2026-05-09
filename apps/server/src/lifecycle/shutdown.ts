@@ -4,7 +4,7 @@ import { cleanupAllListeners } from "~/socket/game-listeners.js";
 
 export async function shutdown(
   io: SocketServer,
-  httpServer: HttpServer
+  httpServer: HttpServer,
 ): Promise<void> {
   console.log("Shutting down");
 
@@ -31,8 +31,8 @@ export async function shutdown(
 
 export function registerShutdownHandlers(
   io: SocketServer,
-  httpServer: HttpServer
-) {
+  httpServer: HttpServer,
+): void {
   process.on("SIGTERM", () => shutdown(io, httpServer));
   process.on("SIGINT", () => shutdown(io, httpServer));
 }

@@ -22,8 +22,8 @@ httpServer.listen(process.env.PORT || 8080);
 io.on("connection", (socket) => {
   registerLogHandler(socket);
   registerCreateGameHandler(socket);
-  registerJoinGameHandler(socket);
-  registerPlaceDieHandler(socket);
+  registerJoinGameHandler(socket, io);
+  registerPlaceDieHandler(socket, io);
   registerSubscribeToGameHandler(socket, io);
   registerDisconnectHandler(socket, io);
 });
