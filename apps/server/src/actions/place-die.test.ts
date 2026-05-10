@@ -1,4 +1,4 @@
-import { Die, GameData } from "@knucklebones/shared/types.js";
+import type { Die, GameData } from "@knucklebones/shared/types.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionPlaceDie } from "~/actions/place-die.js";
 import { getGameFromDatabase } from "~/database/get-game.js";

@@ -14,6 +14,7 @@ export default tseslint.config(
     },
     rules: {
       "no-undef": "off", // TypeScript handles this
+      "@typescript-eslint/consistent-type-imports": "error",
     },
   }
 );

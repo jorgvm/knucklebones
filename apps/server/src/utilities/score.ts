@@ -1,4 +1,4 @@
-import { Player, Racks, Rack } from "@knucklebones/shared/types.js";
+import type { Player, Racks, Rack } from "@knucklebones/shared/types.js";
 
 /**
  * Sum each rack score

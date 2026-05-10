@@ -1,4 +1,4 @@
-import {
+import type {
   GameAction,
   GameData,
   GameStatus,
@@ -6,7 +6,7 @@ import {
   Player,
   PlayerSecret,
 } from "@knucklebones/shared/types.js";
-import { config } from "~/config/config.js";
+import type { config } from "~/config/config.js";
 import type { Tables } from "~/types/database.js";
 
 type GameRow = Tables<typeof config.supabase.dbName>;

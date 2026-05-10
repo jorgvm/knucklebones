@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { createGameInDatabase } from "~/database/create-game.js";
-import { PlayerId } from "@knucklebones/shared/types.js";
+import type { PlayerId } from "@knucklebones/shared/types.js";
 import { actionCreateRematch } from "~/actions/create-rematch.js";
 
 // Mocks

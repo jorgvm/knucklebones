@@ -1,4 +1,4 @@
-import { GameData } from "@knucklebones/shared/types.js";
+import type { GameData } from "@knucklebones/shared/types.js";
 
 /**
  * Mocked game data

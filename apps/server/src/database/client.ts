@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { config } from "~/config/config.js";
-import { Database } from "~/types/database.js";
+import type { Database } from "~/types/database.js";
 
 if (!config.supabase.url || !config.supabase.serviceKey) {
   throw new Error("Supabase configuration missing");

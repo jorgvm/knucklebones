@@ -1,4 +1,4 @@
-import { GameData } from "@knucklebones/shared/types.js";
+import type { GameData } from "@knucklebones/shared/types.js";
 import { supabase } from "~/database/client.js";
 
 /**

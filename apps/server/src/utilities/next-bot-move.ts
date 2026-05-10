@@ -1,4 +1,4 @@
-import { Die, GameData, RackNumber } from "@knucklebones/shared/types.js";
+import type { Die, GameData, RackNumber } from "@knucklebones/shared/types.js";
 import { getRacks } from "@knucklebones/shared/utilities/get-racks.js";
 import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
 import { getRackScore } from "~/utilities/score.js";

@@ -1,4 +1,4 @@
-import { Player, PlayerId } from "@knucklebones/shared/types.js";
+import type { Player, PlayerId } from "@knucklebones/shared/types.js";
 
 /**
  * Determines the player with the highest score
