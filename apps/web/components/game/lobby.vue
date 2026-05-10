@@ -45,12 +45,12 @@
 
     <p>To start the game, send this link to a friend!</p>
 
-    <p class="overflow-hidden font-mono">
+    <p class="overflow-hidden font-mono" data-testid="share-url">
       {{ shareURL.toString() }}
     </p>
 
     <div class="flex items-center gap-4">
-      <UiButton @click="handleCopyToClipboard">copy</UiButton>
+      <UiButton data-testid="btn-copy-link" @click="handleCopyToClipboard">copy</UiButton>
 
       <p
         :class="

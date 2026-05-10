@@ -33,6 +33,8 @@
   <div class="flex min-h-8 w-full justify-center text-2xl text-yellow-400">
     <div
       v-if="gameData.status === 'playing'"
+      data-testid="turn-status"
+      :data-turn="localPlayerTurn ? 'local' : 'opponent'"
       class="flex items-center justify-center gap-4 text-center"
     >
       {{ localPlayerTurn ? "your move" : "waiting on " + nowPlayingName }}
@@ -46,6 +48,7 @@
 
     <div
       v-if="gameData.status === 'finished'"
+      data-testid="game-result"
       class="absolute top-1/2 z-10 flex w-full -translate-y-1/2 flex-col items-center justify-center gap-4 py-20"
     >
       <span v-if="isTie" class="text-4xl">It's a tie!</span>
@@ -58,6 +61,7 @@
         v-if="gameData.rematch_id"
         :to="gameData.rematch_id"
         :small="true"
+        data-testid="btn-rematch"
       >
         Rematch
       </UiButton>

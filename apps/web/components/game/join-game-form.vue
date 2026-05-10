@@ -75,12 +75,15 @@
         class="mb-2"
         :maxlength="MAX_PLAYER_NAME_LENGTH"
         minlength="3"
+        name="player-name"
+        data-testid="input-player-name"
         @input="handleInput"
       />
 
       <UiButton
         type="submit"
         :disabled="isLoading || !socketService.isConnected"
+        data-testid="btn-join-game"
       >
         {{ isLoading ? "loading..." : "join game" }}
       </UiButton>

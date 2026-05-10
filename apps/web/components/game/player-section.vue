@@ -73,6 +73,7 @@
 <template>
   <div
     v-if="player"
+    :data-testid="isLocalPlayer ? 'player-section-local' : 'player-section-opponent'"
     :class="
       twMerge(
         'flex flex-col items-center justify-between gap-1 transition-all duration-500',
@@ -91,8 +92,8 @@
           )
         "
       >
-        {{ player.name }}
-        <span class="font-mono text-sm">
+        <span :data-testid="isLocalPlayer ? 'local-player-name' : 'opponent-player-name'">{{ player.name }}</span>
+        <span class="font-mono text-sm" :data-testid="isLocalPlayer ? 'local-player-score' : 'opponent-player-score'">
           ({{ player.score }} {{ player.score === 1 ? "point" : "points" }})
         </span>
       </h1>

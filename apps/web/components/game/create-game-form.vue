@@ -90,10 +90,11 @@
         :maxlength="MAX_PLAYER_NAME_LENGTH"
         minlength="3"
         name="player-name"
+        data-testid="input-player-name"
         @input="handleInput"
       />
 
-      <UiButton type="submit" :disabled="isLoading">
+      <UiButton type="submit" :disabled="isLoading" data-testid="btn-create-game">
         {{ isLoading ? "loading..." : "create game" }}
       </UiButton>
     </form>

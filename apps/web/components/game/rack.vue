@@ -43,6 +43,7 @@
       <button
         v-if="canPlay"
         type="button"
+        :data-testid="`rack-btn-${rackNumber}`"
         class="absolute top-0 left-0 z-10 h-full w-full cursor-pointer bg-red-600 opacity-0 mix-blend-color outline-0 transition-all hover:opacity-100 active:opacity-100 disabled:opacity-0"
         :disabled="isRackDisabled"
         @click="handlePlaceDie(rackNumber)"
