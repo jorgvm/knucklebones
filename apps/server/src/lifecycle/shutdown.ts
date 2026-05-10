@@ -2,7 +2,7 @@ import type { Server as HttpServer } from "http";
 import type { Server as SocketServer } from "socket.io";
 import { cleanupAllListeners } from "~/socket/game-listeners.js";
 
-export async function shutdown(
+async function shutdown(
   io: SocketServer,
   httpServer: HttpServer,
 ): Promise<void> {

@@ -4,10 +4,6 @@ export function getListenerCount(): number {
   return gameListeners.size;
 }
 
-export function hasGameListener(gameId: string): boolean {
-  return gameListeners.has(gameId);
-}
-
 export function cleanupEmptyRoomListeners(
   getRoomSize: (gameId: string) => number,
 ): void {

@@ -14,7 +14,7 @@ export type Racks = [Rack, Rack, Rack];
 export type PlayerId = string;
 export type PlayerSecretId = string;
 export type GameId = string;
-export type PlayerName = string;
+type PlayerName = string;
 
 export type Player = {
   dice: Die[];

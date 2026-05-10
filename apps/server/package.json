@@ -2,8 +2,7 @@
   "name": "@knucklebones/server",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Socket.io game server",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "node esbuild.config.js",
