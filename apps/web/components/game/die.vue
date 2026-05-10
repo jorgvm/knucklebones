@@ -37,7 +37,7 @@
     :data-status="status"
     :class="
       twMerge(
-        'mb-4 flex size-12 scale-110 items-center justify-center overflow-hidden bg-[url(img/die.png)] bg-cover text-black transition-all',
+        'mb-4 flex size-12 scale-110 items-center justify-center overflow-hidden bg-[url(/img/die.png)] bg-cover text-black transition-all',
         !isRemovedLocalState && status === 'removed' && 'mb-0 h-0',
         isRemovedLocalState && 'animate-remove',
         className,
