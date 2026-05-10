@@ -1,5 +1,8 @@
-// Track listeners to avoid duplicates
-export const gameListeners = new Map<string, () => void>();
+const gameListeners = new Map<string, () => void>();
+
+export function getListenerCount(): number {
+  return gameListeners.size;
+}
 
 export function hasGameListener(gameId: string): boolean {
   return gameListeners.has(gameId);
@@ -19,7 +22,7 @@ export function cleanupEmptyRoomListeners(
 }
 
 export function cleanupAllListeners(): void {
-  console.log(`Cleaning up ${gameListeners.size} Firestore listeners`);
+  console.log(`Cleaning up ${gameListeners.size} listeners`);
   gameListeners.forEach((unsubscribe) => {
     unsubscribe();
   });

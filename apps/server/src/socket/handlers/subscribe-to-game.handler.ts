@@ -3,7 +3,7 @@ import type { SubscribeToGameData } from "@knucklebones/shared/types.js";
 import type { Server, Socket } from "socket.io";
 import { toPublicGameData } from "~/utilities/to-public-gamedata.js";
 import { isValidCryptoId } from "~/utilities/generate-id.js";
-import { getGameFromDatabase } from "~/supabase/get-game.js";
+import { getGameFromDatabase } from "~/database/get-game.js";
 
 export function registerSubscribeToGameHandler(
   socket: Socket,

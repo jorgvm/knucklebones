@@ -5,7 +5,7 @@ import {
   SendCreateRematch,
 } from "@knucklebones/shared/types.js";
 import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
-import { createGameInDatabase } from "~/supabase/create-game.js";
+import { createGameInDatabase } from "~/database/create-game.js";
 
 import { rollDie } from "~/utilities/roll-die.js";
 import { botId } from "~/utilities/server-id.js";

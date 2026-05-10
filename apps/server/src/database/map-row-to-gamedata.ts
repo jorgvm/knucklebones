@@ -6,9 +6,10 @@ import {
   Player,
   PlayerSecret,
 } from "@knucklebones/shared/types.js";
-import { Tables } from "~/supabase/database.types.js";
+import { config } from "~/config/config.js";
+import type { Tables } from "~/types/database.js";
 
-type GameRow = Tables<"games">;
+type GameRow = Tables<typeof config.supabase.dbName>;
 
 export const mapRowToGameData = (row: GameRow): GameData => ({
   id: row.id,

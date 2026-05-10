@@ -1,5 +1,5 @@
 import { GameData } from "@knucklebones/shared/types.js";
-import { supabase } from "~/supabase/client.js";
+import { supabase } from "~/database/client.js";
 
 /**
  * Create new game

@@ -1,5 +1,5 @@
 import { createServer } from "http";
-// import { handleSupabase } from "~/supabase/client.js";
+// import { handleSupabase } from "~/database/client.js";
 
 export const httpServer = createServer((req, res) => {
   // Handle health ping

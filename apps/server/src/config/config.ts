@@ -10,6 +10,6 @@ export const config = {
   supabase: {
     url: process.env.SUPABASE_URL,
     serviceKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
-    dbName: process.env.SUPABASE_DB_NAME,
+    dbName: "games" as const,
   },
 } as const;

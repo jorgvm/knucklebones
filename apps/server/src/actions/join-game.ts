@@ -2,8 +2,8 @@ import type { Player, SendJoinGameData } from "@knucklebones/shared/types.js";
 import { sanitizeName } from "@knucklebones/shared/utilities/sanitise.js";
 import { generateId, isValidCryptoId } from "~/utilities/generate-id.js";
 import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
-import { getGameFromDatabase } from "~/supabase/get-game.js";
-import { updateGameInDatabase } from "~/supabase/update-game.js";
+import { getGameFromDatabase } from "~/database/get-game.js";
+import { updateGameInDatabase } from "~/database/update-game.js";
 import { toPublicGameData } from "~/utilities/to-public-gamedata.js";
 
 export const actionJoinGame = async ({

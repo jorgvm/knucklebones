@@ -1,6 +1,6 @@
 import { GameData } from "@knucklebones/shared/types.js";
-import { supabase } from "~/supabase/client.js";
-import { mapRowToGameData } from "~/supabase/map-row-to-gamedata.js";
+import { supabase } from "~/database/client.js";
+import { mapRowToGameData } from "~/database/map-row-to-gamedata.js";
 
 /**
  * Update existing game

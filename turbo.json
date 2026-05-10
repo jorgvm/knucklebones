@@ -9,7 +9,6 @@
         "GAME_SERVER_URL",
         "CORS_ALLOWED_URL",
         "SUPABASE_URL",
-        "SUPABASE_DB_NAME",
         "SUPABASE_SERVICE_ROLE_KEY"
       ]
     },

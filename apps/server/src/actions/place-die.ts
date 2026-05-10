@@ -6,8 +6,8 @@ import type {
 } from "@knucklebones/shared/types.js";
 import { isRackNumber } from "@knucklebones/shared/utilities/sanitise.js";
 import { actionCreateRematch } from "~/actions/create-rematch.js";
-import { getGameFromDatabase } from "~/supabase/get-game.js";
-import { updateGameInDatabase } from "~/supabase/update-game.js";
+import { getGameFromDatabase } from "~/database/get-game.js";
+import { updateGameInDatabase } from "~/database/update-game.js";
 import { isValidCryptoId, generateId } from "~/utilities/generate-id.js";
 import { getWinner } from "~/utilities/get-winner.js";
 import { isGameReady } from "~/utilities/is-game-ready.js";

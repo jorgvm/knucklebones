@@ -2,32 +2,28 @@
 
 This is the server app, creating a websocket connection between client and Supabase database.
 
-## Firebase
+## Supabase
 
-To play the game on your (local) environment, you need your own Firebase database.
+## To restore database
 
-- Create an account on Firebase [firebase.google.com](https://firebase.google.com/)
-- Duplicate .env.example to .env
-- Create a new project and app, place the received tokens in the .env file
-- Create a "Firestore Database" in development mode.
-- Create a collection, put the id in FIREBASE_COLLECTION_ID
-- Now fire up the game. The game will create the data structure on Firebase
+To play the game on your (local) environment, you need your own Supabase project.
 
-## Local setup
+- Create an account on [supabase.com](https://supabase.com/)
+- Create a new project
+- Duplicate `.env.example` to `.env` and fill in your Supabase URL and key
+- Restore the database schema
 
-To run this app locally:
+```bash
+pnpm supabase login
+pnpm supabase link --project-ref <your-project-ref>
+pnpm supabase db push
+```
 
-- copy .env.example to .env, enter variables
-- run `pnpm dev`
+## Fly.io setup
 
-## Render.com setup
+You can deploy this app on [fly.io](https://fly.io/).
 
-You can run a free web service on render.com.
-
-Create a project and add your .env variables.
-
-Update your project settings:
-
-- root directory: `apps/server`
-- build command: `pnpm install --frozen-lockfile`
-- start command: `pnpm start`
+- Install flyctl: `brew install flyctl`
+- Login: `fly auth login`
+- Set env variables: `fly secrets set KEY=value`
+- Deploy: `fly deploy`

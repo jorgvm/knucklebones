@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import { COOKIE_PLAYER_ID } from "@shared/utilities/constants";
   import type { GameData } from "@shared/types";
-  import { handleGameSounds } from "~/utilities/play-sound";
+  import { handleGameSounds } from "~/utilities/handle-game-sounds";
 
   const gameData = inject<Ref<GameData>>("gameData");
   if (!gameData?.value) {

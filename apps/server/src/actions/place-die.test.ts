@@ -1,9 +1,9 @@
 import { Die, GameData } from "@knucklebones/shared/types.js";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionPlaceDie } from "~/actions/place-die.js";
-import { getGameFromDatabase } from "~/supabase/get-game.js";
-import { createGameInDatabase } from "~/supabase/create-game.js";
-import { updateGameInDatabase } from "~/supabase/update-game.js";
+import { getGameFromDatabase } from "~/database/get-game.js";
+import { createGameInDatabase } from "~/database/create-game.js";
+import { updateGameInDatabase } from "~/database/update-game.js";
 
 // Mock gamedata
 const mockGameDataSetup: GameData = {
@@ -56,15 +56,15 @@ const allDiceMinusOne: Die[] = [
 ];
 
 // Mocks
-vi.mock("~/supabase/get-game", () => ({
+vi.mock("~/database/get-game", () => ({
   getGameFromDatabase: vi.fn(),
 }));
 
-vi.mock("~/supabase/update-game", () => ({
+vi.mock("~/database/update-game", () => ({
   updateGameInDatabase: vi.fn(),
 }));
 
-vi.mock("~/supabase/create-game", () => ({
+vi.mock("~/database/create-game", () => ({
   createGameInDatabase: vi.fn(),
 }));
 

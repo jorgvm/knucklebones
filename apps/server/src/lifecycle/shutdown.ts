@@ -8,7 +8,7 @@ export async function shutdown(
 ): Promise<void> {
   console.log("Shutting down");
 
-  // Unsubscribe all Firestore listeners
+  // Unsubscribe all listeners
   cleanupAllListeners();
 
   // Close socket.io
