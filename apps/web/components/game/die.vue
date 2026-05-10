@@ -12,8 +12,6 @@
     status?: DieStatus;
   }>();
 
-  const iconName = "nrk:dice-" + value;
-
   // Keep track of removed state, so we dont show remove animation upon refresh
   const isRemovedLocalState = ref(false);
 
@@ -43,6 +41,6 @@
       )
     "
   >
-    <Icon :name="iconName" size="3.5em" class="opacity-80" />
+    <Icon :name="'nrk:dice-' + value" size="3.5em" class="opacity-80" />
   </div>
 </template>

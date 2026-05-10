@@ -11,10 +11,11 @@
       handlePlaceDie: (i: RackNumber) => void;
     }>();
 
-  const isRackFull = () =>
-    rack.filter((i) => i.status === "active").length >= 3;
+  const isRackFull = computed(
+    () => rack.filter((i) => i.status === "active").length >= 3,
+  );
 
-  const isRackDisabled = () => !canPlay || isRackFull();
+  const isRackDisabled = computed(() => !canPlay || isRackFull.value);
 </script>
 
 <template>
@@ -43,7 +44,7 @@
         v-if="canPlay"
         type="button"
         class="absolute top-0 left-0 z-10 h-full w-full cursor-pointer bg-red-600 opacity-0 mix-blend-color outline-0 transition-all hover:opacity-100 active:opacity-100 disabled:opacity-0"
-        :disabled="isRackDisabled()"
+        :disabled="isRackDisabled"
         @click="handlePlaceDie(rackNumber)"
       />
     </div>

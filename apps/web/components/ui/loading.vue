@@ -1,44 +1,26 @@
 <script setup lang="ts">
   import { twMerge } from "tailwind-merge";
-  import { ref, onUnmounted, watch } from "vue";
+  import { onUnmounted, watch } from "vue";
 
   const { active } = defineProps<{
     active: boolean;
   }>();
 
-  const serverIsSlow = ref(false);
-  let timeout: ReturnType<typeof setTimeout>;
-
   watch(
     () => active,
     (isActive) => {
-      if (isActive) {
-        if (typeof document !== "undefined") {
-          // prevent body scroll
-          document.body.style.overflow = "hidden";
-        }
+      if (typeof document === "undefined") return;
 
-        // if server is taking too long, show a message
-        timeout = setTimeout(() => {
-          serverIsSlow.value = true;
-        }, 2000);
+      if (isActive) {
+        document.body.style.overflow = "hidden";
       } else {
-        if (timeout) {
-          clearTimeout(timeout);
-        }
-        serverIsSlow.value = false;
-        if (typeof document !== "undefined") {
-          document.body.style.overflow = "";
-        }
+        document.body.style.overflow = "";
       }
     },
     { immediate: true },
   );
 
   onUnmounted(() => {
-    clearTimeout(timeout);
-
-    // reset body scroll
     document.body.style.overflow = "";
   });
 </script>
@@ -53,9 +35,5 @@
     "
   >
     <h2 class="relative text-6xl">Loading</h2>
-
-    <p v-if="serverIsSlow" class="text-center">
-      Hmm, the server is slow. If it's a cold start, this make take a minute.
-    </p>
   </div>
 </template>

@@ -19,7 +19,7 @@ const isConnected = ref(false);
 
 const connect = () => {
   const runtimeConfig = useRuntimeConfig();
-  const gameServerUrl = runtimeConfig.public.gameServerUrl;
+  const gameServerUrl = runtimeConfig.public.gameServerUrl as string;
 
   if (import.meta.client && !socket.value) {
     socket.value = io(gameServerUrl);

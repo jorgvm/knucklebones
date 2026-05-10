@@ -11,15 +11,17 @@
     throw new Error("GameData was not provided");
   }
 
-  const isTie = computed(() => gameData.value.winner.length > 1);
+  const isTie = computed((): boolean => gameData.value.winner.length > 1);
 
-  const localPlayerWon = computed(() =>
+  const localPlayerWon = computed((): boolean =>
     gameData.value.winner.some((p) => p === cookiePlayerId.value),
   );
 
-  const nowPlayingName = computed(() => {
+  const nowPlayingName = computed((): string => {
     const playerId = gameData.value.active_player;
-    return gameData.value.players.find((p) => p.id === playerId)?.name;
+    return (
+      gameData.value.players.find((p) => p.id === playerId)?.name || "opponent"
+    );
   });
 
   const localPlayerTurn = computed(() => {
