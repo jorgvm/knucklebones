@@ -23,7 +23,7 @@
         handleGameSounds(newGameData, cookiePlayerId.value || undefined);
       }
     },
-    { deep: true },
+    { deep: true, immediate: true },
   );
 </script>
 

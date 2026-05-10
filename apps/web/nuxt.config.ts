@@ -23,7 +23,6 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "@nuxt/icon",
     "@nuxt/image",
-    "@nuxt/test-utils",
     [
       "@nuxtjs/google-fonts",
       {
@@ -38,7 +37,6 @@ export default defineNuxtConfig({
   ],
 
   vite: {
-    // @ts-expect-error - Vite version mismatch between Nuxt and @tailwindcss/vite
     plugins: [tailwindcss()],
   },
 

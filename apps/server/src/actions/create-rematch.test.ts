@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createGameInDatabase } from "~/database/create-game.js";
 import type { PlayerId } from "@knucklebones/shared/types.js";
 import { actionCreateRematch } from "~/actions/create-rematch.js";
+import { randomIntBetween } from "@knucklebones/shared/utilities/random-int-between.js";
 
 // Mocks
 vi.mock("~/database/create-game", () => ({
@@ -92,10 +93,7 @@ describe("actionCreateRematch", () => {
   it("creates a new game for a rematch with a random player going first if it was a tie", async () => {
     // Arrange
     vi.mocked(createGameInDatabase).mockResolvedValue("rematch-game-id-tie");
-    // Mock other utilities
-    vi.mock("@knucklebones/shared/utilities/random-int-between.js", () => ({
-      randomIntBetween: () => 1, // in this test always pick second player to go first
-    }));
+    vi.mocked(randomIntBetween).mockReturnValue(1);
     const previousWinner: PlayerId[] = ["player-1", "player-2"]; // It was a tie
 
     // Act
