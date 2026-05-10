@@ -1,4 +1,4 @@
-import { Player } from "@knucklebones/shared/types.js";
+import type { Player } from "@knucklebones/shared/types.js";
 import { describe, it, expect } from "vitest";
 import { getWinner } from "~/utilities/get-winner.js";
 

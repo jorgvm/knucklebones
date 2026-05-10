@@ -6,8 +6,15 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    languageOptions: {
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
       "no-undef": "off", // TypeScript handles this
+      "@typescript-eslint/consistent-type-imports": "error",
     },
   }
 );

@@ -1,7 +1,13 @@
 // @ts-check
+import { fileURLToPath } from "node:url";
 import withNuxt from "./.nuxt/eslint.config.mjs";
 
 export default withNuxt({
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: fileURLToPath(new URL(".", import.meta.url)),
+    },
+  },
   rules: {
     "no-undef": "error",
     "@typescript-eslint/no-unused-vars": ["warn"],

@@ -6,6 +6,7 @@ This app is the interface the user will see, built in Vue.
 
 To run this app locally:
 
+- setup /app/server first
 - copy .env.example to .env, enter variables
 - run `pnpm dev`
 

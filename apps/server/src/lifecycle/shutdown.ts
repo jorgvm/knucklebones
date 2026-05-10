@@ -2,13 +2,13 @@ import type { Server as HttpServer } from "http";
 import type { Server as SocketServer } from "socket.io";
 import { cleanupAllListeners } from "~/socket/game-listeners.js";
 
-export async function shutdown(
+async function shutdown(
   io: SocketServer,
-  httpServer: HttpServer
+  httpServer: HttpServer,
 ): Promise<void> {
   console.log("Shutting down");
 
-  // Unsubscribe all Firestore listeners
+  // Unsubscribe all listeners
   cleanupAllListeners();
 
   // Close socket.io
@@ -31,8 +31,8 @@ export async function shutdown(
 
 export function registerShutdownHandlers(
   io: SocketServer,
-  httpServer: HttpServer
-) {
+  httpServer: HttpServer,
+): void {
   process.on("SIGTERM", () => shutdown(io, httpServer));
   process.on("SIGINT", () => shutdown(io, httpServer));
 }

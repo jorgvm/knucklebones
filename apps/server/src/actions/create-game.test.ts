@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionCreateGame } from "./create-game.js";
-import { createGameInDatabase } from "~/utilities/firebase.js";
+import { createGameInDatabase } from "~/database/create-game.js";
 
 // Mocks
-vi.mock("~/utilities/firebase", () => ({
+vi.mock("~/database/create-game", () => ({
   createGameInDatabase: vi.fn(),
 }));
 
@@ -56,7 +56,7 @@ describe("actionCreateGame - success case", () => {
         new_die: 3,
         status: "lobby",
         winner: [],
-      })
+      }),
     );
   });
 
@@ -101,7 +101,7 @@ describe("actionCreateGame - success case", () => {
             secret: "15c6cb3e-31bc-4f8f-83ce-ca6b36e03897",
           },
         ],
-      })
+      }),
     );
   });
 
@@ -113,7 +113,7 @@ describe("actionCreateGame - success case", () => {
         playerId: null,
         playerSecretId: null,
         type: "multiplayer",
-      })
+      }),
     ).rejects.toThrow("No valid name was supplied");
   });
 });

@@ -1,9 +1,9 @@
-import { Player, Racks, Rack } from "@knucklebones/shared/types.js";
+import type { Player, Racks, Rack } from "@knucklebones/shared/types.js";
 
 /**
  * Sum each rack score
  */
-export const getPlayerScore = (player: Player) => {
+export const getPlayerScore = (player: Player): number => {
   const racks: Racks = [[], [], []];
 
   player.dice.forEach((die) => {

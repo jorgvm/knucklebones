@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  isRackNumber,
-  isValidFirebaseDocumentId,
-  sanitizeName,
-} from "./sanitise";
+import { isRackNumber, sanitizeName } from "./sanitise";
 import { MAX_PLAYER_NAME_LENGTH } from "./constants.js";
 
 describe("sanitizeName", () => {
@@ -48,30 +44,6 @@ describe("sanitizeName", () => {
     const input = "Alice Bob 123";
     const result = sanitizeName(input);
     expect(result).toBe("Alice Bob");
-  });
-});
-
-describe("isValidFirebaseDocumentId", () => {
-  it("returns true for a valid Firebase document ID", () => {
-    const validId = "5jLUTWk7oYnjT4YWEtXX";
-    expect(isValidFirebaseDocumentId(validId)).toBe(true);
-  });
-
-  it("returns false for an ID with incorrect length", () => {
-    const shortId = "abc";
-    expect(isValidFirebaseDocumentId(shortId)).toBe(false);
-
-    const longId = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    expect(isValidFirebaseDocumentId(longId)).toBe(false);
-  });
-
-  it("returns false for an ID with invalid characters", () => {
-    expect(isValidFirebaseDocumentId("AAAAAAAAAAAAAAAAAAA ")).toBe(false);
-    expect(isValidFirebaseDocumentId("AAAAAAAAAAAAAAAAAAA-")).toBe(false);
-  });
-
-  it("returns false for an empty string", () => {
-    expect(isValidFirebaseDocumentId("")).toBe(false);
   });
 });
 

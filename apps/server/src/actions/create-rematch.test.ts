@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import { createGameInDatabase } from "~/utilities/firebase.js";
-import { PlayerId } from "@knucklebones/shared/types.js";
+import { createGameInDatabase } from "~/database/create-game.js";
+import type { PlayerId } from "@knucklebones/shared/types.js";
 import { actionCreateRematch } from "~/actions/create-rematch.js";
 
 // Mocks
-vi.mock("~/utilities/firebase", () => ({
+vi.mock("~/database/create-game", () => ({
   createGameInDatabase: vi.fn(),
 }));
 
@@ -85,7 +85,7 @@ describe("actionCreateRematch", () => {
         status: "playing", // Game should be in playing status
         version: 1,
         winner: [],
-      })
+      }),
     );
   });
 
@@ -114,7 +114,7 @@ describe("actionCreateRematch", () => {
     expect(createGameInDatabase).toHaveBeenCalledWith(
       expect.objectContaining({
         active_player: "player-2", // Based on randomIntBetween mock
-      })
+      }),
     );
   });
 
@@ -129,7 +129,7 @@ describe("actionCreateRematch", () => {
         previousSecrets: mockSecrets,
         previousWinner,
         previousType: "multiplayer",
-      })
+      }),
     ).rejects.toThrow("There was a problem choosing a new player");
   });
 
@@ -146,7 +146,7 @@ describe("actionCreateRematch", () => {
         previousSecrets: mockSecrets,
         previousWinner,
         previousType: "multiplayer",
-      })
+      }),
     ).rejects.toThrow("Something went wrong during rematch creation");
   });
 });

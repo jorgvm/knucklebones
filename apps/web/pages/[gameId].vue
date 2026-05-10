@@ -36,9 +36,9 @@
 
   const isConnected = computed(() => socketService.isConnected.value);
 
-  const playerIsInGame = computed(() =>
-    gameData.value.players.some((i) => i.id === cookiePlayerId.value),
-  );
+  const playerIsInGame = computed(() => {
+    return gameData.value.players.some((i) => i.id === cookiePlayerId.value);
+  });
 
   const localPlayerIsHost = computed(() =>
     Boolean(

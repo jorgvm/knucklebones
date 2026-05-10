@@ -1,10 +1,10 @@
 import { createServer } from "http";
+// import { handleSupabase } from "~/database/client.js";
 
 export const httpServer = createServer((req, res) => {
   // Handle health ping
   if (req.url === "/health") {
     res.writeHead(200, { "Content-Type": "text/plain" });
-
     res.end("OK");
   } else {
     res.writeHead(404);

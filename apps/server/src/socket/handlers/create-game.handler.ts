@@ -6,13 +6,13 @@ import type {
 import type { Socket } from "socket.io";
 import { actionCreateGame } from "~/actions/create-game.js";
 
-export function registerCreateGameHandler(socket: Socket) {
+export function registerCreateGameHandler(socket: Socket): void {
   socket.on(
     "createGame",
     async (data: string, callback: DataHandler<ResultCreateGameData>) => {
       const parsedData: SendCreateGameData = JSON.parse(data);
       const result = await actionCreateGame(parsedData);
       callback(result);
-    }
+    },
   );
 }

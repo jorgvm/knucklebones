@@ -1,10 +1,10 @@
 # Knucklesbones
 
-A little game built with Vue (Nuxt) and backend websockets server, to handle game actions and connect with a Firebase database.
+A little game built with Vue (Nuxt) and backend websockets server, to handle game actions and connect with a Supabase database.
 
 # Local setup
 
-See readme files in /app folders.
+See readme files in /apps/server and /apps/web.
 
 # Game rules
 

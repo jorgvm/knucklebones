@@ -1,14 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { actionJoinGame } from "~/actions/join-game.js";
-import {
-  getGameFromDatabase,
-  updateGameInDatabase,
-} from "~/utilities/firebase.js";
+import { getGameFromDatabase } from "~/database/get-game.js";
+import { updateGameInDatabase } from "~/database/update-game.js";
 import { mockGameData } from "~/utilities/mock-game.js";
 
-// Mock Firebase functions
-vi.mock("~/utilities/firebase", () => ({
+// Mock Supabase functions
+vi.mock("~/database/get-game", () => ({
   getGameFromDatabase: vi.fn(),
+}));
+
+vi.mock("~/database/update-game", () => ({
   updateGameInDatabase: vi.fn(),
 }));
 
@@ -22,13 +23,10 @@ vi.mock("@knucklebones/shared/utilities/random-int-between.js", () => ({
   randomIntBetween: () => 0, // always pick first player to go first
 }));
 
-vi.mock("firebase/firestore", () => ({
-  arrayUnion: (val: unknown) => ({ mockUnion: val }),
-}));
-
 describe("joinGame - success case", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(updateGameInDatabase).mockResolvedValue(mockGameData);
   });
 
   it("adds a new player to the game", async () => {
@@ -41,34 +39,35 @@ describe("joinGame - success case", () => {
     // Act
     const result = await actionJoinGame({
       playerName: "Alice",
-      gameId: "JO7BPzEtvwnkFQx8JWc9",
+      gameId: "a0b1c2d3-e4f5-4678-89ab-cdef01234567",
       playerId: null,
       playerSecretId: null,
     });
 
     // Assert
-    expect(result).toEqual({ playerId: "mock-id", playerSecretId: "mock-id" });
-
-    expect(updateGameInDatabase).toHaveBeenCalledWith("JO7BPzEtvwnkFQx8JWc9", {
-      players: {
-        mockUnion: expect.objectContaining({
-          id: "mock-id",
-          name: "Alice",
-          host: false,
-          dice: [],
-          score: 0,
-        }),
-      },
-      active_player: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
-      latest_actions: ["game_started"],
-      status: "playing",
-      secrets: {
-        mockUnion: {
-          id: "mock-id",
-          secret: "mock-id",
-        },
-      },
+    expect(result).toMatchObject({
+      playerId: "mock-id",
+      playerSecretId: "mock-id",
     });
+
+    expect(updateGameInDatabase).toHaveBeenCalledWith(
+      "a0b1c2d3-e4f5-4678-89ab-cdef01234567",
+      {
+        players: expect.arrayContaining([
+          expect.objectContaining({
+            id: "mock-id",
+            name: "Alice",
+            host: false,
+            dice: [],
+            score: 0,
+          }),
+        ]),
+        active_player: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
+        latest_actions: ["game_started"],
+        status: "playing",
+        secrets: expect.arrayContaining([{ id: "mock-id", secret: "mock-id" }]),
+      },
+    );
   });
 
   it("adds a new player when prefilling ids", async () => {
@@ -81,37 +80,40 @@ describe("joinGame - success case", () => {
     // Act
     const result = await actionJoinGame({
       playerName: "Alice",
-      gameId: "JO7BPzEtvwnkFQx8JWc9",
+      gameId: "a0b1c2d3-e4f5-4678-89ab-cdef01234567",
       playerId: "48b54530-d2cd-4395-b264-0579d7684d84",
       playerSecretId: "2cfb8540-afc4-4a42-b129-4dfdbffc9883",
     });
 
     // Assert
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       playerId: "48b54530-d2cd-4395-b264-0579d7684d84",
       playerSecretId: "2cfb8540-afc4-4a42-b129-4dfdbffc9883",
     });
 
-    expect(updateGameInDatabase).toHaveBeenCalledWith("JO7BPzEtvwnkFQx8JWc9", {
-      players: {
-        mockUnion: expect.objectContaining({
-          id: "48b54530-d2cd-4395-b264-0579d7684d84",
-          name: "Alice",
-          host: false,
-          dice: [],
-          score: 0,
-        }),
+    expect(updateGameInDatabase).toHaveBeenCalledWith(
+      "a0b1c2d3-e4f5-4678-89ab-cdef01234567",
+      {
+        players: expect.arrayContaining([
+          expect.objectContaining({
+            id: "48b54530-d2cd-4395-b264-0579d7684d84",
+            name: "Alice",
+            host: false,
+            dice: [],
+            score: 0,
+          }),
+        ]),
+        active_player: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
+        latest_actions: ["game_started"],
+        status: "playing",
+        secrets: expect.arrayContaining([
+          {
+            id: "48b54530-d2cd-4395-b264-0579d7684d84",
+            secret: "2cfb8540-afc4-4a42-b129-4dfdbffc9883",
+          },
+        ]),
       },
-      active_player: "adc7fece-0398-42f5-a62c-549ebaa9dbbb",
-      latest_actions: ["game_started"],
-      status: "playing",
-      secrets: {
-        mockUnion: {
-          id: "48b54530-d2cd-4395-b264-0579d7684d84",
-          secret: "2cfb8540-afc4-4a42-b129-4dfdbffc9883",
-        },
-      },
-    });
+    );
   });
 
   it("throws error when playerName is invalid", async () => {
@@ -125,10 +127,10 @@ describe("joinGame - success case", () => {
     await expect(
       actionJoinGame({
         playerName: "!@#",
-        gameId: "JO7BPzEtvwnkFQx8JWc9",
+        gameId: "a0b1c2d3-e4f5-4678-89ab-cdef01234567",
         playerId: null,
         playerSecretId: null,
-      })
+      }),
     ).rejects.toThrow("Invalid input.");
   });
 
@@ -146,7 +148,7 @@ describe("joinGame - success case", () => {
         gameId: "this-id-is-not-valid",
         playerId: null,
         playerSecretId: null,
-      })
+      }),
     ).rejects.toThrow("Invalid input.");
   });
 
@@ -161,10 +163,10 @@ describe("joinGame - success case", () => {
     await expect(
       actionJoinGame({
         playerName: "Alice",
-        gameId: "JO7BPzEtvwnkFQx8JWc9",
+        gameId: "a0b1c2d3-e4f5-4678-89ab-cdef01234567",
         playerId: "this-is-not-valid",
         playerSecretId: null,
-      })
+      }),
     ).rejects.toThrow("Player id not valid");
   });
 });

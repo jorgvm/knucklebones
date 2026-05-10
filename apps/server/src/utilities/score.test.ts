@@ -1,4 +1,4 @@
-import { Die, Player } from "@knucklebones/shared/types.js";
+import type { Die, Player } from "@knucklebones/shared/types.js";
 import { describe, it, expect } from "vitest";
 import { getRackScore, getPlayerScore } from "~/utilities/score.js";
 
