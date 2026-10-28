@@ -4,7 +4,6 @@ import { config } from "./config.js";
 export function initSentry(): void {
   Sentry.init({
     dsn: config.sentryDsn,
-    sendDefaultPii: true,
     debug: false,
   });
 }

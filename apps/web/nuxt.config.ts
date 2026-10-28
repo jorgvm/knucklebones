@@ -52,7 +52,6 @@ export default defineNuxtConfig({
   sentry: {
     org: process.env.SENTRY_ORG,
     project: "knucklebones",
-    autoInjectServerSentry: "top-level-import",
   },
 
   sourcemap: {
